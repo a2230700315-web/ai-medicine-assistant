@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vosk实时语音识别</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .status-value {
+            color: #28a745;
+            font-weight: 700;
+        }
+        
+        .status-value.disconnected {
+            color: #dc3545;
+        }
+        
+        .status-value.connecting {
+            color: #ffc107;
+        }
+        
+        .control-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .control-button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-button.primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .control-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .control-button.primary:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .control-button.danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .control-button.danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+        
+        .control-button.danger:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-section {
+            margin-bottom: 25px;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result-title .icon {
+            font-size: 20px;
+        }
+        
+        .partial-result {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px 20px;
+            min-height: 50px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #856404;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .partial-result.empty {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .final-result {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #155724;
+            font-weight: 500;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .final-result.empty {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            color: #999;
+            font-style: italic;
+            font-weight: normal;
+        }
+        
+        .history-section {
+            margin-top: 25px;
+        }
+        
+        .history-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-item .timestamp {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .history-item .text {
+            color: #333;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .info-box h3 {
+            color: #1976D2;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info-box li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .recording-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dc3545;
+            margin-right: 8px;
+            animation: pulse 1s infinite;
+        }
+        
+        .recording-indicator.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Vosk实时语音识别</h1>
+            <p>真正的流式实时识别，零延迟，所见即所得</p>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">连接状态:</span>
+                <span class="status-value" id="connectionStatus">未连接</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">识别状态:</span>
+                <span class="status-value" id="recognitionStatus">未启动</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">内存使用:</span>
+                <span class="status-value" id="memoryUsage">--</span>
+            </div>
+        </div>
+        
+        <div class="control-section">
+            <button class="control-button primary" id="startButton" onclick="startRecognition()">
+                <span class="recording-indicator hidden" id="recordingIndicator"></span>
+                开始识别
+            </button>
+            <button class="control-button danger" id="stopButton" onclick="stopRecognition()" disabled>
+                停止识别
+            </button>
+        </div>
+        
+        <div class="result-section">
+            <div class="result-title">
+                <span class="icon">⚡</span>
+                实时识别结果（部分）
+            </div>
+            <div class="partial-result empty" id="partialResult">
+                等待语音输入...
+            </div>
+            
+            <div class="result-title">
+                <span class="icon">✅</span>
+                最终识别结果
+            </div>
+            <div class="final-result empty" id="finalResult">
+                识别的完整文本将显示在这里...
+            </div>
+        </div>
+        
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-label">识别次数</div>
+                <div class="metric-value" id="recognitionCount">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">总字数</div>
+                <div class="metric-value" id="totalChars">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">平均延迟</div>
+                <div class="metric-value" id="avgLatency">0ms</div>
+            </div>
+        </div>
+        
+        <div class="history-section">
+            <div class="history-title">📋 识别历史</div>
+            <div class="history-list" id="historyList">
+                <div class="history-item" style="color: #999; font-style: italic;">
+                    暂无识别历史
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>🎯 特性说明</h3>
+            <ul>
+                <li>真正的流式实时识别，每检测到一个字就立即输出</li>
+                <li>零延迟，所见即所得，无需等待完整句子</li>
+                <li>使用vosk-model-small-cn模型，内存占用&lt;100MB</li>
+                <li>完全离线运行，保护隐私安全</li>
+                <li>底层直接捕获麦克风流，跳过浏览器中间层</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const WS_URL = 'ws://localhost:8765';
+        let ws = null;
+        let isRecognizing = false;
+        let recognitionCount = 0;
+        let totalChars = 0;
+        let latencies = [];
+        let history = [];
+        
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket(WS_URL);
+                
+                ws.onopen = function() {
+                    console.log('WebSocket连接已建立');
+                    updateConnectionStatus('connected');
+                    showMessage('✅ 已连接到Vosk服务器', 'success');
+                };
+                
+                ws.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleMessage(data);
+                    } catch (e) {
+                        console.error('消息解析失败:', e);
+                    }
+                };
+                
+                ws.onerror = function(error) {
+                    console.error('WebSocket错误:', error);
+                    updateConnectionStatus('error');
+                    showMessage('❌ WebSocket连接错误', 'error');
+                };
+                
+                ws.onclose = function() {
+                    console.log('WebSocket连接已关闭');
+                    updateConnectionStatus('disconnected');
+                    isRecognizing = false;
+                    updateRecognitionStatus();
+                };
+                
+            } catch (error) {
+                console.error('WebSocket连接失败:', error);
+                updateConnectionStatus('error');
+                showMessage('❌ 无法连接到Vosk服务器', 'error');
+            }
+        }
+        
+        function handleMessage(data) {
+            switch(data.type) {
+                case 'connected':
+                    console.log('服务器已连接:', data.message);
+                    break;
+                    
+                case 'partial':
+                    updatePartialResult(data.text);
+                    break;
+                    
+                case 'final':
+                    updateFinalResult(data.text);
+                    updateMetrics(data);
+                    addToHistory(data);
+                    break;
+                    
+                case 'status':
+                    handleStatusUpdate(data);
+                    break;
+                    
+                default:
+                    console.log('未知消息类型:', data.type);
+            }
+        }
+        
+        function handleStatusUpdate(data) {
+            if (data.action === 'start') {
+                if (data.success) {
+                    isRecognizing = true;
+                    updateRecognitionStatus();
+                    showMessage('✅ 识别已启动', 'success');
+                } else {
+                    showMessage('❌ 识别启动失败', 'error');
+                }
+            } else if (data.action === 'stop') {
+                isRecognizing = false;
+                updateRecognitionStatus();
+                showMessage('⏹️ 识别已停止', 'info');
+            }
+            
+            if (data.memory_mb !== undefined) {
+                document.getElementById('memoryUsage').textContent = 
+                    data.memory_mb.toFixed(1) + ' MB';
+            }
+        }
+        
+        function updatePartialResult(text) {
+            const partialResult = document.getElementById('partialResult');
+            if (text && text.trim()) {
+                partialResult.textContent = text;
+                partialResult.classList.remove('empty');
+            } else {
+                partialResult.textContent = '等待语音输入...';
+                partialResult.classList.add('empty');
+            }
+        }
+        
+        function updateFinalResult(text) {
+            const finalResult = document.getElementById('finalResult');
+            if (text && text.trim()) {
+                finalResult.textContent = text;
+                finalResult.classList.remove('empty');
+            }
+        }
+        
+        function updateMetrics(data) {
+            recognitionCount++;
+            const text = data.text || '';
+            totalChars += text.length;
+            
+            if (data.duration) {
+                const latency = data.duration * 1000;
+                latencies.push(latency);
+                const avgLatency = latencies.reduce((a, b) => a + b, 0) / latencies.length;
+                document.getElementById('avgLatency').textContent = avgLatency.toFixed(0) + 'ms';
+            }
+            
+            document.getElementById('recognitionCount').textContent = recognitionCount;
+            document.getElementById('totalChars').textContent = totalChars;
+        }
+        
+        function addToHistory(data) {
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '';
+            }
+            
+            const historyItem = {
+                timestamp: data.timestamp,
+                text: data.text
+            };
+            
+            history.unshift(historyItem);
+            
+            if (history.length > 10) {
+                history.pop();
+            }
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'history-item';
+            itemDiv.innerHTML = `
+                <span class="timestamp">[${historyItem.timestamp}]</span>
+                <span class="text">${historyItem.text}</span>
+            `;
+            
+            historyList.insertBefore(itemDiv, historyList.firstChild);
+        }
+        
+        function startRecognition() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                showMessage('❌ 请先连接到服务器', 'error');
+                return;
+            }
+            
+            const message = {
+                action: 'start'
+            };
+            
+            ws.send(JSON.stringify(message));
+        }
+        
+        function stopRecognition() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                return;
+            }
+            
+            const message = {
+                action: 'stop'
+            };
+            
+            ws.send(JSON.stringify(message));
+        }
+        
+        function updateConnectionStatus(status) {
+            const statusElement = document.getElementById('connectionStatus');
+            
+            switch(status) {
+                case 'connected':
+                    statusElement.textContent = '已连接';
+                    statusElement.className = 'status-value';
+                    break;
+                case 'connecting':
+                    statusElement.textContent = '连接中...';
+                    statusElement.className = 'status-value connecting';
+                    break;
+                case 'disconnected':
+                    statusElement.textContent = '未连接';
+                    statusElement.className = 'status-value disconnected';
+                    break;
+                case 'error':
+                    statusElement.textContent = '连接错误';
+                    statusElement.className = 'status-value disconnected';
+                    break;
+            }
+        }
+        
+        function updateRecognitionStatus() {
+            const statusElement = document.getElementById('recognitionStatus');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            const indicator = document.getElementById('recordingIndicator');
+            
+            if (isRecognizing) {
+                statusElement.textContent = '识别中';
+                statusElement.className = 'status-value';
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                indicator.classList.remove('hidden');
+            } else {
+                statusElement.textContent = '未启动';
+                statusElement.className = 'status-value disconnected';
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                indicator.classList.add('hidden');
+            }
+        }
+        
+        function showMessage(message, type) {
+            console.log(message);
+        }
+        
+        function checkServerStatus() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = {
+                    action: 'status'
+                };
+                ws.send(JSON.stringify(message));
+            }
+        }
+        
+        window.onload = function() {
+            connectWebSocket();
+            setInterval(checkServerStatus, 5000);
+        };
+        
+        window.onbeforeunload = function() {
+            if (ws) {
+                ws.close();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI医药助教 - 执业药师助教</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 50%, #ecfeff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .app-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            padding: 24px;
+            color: white;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .header-title p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            display: flex;
+            height: 700px;
+        }
+        
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: linear-gradient(to bottom, #f9fafb, #ffffff);
+        }
+        
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+        
+        .message-avatar.assistant {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+        }
+        
+        .message-avatar.user {
+            background: linear-gradient(135deg, #3b82f6 0%, #4f46e5 100%);
+            color: white;
+        }
+        
+        .message-content-wrapper {
+            max-width: 75%;
+        }
+        
+        .message-content-wrapper.user {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .message-bubble {
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .message-bubble.assistant {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .message-bubble.user {
+            background: linear-gradient(135deg, #3b82f6 0%, #4f46e5 100%);
+            color: white;
+        }
+        
+        .prescription-btn {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #10b981;
+            cursor: pointer;
+            font-weight: 500;
+            padding: 4px 8px;
+            background: #ecfdf5;
+            border-radius: 6px;
+            border: 1px solid #10b981;
+        }
+        
+        .prescription-btn:hover {
+            background: #d1fae5;
+        }
+        
+        .input-section {
+            padding: 24px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .input-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            padding-right: 50px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            transition: all 0.2s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .input-field.recording {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+        
+        .voice-indicator {
+            position: absolute;
+            right: 12px;
+            top: 14px;
+            display: flex;
+            gap: 3px;
+        }
+        
+        .voice-indicator span {
+            width: 3px;
+            height: 16px;
+            background: #10b981;
+            border-radius: 2px;
+            animation: bounce 1s infinite;
+        }
+        
+        .voice-indicator span:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        
+        .voice-indicator span:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.5); }
+        }
+        
+        .voice-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            font-size: 24px;
+        }
+        
+        .voice-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+        
+        .voice-button.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .voice-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .send-button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .info-box h3 {
+            color: #92400e;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            color: #78350f;
+            font-size: 12px;
+        }
+        
+        .info-box li {
+            margin-bottom: 4px;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .info-box li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+        
+        .prescription-panel {
+            width: 400px;
+            background: linear-gradient(to bottom, #f9fafb, #ffffff);
+            padding: 24px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .prescription-panel.active {
+            display: block;
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .close-btn:hover {
+            color: #4b5563;
+        }
+        
+        .panel-content {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .panel-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .panel-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .panel-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .panel-section ul {
+            list-style: none;
+        }
+        
+        .panel-section li {
+            font-size: 13px;
+            color: #4b5563;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .panel-section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .warning-box h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .warning-box p {
+            font-size: 12px;
+            color: #78350f;
+            line-height: 1.6;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .action-btn.print {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+        }
+        
+        .action-btn.download {
+            background: linear-gradient(135deg, #3b82f6 0%, #4f46e5 100%);
+            color: white;
+        }
+        
+        .action-btn.share {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cancel-hint {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        
+        .cancel-hint.show {
+            opacity: 1;
+        }
+        
+        .cancel-hint.active {
+            background: #dc2626;
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .chat-section {
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            .messages-container {
+                height: 400px;
+            }
+            
+            .prescription-panel {
+                width: 100%;
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-container">
+            <div class="header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <div class="header-icon">🩺</div>
+                        <div class="header-title">
+                            <h1>执业药师助教</h1>
+                            <p>专业用药指导 · 药学知识解答</p>
+                        </div>
+                    </div>
+                    <div class="status-badge">
+                        <span>✓</span>
+                        <span>在线</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="chat-section">
+                    <div class="messages-container" id="messagesContainer">
+                        <div class="message">
+                            <div class="message-avatar assistant">🩺</div>
+                            <div class="message-content-wrapper">
+                                <div class="message-bubble assistant">您好！我是您的执业药师助教。我可以为您提供专业的用药指导、药品信息查询和药学知识解答。请按住麦克风按钮识别语音，松开发送。</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <div class="input-container">
+                                <textarea
+                                    id="messageInput"
+                                    placeholder="请输入您的用药问题..."
+                                    rows="2"
+                                    class="input-field"
+                                ></textarea>
+                                <div class="voice-indicator" id="voiceIndicator" style="display: none;">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="cancel-hint" id="cancelHint">↑ 上滑取消</div>
+                            </div>
+                            
+                            <button id="voiceButton" class="voice-button" title="按住识别，松开发送">
+                                🎤
+                            </button>
+                            
+                            <button id="sendButton" class="send-button">
+                                发送
+                            </button>
+                        </div>
+                        
+                        <div class="info-box">
+                            <h3>⚠️ 重要提示</h3>
+                            <ul>
+                                <li>本助教提供的用药指导仅供参考，不能替代专业医师诊断</li>
+                                <li>涉及处方药时，请务必遵医嘱使用</li>
+                                <li>如有严重或紧急情况，请立即就医</li>
+                                <li>所有建议均基于权威的临床用药指南</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="prescription-panel" id="prescriptionPanel">
+                        <div class="panel-header">
+                            <div class="panel-title">📋 药品说明书</div>
+                            <button class="close-btn" id="closePanelBtn">✕</button>
+                        </div>
+                        
+                        <div class="panel-content" id="prescriptionContent">
+                        </div>
+                        
+                        <div class="warning-box">
+                            <h4>⚠️ 重要提醒</h4>
+                            <p>本说明书仅供参考，不能替代专业医师诊断。涉及处方药时，请务必遵医嘱使用。如有疑问，请咨询医师或药师。</p>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="action-btn print" onclick="alert('打印功能开发中')">🖨️ 打印</button>
+                            <button class="action-btn download" onclick="alert('下载功能开发中')">⬇️ 下载</button>
+                            <button class="action-btn share" onclick="alert('分享功能开发中')">📤 分享</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRecording = false;
+        let isSupported = true;
+        let recognition = null;
+        let finalTranscript = '';
+        
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const voiceButton = document.getElementById('voiceButton');
+        const sendButton = document.getElementById('sendButton');
+        const voiceIndicator = document.getElementById('voiceIndicator');
+        const prescriptionPanel = document.getElementById('prescriptionPanel');
+        const prescriptionContent = document.getElementById('prescriptionContent');
+        const closePanelBtn = document.getElementById('closePanelBtn');
+        const cancelHint = document.getElementById('cancelHint');
+        
+        let startY = 0;
+        let isSwipingUp = false;
+        
+        function checkSpeechSupport() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = true;
+                recognition.lang = 'zh-CN';
+                
+                recognition.onstart = function() {
+                    isRecording = true;
+                    voiceButton.classList.add('recording');
+                    voiceButton.textContent = '🔴';
+                    voiceIndicator.style.display = 'flex';
+                    messageInput.placeholder = '正在识别语音...';
+                    messageInput.classList.add('recording');
+                    cancelHint.classList.add('show');
+                };
+                
+                recognition.onend = function() {
+                    isRecording = false;
+                    voiceButton.classList.remove('recording');
+                    voiceButton.textContent = '🎤';
+                    voiceIndicator.style.display = 'none';
+                    messageInput.placeholder = '请输入您的用药问题...';
+                    messageInput.classList.remove('recording');
+                    cancelHint.classList.remove('show');
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('语音识别错误:', event.error);
+                    isRecording = false;
+                    voiceButton.classList.remove('recording');
+                    voiceButton.textContent = '🎤';
+                    voiceIndicator.style.display = 'none';
+                    messageInput.placeholder = '请输入您的用药问题...';
+                    messageInput.classList.remove('recording');
+                    cancelHint.classList.remove('show');
+                    alert('语音识别错误: ' + event.error);
+                };
+                
+                recognition.onresult = function(event) {
+                    let interimTranscript = '';
+                    let currentFinalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            currentFinalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    if (currentFinalTranscript) {
+                        finalTranscript += currentFinalTranscript;
+                    }
+                    
+                    messageInput.value = finalTranscript + interimTranscript;
+                };
+            } else {
+                isSupported = false;
+                voiceButton.disabled = true;
+                voiceButton.textContent = '❌';
+                voiceButton.title = '您的浏览器不支持语音输入';
+            }
+        }
+        
+        function startRecording() {
+            if (!isSupported) {
+                alert('您的浏览器不支持语音输入');
+                return;
+            }
+            
+            finalTranscript = '';
+            messageInput.value = '';
+            recognition.start();
+        }
+        
+        function stopRecording() {
+            if (!isSupported || !isRecording) {
+                return;
+            }
+            
+            recognition.stop();
+            
+            setTimeout(() => {
+                if (messageInput.value.trim()) {
+                    sendMessage();
+                }
+            }, 300);
+        }
+        
+        function cancelRecording() {
+            if (!isSupported || !isRecording) {
+                return;
+            }
+            
+            recognition.stop();
+            messageInput.value = '';
+            finalTranscript = '';
+        }
+        
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            
+            addMessage(text, 'user');
+            messageInput.value = '';
+            
+            setTimeout(() => {
+                const response = generateResponse(text);
+                addMessage(response, 'assistant', true);
+            }, 1000);
+        }
+        
+        function addMessage(content, role, showPrescriptionBtn = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + role;
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar ' + role;
+            avatarDiv.textContent = role === 'user' ? '💊' : '🩺';
+            
+            const contentWrapper = document.createElement('div');
+            contentWrapper.className = 'message-content-wrapper ' + role;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble ' + role;
+            bubbleDiv.textContent = content;
+            
+            contentWrapper.appendChild(bubbleDiv);
+            
+            if (showPrescriptionBtn) {
+                const prescriptionBtn = document.createElement('div');
+                prescriptionBtn.className = 'prescription-btn';
+                prescriptionBtn.innerHTML = '📋 查看药品说明书';
+                prescriptionBtn.onclick = () => showPrescription(content);
+                contentWrapper.appendChild(prescriptionBtn);
+            }
+            
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(contentWrapper);
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function generateResponse(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            if (lowerQuestion.includes('阿莫西林') || lowerQuestion.includes('抗生素')) {
+                return `**阿莫西林**（处方药，请遵医嘱）
+
+**适应症**：用于治疗敏感菌引起的各种感染，如呼吸道感染、尿路感染、皮肤软组织感染等。
+
+**用法用量**：
+- 成人：通常每次0.5g，每6-8小时一次
+- 儿童：按体重计算，通常每日20-40mg/kg，分3-4次服用
+- 饭后服用可减少胃肠道反应
+
+**不良反应**：
+- 常见：恶心、呕吐、腹泻等胃肠道反应
+- 偶见：皮疹、药物热等过敏反应
+- 严重：过敏性休克（罕见但危险）
+
+**禁忌症**：
+- 青霉素过敏者禁用
+- 传染性单核细胞增多症患者禁用
+
+**注意事项**：
+- 用药前必须进行青霉素皮试
+- 完整疗程治疗，避免过早停药
+- 如出现皮疹、呼吸困难等过敏症状，立即停药就医
+
+**重要提醒**：本品为处方药，必须在医师指导下使用，请遵医嘱！`;
+            } else if (lowerQuestion.includes('头孢')) {
+                return `**头孢类抗生素**（处方药，请遵医嘱）
+
+头孢类抗生素是一类广谱抗生素，根据抗菌谱和抗菌活性分为五代：
+
+**第一代**：头孢唑林、头孢拉定等，主要用于革兰阳性菌感染
+**第二代**：头孢呋辛、头孢克洛等，对革兰阴性菌作用增强
+**第三代**：头孢曲松、头孢他啶等，对革兰阴性菌作用更强
+**第四代**：头孢吡肟等，广谱抗菌
+**第五代**：头孢洛林等，对耐药菌有效
+
+**共同特点**：
+- 杀菌作用强
+- 过敏反应比青霉素少，但仍需注意
+- 与酒精同服可引起双硫仑样反应（严重）
+
+**注意事项**：
+- 对青霉素过敏者慎用
+- 用药期间及停药后7天内禁止饮酒
+- 肾功能不全者需调整剂量
+
+**重要提醒**：头孢类抗生素均为处方药，必须在医师指导下使用，请遵医嘱！`;
+            } else if (lowerQuestion.includes('不良反应') || lowerQuestion.includes('副作用')) {
+                return `**药物不良反应（ADR）是指合格药品在正常用法用量下出现的与用药目的无关的有害反应。**
+
+**常见不良反应类型**：
+
+1. **胃肠道反应**
+   - 恶心、呕吐、腹泻、腹痛
+   - 常见药物：抗生素、NSAIDs等
+
+2. **过敏反应**
+   - 皮疹、荨麻疹、瘙痒
+   - 严重：过敏性休克
+   - 常见药物：青霉素、头孢等
+
+3. **神经系统反应**
+   - 头晕、头痛、嗜睡
+   - 严重：癫痫发作
+   - 常见药物：镇静催眠药、抗癫痫药
+
+4. **肝肾功能损害**
+   - 转氨酶升高、黄疸
+   - 肌酐升高、蛋白尿
+   - 常见药物：某些抗生素、抗肿瘤药
+
+**不良反应处理原则**：
+- 轻度反应：继续观察，对症处理
+- 中度反应：暂停用药，咨询医师
+- 重度反应：立即停药，紧急就医
+
+**报告不良反应**：
+如发现可疑不良反应，请及时向医师或药师报告，也可通过国家药品不良反应监测系统上报。`;
+            } else if (lowerQuestion.includes('禁忌症')) {
+                return `**药物禁忌症是指禁止使用某种药物的情况。**
+
+**常见禁忌症类型**：
+
+1. **绝对禁忌症**
+   - 青霉素过敏者禁用青霉素
+   - 严重肝肾功能不全者禁用某些药物
+   - 孕妇禁用某些致畸药物
+
+2. **相对禁忌症**
+   - 轻中度肝肾功能不全需调整剂量
+   - 哺乳期慎用某些药物
+   - 老年人需调整剂量
+
+**特殊人群禁忌**：
+
+**孕妇**：
+- 禁用：沙利度胺、维甲酸类等致畸药物
+- 慎用：大多数药物需权衡利弊
+
+**儿童**：
+- 禁用：某些成人药物
+- 剂量需按体重或体表面积计算
+
+**老年人**：
+- 肝肾功能减退，需调整剂量
+- 多种药物联用需注意相互作用
+
+**重要提醒**：用药前请仔细阅读药品说明书中的禁忌症项，如有疑问请咨询医师或药师。`;
+            } else {
+                return `感谢您的提问。作为执业药师助教，我将基于临床用药指南为您提供专业的用药指导。
+
+**我可以帮助您解答以下问题**：
+
+1. **药品信息查询**：药品名称、适应症、用法用量等
+2. **用药指导**：如何正确服用药物、注意事项等
+3. **不良反应**：药物可能的不良反应及处理方法
+4. **禁忌症**：哪些情况下不能使用某种药物
+5. **药物相互作用**：多种药物同时使用的注意事项
+6. **特殊人群用药**：孕妇、儿童、老年人等特殊人群用药指导
+
+**重要提示**：
+- 涉及处方药的问题，我会明确标注"请遵医嘱"
+- 所有建议均基于权威的临床用药指南
+- 如有严重或紧急情况，请立即就医
+
+请告诉我您想了解的具体药品或用药问题，我会为您提供详细的解答。`;
+            }
+        }
+        
+        function showPrescription(content) {
+            prescriptionContent.innerHTML = parsePrescriptionContent(content);
+            prescriptionPanel.classList.add('active');
+        }
+        
+        function parsePrescriptionContent(content) {
+            const lines = content.split('\n');
+            let html = '';
+            let currentSection = null;
+            
+            lines.forEach(line => {
+                if (line.startsWith('**')) {
+                    if (currentSection) {
+                        html += '</ul></div>';
+                    }
+                    const sectionTitle = line.replace(/\*\*/g, '').replace('（处方药，请遵医嘱）', '');
+                    const isWarning = line.includes('禁忌');
+                    html += `<div class="panel-section">
+                        <h4>${isWarning ? '⚠️' : '✓'} ${sectionTitle}</h4>
+                        <ul>`;
+                    currentSection = true;
+                } else if (line.startsWith('-')) {
+                    const itemText = line.replace(/^- /, '');
+                    html += `<li>${itemText}</li>`;
+                }
+            });
+            
+            if (currentSection) {
+                html += '</ul></div>';
+            }
+            
+            return html;
+        }
+        
+        voiceButton.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            startY = e.clientY;
+            isSwipingUp = false;
+            startRecording();
+        });
+        
+        voiceButton.addEventListener('mousemove', (e) => {
+            if (isRecording && startY > 0) {
+                const deltaY = e.clientY - startY;
+                if (deltaY < -30) {
+                    isSwipingUp = true;
+                    cancelHint.classList.add('active');
+                } else {
+                    isSwipingUp = false;
+                    cancelHint.classList.remove('active');
+                }
+            }
+        });
+        
+        voiceButton.addEventListener('mouseup', (e) => {
+            e.preventDefault();
+            if (isSwipingUp) {
+                cancelRecording();
+            } else {
+                stopRecording();
+            }
+            startY = 0;
+            isSwipingUp = false;
+            cancelHint.classList.remove('active');
+        });
+        
+        voiceButton.addEventListener('mouseleave', (e) => {
+            e.preventDefault();
+            if (isRecording) {
+                stopRecording();
+            }
+            startY = 0;
+            isSwipingUp = false;
+            cancelHint.classList.remove('active');
+        });
+        
+        voiceButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startY = e.touches[0].clientY;
+            isSwipingUp = false;
+            startRecording();
+        });
+        
+        voiceButton.addEventListener('touchmove', (e) => {
+            if (isRecording && startY > 0) {
+                const deltaY = e.touches[0].clientY - startY;
+                if (deltaY < -30) {
+                    isSwipingUp = true;
+                    cancelHint.classList.add('active');
+                } else {
+                    isSwipingUp = false;
+                    cancelHint.classList.remove('active');
+                }
+            }
+        });
+        
+        voiceButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (isSwipingUp) {
+                cancelRecording();
+            } else {
+                stopRecording();
+            }
+            startY = 0;
+            isSwipingUp = false;
+            cancelHint.classList.remove('active');
+        });
+        
+        sendButton.addEventListener('click', sendMessage);
+        closePanelBtn.addEventListener('click', () => {
+            prescriptionPanel.classList.remove('active');
+        });
+        
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        checkSpeechSupport();
+    </script>
+</body>
+</html>
