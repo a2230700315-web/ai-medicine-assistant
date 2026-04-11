@@ -1,0 +1,3670 @@
+{
+  "id": "pharmacy_comprehensive",
+  "name": "药学综合知识与技能",
+  "icon": "💊",
+  "units": [
+    {
+      "id": "pharmacy_comprehensive-u1",
+      "name": "一 药 学 服 务 与 药 品 管 理",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u1-1",
+          "name": "( 一 ) 药 学服务与执业 药师",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u1-1-1",
+              "name": "1.药学服务的内涵与对象",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-1-1-1",
+                  "content": "(1)药学服务的内涵"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-1-1-2",
+                  "content": "(2)药学服务的重点人群"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.药学服务的内涵与对象</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u1-1-2",
+              "name": "2.药学服务的模式与内容",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-1-2-1",
+                  "content": "(1)药学服务的主要内容"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-1-2-2",
+                  "content": "(2)药物重整、药物治疗管理等新理念"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药学服务的模式与内容</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u1-1-3",
+              "name": "3.药学服务对执业药师的 要求",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-1-3-1",
+                  "content": "(1)职业道德"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-1-3-2",
+                  "content": "(2)专业知识"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-1-3-3",
+                  "content": "(3)专业技能"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.药学服务对执业药师的 要求</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u1-2",
+          "name": "( 二 ) 药 品 管理",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u1-2-1",
+              "name": "1.药品经营质量管理体系",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-2-1-1",
+                  "content": "(1)药品经营质量管理原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-1-2",
+                  "content": "(2)药品经营质量管理体系"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.药品经营质量管理体系</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u1-2-2",
+              "name": "2.药品经营环节质量管控 重点",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-2-2-1",
+                  "content": "(1)药品的稳定性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-2-2",
+                  "content": "(2)影响药品质量的因素"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-2-3",
+                  "content": "(3)药品的质量验收"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-2-4",
+                  "content": "(4)药品的贮藏与保管"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-2-5",
+                  "content": "(5)药品质量问题的发现与处理"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药品经营环节质量管控 重点</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u1-2-3",
+              "name": "3.需要特殊注意药品的管理",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u1-2-3-1",
+                  "content": "(1)高警示药品管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u1-2-3-2",
+                  "content": "(2)看似听似"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.需要特殊注意药品的管理</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u2",
+      "name": "二处方审核与 调剂",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u2-1",
+          "name": "( 一 ) 处 方 审核",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u2-1-1",
+              "name": "1.处方审核规范",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-1-1-1",
+                  "content": "(1)处方审核基本要求"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-1-2",
+                  "content": "(2)处方审核的流程"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-1-3",
+                  "content": "(3)处方审核的基本素养及技能"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.处方审核规范</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u2-1-2",
+              "name": "2.处方合法性审核",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-1-2-1",
+                  "content": "(1)医师处方资格"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-2-2",
+                  "content": "(2)特殊药品处方权"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.处方合法性审核</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u2-1-3",
+              "name": "3.处方规范性审核",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-1-3-1",
+                  "content": "(1)处方格式"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-3-2",
+                  "content": "(2)药品通用名"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-3-3",
+                  "content": "(3)处方缩写词"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-3-4",
+                  "content": "(4)处方书写的基本要求"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.处方规范性审核</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u2-1-4",
+              "name": "4.处方用药适宜性审核",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-1",
+                  "content": "(1)处方用药与诊断的相符性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-2",
+                  "content": "(2)须做皮试药品结果的判定"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-3",
+                  "content": "(3)剂量、用法和疗程的正确性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-4",
+                  "content": "(4)选用剂型与给药途径的适宜性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-5",
+                  "content": "(5)重复给药和相互作用"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-6",
+                  "content": "(6)配伍禁忌"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-7",
+                  "content": "(7)用药禁忌"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-8",
+                  "content": "(8)注射剂用药适宜性审核"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-9",
+                  "content": "(9)抗菌药物处方适宜性审核"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-10",
+                  "content": "(10)中成药处方适宜性审核"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-4-11",
+                  "content": "(11)超说明书用药适宜性审核"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.处方用药适宜性审核</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u2-1-5",
+              "name": "5.处方审核结果",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-1-5-1",
+                  "content": "(1)对审核结果的判读"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-1-5-2",
+                  "content": "(2)对审核结果的处理"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.处方审核结果</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u2-2",
+          "name": "( 二 ) 处 方 调配",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u2-2-1",
+              "name": "1.处方调剂操作规程",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-2-1-1",
+                  "content": "(1)处方调剂的具体流程和要求"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-1-2",
+                  "content": "(2)通过药品名称确定药物"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-1-3",
+                  "content": "(3)识别合适的包装和贮藏要求"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.处方调剂操作规程</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u2-2-2",
+              "name": "2.药学计算",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-2-2-1",
+                  "content": "(1)剂量规格与药品数量的转换"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-2-2",
+                  "content": "(2)根据药物总量计算其某一组分含量"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-2-3",
+                  "content": "(3)同类药物之间的等效剂量换算"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-2-4",
+                  "content": "(4)药物稀释浓度的计算"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-2-2-5",
+                  "content": "(5)国际单位与质量单位的换算"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药学计算</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u2-3",
+          "name": "(三)发药",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u2-3-1",
+              "name": "核对与发药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u2-3-1-1",
+                  "content": "(1)核对处方与药品"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u2-3-1-2",
+                  "content": "(2)用药交代"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>核对与发药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u3",
+      "name": "三  用药 咨询 与  药物治疗管理",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u3-1",
+          "name": "( 一 ) 药 学 信 息 咨 询 服务",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u3-1-1",
+              "name": "1.药学信息",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-1",
+                  "content": "(1)药学信息与药学信息服务"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-2",
+                  "content": "(2)药学信息服务常用资料"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-3",
+                  "content": "(3)药学信息检索方法"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-4",
+                  "content": "(4)药学信息质量判断与评价"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-5",
+                  "content": "(5)药学信息的管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-1-6",
+                  "content": "(6)正确阅读药品说明书"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.药学信息</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-1-2",
+              "name": "2.用药咨询",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-1-2-1",
+                  "content": "(1)咨询服务的方法和程序"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-2-2",
+                  "content": "(2)患者用药咨询"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-2-3",
+                  "content": "(3)医师用药咨询"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-2-4",
+                  "content": "(4)护士用药咨询"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-2-5",
+                  "content": "(5)公众用药咨询"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.用药咨询</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-1-3",
+              "name": "3.沟通技能",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-1-3-1",
+                  "content": "(1)沟通的基本方法"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-1-3-2",
+                  "content": "(2)沟通的注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.沟通技能</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u3-2",
+          "name": "( 二 ) 疾 病管理与健康 宣教",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u3-2-1",
+              "name": "1.疾病防治",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-1",
+                  "content": "(1)健康生活方式"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-2",
+                  "content": "(2)提高用药依从性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-3",
+                  "content": "(3)营养管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-4",
+                  "content": "(4)戒烟管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-5",
+                  "content": "(5)传染病防治"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-6",
+                  "content": "(6)疫苗接种"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-1-7",
+                  "content": "(7)安宁疗护"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.疾病防治</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-2-2",
+              "name": "2.家庭保健",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-2-2-1",
+                  "content": "(1)家庭药箱管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-2-2",
+                  "content": "(2)家用医疗器械使用"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.家庭保健</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-2-3",
+              "name": "3.物质滥用与成瘾",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-2-3-1",
+                  "content": "(1)现状与危害"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-2-3-2",
+                  "content": "(2)预防及教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.物质滥用与成瘾</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u3-3",
+          "name": "( 三 ) 药 物 治疗管理",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u3-3-1",
+              "name": "1.用药相关信息收集要点和 方法",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-1-1",
+                  "content": "(1)信息收集的要点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-1-2",
+                  "content": "(2)信息收集的方法"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.用药相关信息收集要点和 方法</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-3-2",
+              "name": "2.药物治疗评估、计划制定 与随访",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-2-1",
+                  "content": "(1)药物治疗方案的评估要点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-2-2",
+                  "content": "(2)计划制定及执行"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-2-3",
+                  "content": "(3)跟踪随访"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗评估、计划制定 与随访</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-3-3",
+              "name": "3.用药档案建立",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-3-1",
+                  "content": "(1)用药档案的管理及记录要点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-3-2",
+                  "content": "(2)药物治疗药历"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.用药档案建立</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-3-4",
+              "name": "4.中成药临床药物治疗管理",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-4-1",
+                  "content": "(1)常用剂型特点与应用"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-4-2",
+                  "content": "(2)药物治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-4-3",
+                  "content": "(3)分类与临床应用要点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-4-4",
+                  "content": "(4)主要不良反应与配伍禁忌"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-4-5",
+                  "content": "(5)中西药物联合治疗管理要点"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.中成药临床药物治疗管理</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-3-5",
+              "name": "5.抗菌药物治疗管理",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-5-1",
+                  "content": "(1)抗菌药物临床应用的基本原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-5-2",
+                  "content": "(2)抗菌药物在特殊病理、生理状况患者中 应用的基本原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-5-3",
+                  "content": "(3)抗菌药物临床应用分级管理"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.抗菌药物治疗管理</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u3-3-6",
+              "name": "6.抗肿瘤药物治疗管理",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-3-6-1",
+                  "content": "(1)抗肿瘤药物临床应用基本原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-3-6-2",
+                  "content": "(2)抗肿瘤药物治疗药学服务"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.抗肿瘤药物治疗管理</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u3-4",
+          "name": "(四)常用 医学检查",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u3-4-1",
+              "name": "常用医学检查指标的解读",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-1",
+                  "content": "(1)血常规检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-2",
+                  "content": "(2)尿常规检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-3",
+                  "content": "(3)粪常规检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-4",
+                  "content": "(4)肝功能检查常用指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-5",
+                  "content": "(5)肾功能检查常用指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-6",
+                  "content": "(6)其他常用血生化检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-7",
+                  "content": "(7)电解质检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-8",
+                  "content": "(8)乙型肝炎血清免疫学检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-9",
+                  "content": "(9)甲状腺功能检查指标及其临床意义"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u3-4-1-10",
+                  "content": "(10)细菌药敏试验结果及其临床意义"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>常用医学检查指标的解读</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u4",
+      "name": "四 用 药 安 全",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u4-1",
+          "name": "( 一 ) 药 物 警戒",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u4-1-1",
+              "name": "药物警戒的开展",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-1-1-1",
+                  "content": "(1)药物警戒的信号"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-1-1-2",
+                  "content": "(2)药物警戒的内容"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>药物警戒的开展</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u4-2",
+          "name": "( 二 ) 药 品 不良反应",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u4-2-1",
+              "name": "药品不良反应预防与监测",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-1",
+                  "content": "(1)预防原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-2",
+                  "content": "(2)影响因素"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-3",
+                  "content": "(3)监测方法"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-4",
+                  "content": "(4)程度分级标准"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-5",
+                  "content": "(5)因果关系评价原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-6",
+                  "content": "(6)报告范围"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-2-1-7",
+                  "content": "(7)报告注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>药品不良反应预防与监测</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u4-3",
+          "name": "( 三 ) 药 源 性疾病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u4-3-1",
+              "name": "药源性疾病的发生与防治",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-3-1-1",
+                  "content": "(1)药源性疾病分类"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-3-1-2",
+                  "content": "(2)药源性疾病风险因素及防治"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>药源性疾病的发生与防治</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u4-4",
+          "name": "( 四 ) 用 药 错误",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u4-4-1",
+              "name": "1.用药错误的发生",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-4-1-1",
+                  "content": "(1)用药错误的分级"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-4-1-2",
+                  "content": "(2)用药错误的引发原因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-4-1-3",
+                  "content": "(3)用药错误的环节与类型"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.用药错误的发生</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-4-2",
+              "name": "2.用药错误的防范",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-4-2-1",
+                  "content": "(1)用药错误的监测"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-4-2-2",
+                  "content": "(2)用药错误的防范"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.用药错误的防范</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-4-3",
+              "name": "3.用药错误的报告",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-4-3-1",
+                  "content": "报告内容与流程"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.用药错误的报告</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u4-5",
+          "name": "( 五 ) 特 殊 人群用药",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u4-5-1",
+              "name": "1.妊娠期女性用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-1-1",
+                  "content": "(1)妊娠期女性药动学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-1-2",
+                  "content": "(2)药物对妊娠期不同阶段胎儿的影响"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-1-3",
+                  "content": "(3)胎儿药动学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-1-4",
+                  "content": "(4)药物妊娠毒性"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-1-5",
+                  "content": "(5)妊娠期用药原则"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.妊娠期女性用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-2",
+              "name": "2.哺乳期女性用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-2-1",
+                  "content": "(1)药物的乳汁分泌"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-2-2",
+                  "content": "(2)常用药物对乳儿的影响"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-2-3",
+                  "content": "(3)哺乳期用药原则"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.哺乳期女性用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-3",
+              "name": "3.新生儿用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-3-1",
+                  "content": "(1)新生儿药动学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-3-2",
+                  "content": "(2)新生儿用药原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-3-3",
+                  "content": "(3)新生儿用药剂量计算方法"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.新生儿用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-4",
+              "name": "4.儿童用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-4-1",
+                  "content": "(1)儿童药动学和药效学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-4-2",
+                  "content": "(2)儿童用药原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-4-3",
+                  "content": "(3)儿童用药剂量计算方法"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.儿童用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-5",
+              "name": "5.老年人用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-5-1",
+                  "content": "(1)老年人药动学和药效学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-5-2",
+                  "content": "(2)老年人疾病特点及处理原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-5-3",
+                  "content": "(3)终末期照护中的药物管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-5-4",
+                  "content": "(4)老年人合理用药"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.老年人用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-6",
+              "name": "6.肝功能不全患者用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-6-1",
+                  "content": "(1)肝脏疾病对药物作用的影响"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-6-2",
+                  "content": "(2)肝功能不全患者用药原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-6-3",
+                  "content": "(3)肝功能不全患者合理用药"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.肝功能不全患者用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-7",
+              "name": "7.肾功能不全患者用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-7-1",
+                  "content": "(1)肾功能不全患者药动学特点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-7-2",
+                  "content": "(2)肾功能不全患者用药原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-7-3",
+                  "content": "(3)肾功能不全患者合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-7-4",
+                  "content": "(4)透析对药物的影响"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-7-5",
+                  "content": "(5)透析患者用药注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>7.肾功能不全患者用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-8",
+              "name": "8.器官移植患者用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-8-1",
+                  "content": "(1)免疫抑制剂使用原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-8-2",
+                  "content": "(2)免疫抑制剂用药方案及药学监护"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-8-3",
+                  "content": "(3)慢性排斥反应的危险因素及防范措施"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>8.器官移植患者用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-9",
+              "name": "9.驾驶员用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-9-1",
+                  "content": "(1)驾驶慎用的药物"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-9-2",
+                  "content": "(2)用药注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>9.驾驶员用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u4-5-10",
+              "name": "10.运动员用药",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u4-5-10-1",
+                  "content": "(1)兴奋剂的界定及种类"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u4-5-10-2",
+                  "content": "(2)用药注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>10.运动员用药</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u5",
+      "name": "五急 救 、 中毒   解救及职业 防护",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u5-1",
+          "name": "(一)急救",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u5-1-1",
+              "name": "1.急救的意义与原则",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u5-1-1-1",
+                  "content": "(1)急救的意义与目的"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-1-2",
+                  "content": "(2)急救的处理原则与一般方法"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.急救的意义与原则</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u5-1-2",
+              "name": "2.常见急症及处置",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-1",
+                  "content": "(1)出血"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-2",
+                  "content": "(2)擦伤、割伤与咬伤"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-3",
+                  "content": "(3)烫伤"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-4",
+                  "content": "(4)骨折与扭伤"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-5",
+                  "content": "(5)气道异物梗阻"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-6",
+                  "content": "(6)中暑"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-1-2-7",
+                  "content": "(7)溺水"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.常见急症及处置</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u5-2",
+          "name": "(二)中毒 解救",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u5-2-1",
+              "name": "1.中毒治疗原则",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u5-2-1-1",
+                  "content": "中毒的一般救治措施"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.中毒治疗原则</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u5-2-2",
+              "name": "2.常见毒性物质中毒的治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u5-2-2-1",
+                  "content": "(1)常见中毒毒物种类"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-2-2-2",
+                  "content": "(2)常见精神类药物中毒的药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u5-2-2-3",
+                  "content": "(3)有机磷、鼠药、氰化物、对乙酰氨基酚 及重金属中毒的药物治疗"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.常见毒性物质中毒的治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u5-3",
+          "name": "(三)职业 防护",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u5-3-1",
+              "name": "细胞毒性药物的职业防护",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u5-3-1-1",
+                  "content": "细胞毒性药物暴露的预防和紧急处理措施"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>细胞毒性药物的职业防护</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u6",
+      "name": "六 常 见 病 症 的 药 物 治 疗 管 理",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u6-1",
+          "name": "(一)发热 与疼痛",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-1-1",
+              "name": "1.发热",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-1-1-1",
+                  "content": "(1)常见发热的临床表现与病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-1-1-2",
+                  "content": "(2)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-1-1-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.发热</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-1-2",
+              "name": "2.疼痛",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-1-2-1",
+                  "content": "(1)常见疼痛的临床表现与病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-1-2-2",
+                  "content": "(2)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-1-2-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.疼痛</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-2",
+          "name": "(二)呼吸 系统",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-2-1",
+              "name": "1.咳嗽",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-1-1",
+                  "content": "(1)常见咳嗽的临床表现与病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-1-2",
+                  "content": "(2)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-1-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.咳嗽</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-2",
+              "name": "2.感冒",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-2-1",
+                  "content": "(1)普通感冒与流行性感冒的临床表现与 病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-2-2",
+                  "content": "(2)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-2-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.感冒</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-3",
+              "name": "3.急性扁桃体炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-3-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-3-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-3-3",
+                  "content": "(3)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-3-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.急性扁桃体炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-4",
+              "name": "4.鼻窦炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-4-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-4-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-4-3",
+                  "content": "(3)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-4-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.鼻窦炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-5",
+              "name": "5.过敏性鼻炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-5-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-5-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-5-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-5-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.过敏性鼻炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-6",
+              "name": "6.急性气管-支气管炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-6-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-6-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-6-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-6-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.急性气管-支气管炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-2-7",
+              "name": "7.社区获得性肺炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-2-7-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-7-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-7-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-2-7-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>7.社区获得性肺炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-3",
+          "name": "(三)消化 系统",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-3-1",
+              "name": "1. 口腔溃疡",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-1-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-1-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-1-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-1-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1. 口腔溃疡</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-3-2",
+              "name": "2.消化不良",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-2-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-2-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-2-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-2-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.消化不良</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-3-3",
+              "name": "3.胆石症和胆囊炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-3-1",
+                  "content": "(1)病因及发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-3-2",
+                  "content": "(2)临床表现与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-3-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-3-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.胆石症和胆囊炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-3-4",
+              "name": "4.便秘",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-4-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-4-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-4-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-4-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.便秘</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-3-5",
+              "name": "5.腹泻",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-5-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-5-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-5-3",
+                  "content": "(3)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-5-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.腹泻</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-3-6",
+              "name": "6.痔疮",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-3-6-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-6-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-6-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-3-6-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.痔疮</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-4",
+          "name": "(四)泌尿 生殖系统",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-4-1",
+              "name": "1.阴道炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-1-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-1-2",
+                  "content": "(2)临床表现与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-1-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-1-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.阴道炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-2",
+              "name": "2.乳腺炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-2-1",
+                  "content": "(1)哺乳期乳腺炎与非哺乳期乳腺炎"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-2-2",
+                  "content": "(2)病因与临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-2-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-2-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.乳腺炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-3",
+              "name": "3.尿路感染",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-3-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-3-2",
+                  "content": "(2)临床表现与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-3-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-3-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.尿路感染</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-4",
+              "name": "4.男性性功能障碍",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-4-1",
+                  "content": "(1)勃起功能障碍与早泄"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-4-2",
+                  "content": "(2)病因、发病机制与临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-4-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-4-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.男性性功能障碍</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-5",
+              "name": "5.尿失禁",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-5-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-5-2",
+                  "content": "(2)分型与临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-5-3",
+                  "content": "(3)处理原则与药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-5-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.尿失禁</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-6",
+              "name": "6.绝经综合征",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-6-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-6-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-6-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-6-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.绝经综合征</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-7",
+              "name": "7.多囊卵巢综合征",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-7-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-7-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-7-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-7-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>7.多囊卵巢综合征</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-4-8",
+              "name": "8.避孕",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-4-8-1",
+                  "content": "(1)女性避孕常用方法"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-8-2",
+                  "content": "(2)男性避孕常用方法"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-8-3",
+                  "content": "(3)避孕方式选择"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-4-8-4",
+                  "content": "(4)避孕失败的补救措施"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>8.避孕</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-5",
+          "name": "(五)皮肤及黏膜系统",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-5-1",
+              "name": "1.带状疱疹",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-1-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-1-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-1-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-1-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.带状疱疹</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-2",
+              "name": "2.单纯疱疹",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-2-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-2-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-2-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-2-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.单纯疱疹</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-3",
+              "name": "3. 白癜风",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-3-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-3-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-3-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-3-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3. 白癜风</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-4",
+              "name": "4.银屑病",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-4-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-4-2",
+                  "content": "(2)临床表现与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-4-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-4-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.银屑病</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-5",
+              "name": "5.痤疮",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-5-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-5-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-5-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-5-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.痤疮</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-6",
+              "name": "6.荨麻疹",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-6-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-6-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-6-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-6-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>6.荨麻疹</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-7",
+              "name": "7.湿疹",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-7-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-7-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-7-3",
+                  "content": "(3)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-7-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>7.湿疹</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-8",
+              "name": "8.甲沟炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-8-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-8-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-8-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-8-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>8.甲沟炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-9",
+              "name": "9.特应性皮炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-9-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-9-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-9-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-9-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>9.特应性皮炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-10",
+              "name": "10.皮肤真菌感染",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-10-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-10-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-10-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-10-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>10.皮肤真菌感染</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-11",
+              "name": "11.脱发",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-11-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-11-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-11-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-11-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>11.脱发</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-5-12",
+              "name": "12.疖痈",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-5-12-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-12-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-12-3",
+                  "content": "(3)药物治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-5-12-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>12.疖痈</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-6",
+          "name": "(六)眼睛",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-6-1",
+              "name": "1.视疲劳",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-6-1-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-1-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-1-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-1-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.视疲劳</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-6-2",
+              "name": "2.干眼症",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-6-2-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-2-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-2-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-2-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.干眼症</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-6-3",
+              "name": "3.沙眼",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-6-3-1",
+                  "content": "(1)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-3-2",
+                  "content": "(2)治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-3-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.沙眼</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-6-4",
+              "name": "4.麦粒肿",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-6-4-1",
+                  "content": "(1)临床表现与分型"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-4-2",
+                  "content": "(2)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-4-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.麦粒肿</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-6-5",
+              "name": "5.急性结膜炎",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-6-5-1",
+                  "content": "(1)临床表现与分型"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-5-2",
+                  "content": "(2)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-6-5-3",
+                  "content": "(3)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>5.急性结膜炎</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u6-7",
+          "name": "(七)其他 病症",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u6-7-1",
+              "name": "1.贫血",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-7-1-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-1-2",
+                  "content": "(2)临床表现与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-1-3",
+                  "content": "(3)药物治疗方案与合理使用"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-1-4",
+                  "content": "(4)药学监护要点"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-1-5",
+                  "content": "(5)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.贫血</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-7-2",
+              "name": "2.超重和肥胖",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-7-2-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-2-2",
+                  "content": "(2)超重和肥胖的危害"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-2-3",
+                  "content": "(3)药物治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-2-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.超重和肥胖</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u6-7-3",
+              "name": "3.晕动病",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u6-7-3-1",
+                  "content": "(1)病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-3-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-3-3",
+                  "content": "(3)治疗与就医建议"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u6-7-3-4",
+                  "content": "(4)用药指导与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.晕动病</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u7",
+      "name": "七慢性病的药物治疗 管理",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u7-1",
+          "name": "慢性病管理",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u7-1-1",
+              "name": "1.慢性病管理意义和管理 目标",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u7-1-1-1",
+                  "content": "管理意义和管理目标"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.慢性病管理意义和管理 目标</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u7-1-2",
+              "name": "2.慢性病管理方法",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u7-1-2-1",
+                  "content": "药师在慢性病管理中的作用"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.慢性病管理方法</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u8",
+      "name": "八 呼 吸 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u8-1",
+          "name": "(一)哮喘",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u8-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u8-1-1-1",
+                  "content": "(1)临床表现与分型"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-1-1-2",
+                  "content": "(2)哮喘的评估"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u8-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u8-1-2-1",
+                  "content": "(1)哮喘慢性持续期的治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-1-2-2",
+                  "content": "(2)哮喘急性发作期的处理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-1-2-3",
+                  "content": "(3)哮喘的管理、教育和预防"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u8-2",
+          "name": "(二)慢性 阻塞性肺 疾病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u8-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u8-2-1-1",
+                  "content": "(1)病因和危险因素"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-2-1-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-2-1-3",
+                  "content": "(3)综合评估"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u8-2-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u8-2-2-1",
+                  "content": "(1)稳定期慢阻肺的管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-2-2-2",
+                  "content": "(2)慢阻肺治疗的常用药物"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-2-2-3",
+                  "content": "(3)慢阻肺急性加重的管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u8-2-2-4",
+                  "content": "(4)慢阻肺的预防和维持治疗"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u9",
+      "name": "九 心 血 管 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u9-1",
+          "name": "(一)高血压",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u9-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-1-1-1",
+                  "content": "(1)诊断与分类、分级标准"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-1-1-2",
+                  "content": "(2)临床表现与并发症"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u9-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-1-2-1",
+                  "content": "(1)治疗目标与原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-1-2-2",
+                  "content": "(2)药物治疗与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-1-2-3",
+                  "content": "(3)相关心血管危险因素的处理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-1-2-4",
+                  "content": "(4)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-1-2-5",
+                  "content": "(5)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u9-2",
+          "name": "(二)血脂 异常",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u9-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-2-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-2-1-2",
+                  "content": "(2)临床表现、诊断和分类"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-2-1-3",
+                  "content": "(3)心血管危险评估"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u9-2-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-2-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-2-2-2",
+                  "content": "(2)特殊人群血脂管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-2-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u9-3",
+          "name": "( 三 ) 冠 状 动脉粥样硬 化性心脏病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u9-3-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-3-1-1",
+                  "content": "(1)发病机制与临床分型"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-3-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u9-3-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-3-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-3-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u9-4",
+          "name": "(四)心房 颤动",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u9-4-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-4-1-1",
+                  "content": "(1)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-4-1-2",
+                  "content": "(2)危险因素与分类"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u9-4-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u9-4-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u9-4-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u10",
+      "name": "十 神 经 精 神 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u10-1",
+          "name": "(一)焦虑 抑郁",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-1-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-1-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-1-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-1-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u10-2",
+          "name": "(二)睡眠 障碍",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-2-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-2-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-2-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-2-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-2-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u10-3",
+          "name": "(三)脑卒中",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-3-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-3-1-1",
+                  "content": "(1)缺血性脑血管病与出血性脑血管病"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-3-1-2",
+                  "content": "(2)临床表现与病因"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-3-1-3",
+                  "content": "(3)辅助检查"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-3-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-3-2-1",
+                  "content": "(1)危险因素控制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-3-2-2",
+                  "content": "(2)治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-3-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u10-4",
+          "name": "(四)帕金 森病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-4-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-4-1-1",
+                  "content": "(1)流行病学"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-4-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-4-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-4-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-4-2-2",
+                  "content": "(2)治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-4-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u10-5",
+          "name": "(五)癫痫",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-5-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-5-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-5-1-2",
+                  "content": "(2)临床表现与分型"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-5-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-5-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-5-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u10-6",
+          "name": "(六)痴呆",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u10-6-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-6-1-1",
+                  "content": "(1)分类"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-6-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u10-6-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u10-6-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-6-2-2",
+                  "content": "(2)改善认知功能治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-6-2-3",
+                  "content": "(3)兴奋性症状处理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u10-6-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u11",
+      "name": "消 化 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u11-1",
+          "name": "(一)胃食管 反流病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u11-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-1-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-1-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u11-1-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-1-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-1-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-1-2-3",
+                  "content": "(3)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-1-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u11-2",
+          "name": "(二)消化性 溃疡",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u11-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-2-1-1",
+                  "content": "(1)病因与发病机制"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-2-1-2",
+                  "content": "(2)分类与临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u11-2-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-2-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-2-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-2-2-3",
+                  "content": "(3)幽门螺杆菌根除治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-2-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u11-3",
+          "name": "(三)溃疡性 结肠炎",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u11-3-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-3-1-1",
+                  "content": "(1)临床表现与并发症"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-3-1-2",
+                  "content": "(2)分型与分期、疾病评估"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u11-3-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-3-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-3-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-3-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u11-4",
+          "name": "(四)慢性病 毒性肝炎",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u11-4-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-4-1-1",
+                  "content": "(1)病原及发病机制、传染途径"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-4-1-2",
+                  "content": "(2)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-4-1-3",
+                  "content": "(3)诊断分型标准"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u11-4-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u11-4-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-4-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-4-2-3",
+                  "content": "(3)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u11-4-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u12",
+      "name": "内 分 泌 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u12-1",
+          "name": "(一)甲状 腺功能亢 进症",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u12-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-1-1-1",
+                  "content": "(1)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-1-1-2",
+                  "content": "(2)诊断标准"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u12-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-1-2-1",
+                  "content": "(1)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-1-2-2",
+                  "content": "(2)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-1-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u12-2",
+          "name": "(二)甲状 腺功能减 退症",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u12-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-2-1-1",
+                  "content": "(1)临床表现与分型"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-2-1-2",
+                  "content": "(2)检查与诊断标准"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u12-2-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-2-2-1",
+                  "content": "(1)治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-2-2-2",
+                  "content": "(2)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u12-3",
+          "name": "(三)糖尿病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u12-3-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-3-1-1",
+                  "content": "(1)临床表现与并发症"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-3-1-2",
+                  "content": "(2)诊断标准与分型"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u12-3-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-3-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-3-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-3-2-3",
+                  "content": "(3)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-3-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u12-4",
+          "name": "(四)骨质 疏松症",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u12-4-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-4-1-1",
+                  "content": "(1)临床表现与诊断标准"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-4-1-2",
+                  "content": "(2)危险因素"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u12-4-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-4-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-4-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-4-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u12-5",
+          "name": "(五)高尿酸 血症与痛风",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u12-5-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-5-1-1",
+                  "content": "(1)临床表现与危险因素"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-5-1-2",
+                  "content": "(2)诊断标准与分期"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u12-5-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u12-5-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-5-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u12-5-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u13",
+      "name": "免 疫 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u13-1",
+          "name": "(一)类风 湿关节炎",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u13-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u13-1-1-1",
+                  "content": "临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u13-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u13-1-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-1-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-1-2-3",
+                  "content": "(3)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-1-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u13-2",
+          "name": "(二)系统性红斑狼疮",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u13-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u13-2-1-1",
+                  "content": "(1)临床表现"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-2-1-2",
+                  "content": "(2)疾病活动性评估"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u13-2-2",
+              "name": "2.治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u13-2-2-1",
+                  "content": "(1)治疗原则与一般治疗"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-2-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-2-2-3",
+                  "content": "(3)特殊人群药物治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u13-2-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u14",
+      "name": "泌 尿 系 统 疾 病",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u14-1",
+          "name": "(一)良性 前列腺增 生症",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u14-1-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u14-1-1-1",
+                  "content": "临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u14-1-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u14-1-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-1-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-1-2-3",
+                  "content": "(3)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u14-2",
+          "name": "(二)慢性 肾脏病",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u14-2-1",
+              "name": "1.临床基础",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u14-2-1-1",
+                  "content": "(1)疾病分期与诊断"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-2-1-2",
+                  "content": "(2)临床表现"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.临床基础</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u14-2-2",
+              "name": "2.药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u14-2-2-1",
+                  "content": "(1)治疗原则"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-2-2-2",
+                  "content": "(2)药物治疗方案与合理用药"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-2-2-3",
+                  "content": "(3)并发症治疗管理"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u14-2-2-4",
+                  "content": "(4)用药交代与患者教育"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_comprehensive-u15",
+      "name": "肿 瘤",
+      "subunits": [
+        {
+          "id": "pharmacy_comprehensive-u15-1",
+          "name": "(一)肿瘤的临床基础",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u15-1-1",
+              "name": "1.肿瘤的基础知识",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-1-1-1",
+                  "content": "(1)分类与命名"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-1-1-2",
+                  "content": "(2)病因与危险因素"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.肿瘤的基础知识</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u15-1-2",
+              "name": "2.肿瘤的筛查、诊断与分期",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-1-2-1",
+                  "content": "(1)筛查方式"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-1-2-2",
+                  "content": "(2)临床表现与辅助检查"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-1-2-3",
+                  "content": "(3)国际通用分期系统TNM的释义"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.肿瘤的筛查、诊断与分期</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pharmacy_comprehensive-u15-2",
+          "name": "(二)肿瘤 的治疗与 预防",
+          "details": [
+            {
+              "id": "pharmacy_comprehensive-u15-2-1",
+              "name": "1.肿瘤综合治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-2-1-1",
+                  "content": "综合治疗的原则与应用"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>1.肿瘤综合治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u15-2-2",
+              "name": "2.肿瘤药物治疗",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-2-2-1",
+                  "content": "(1)化疗方式及应用"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-2-2",
+                  "content": "(2)化疗给药注意事项"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-2-3",
+                  "content": "(3)常见靶点及代表药物"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-2-4",
+                  "content": "(4)靶向治疗注意事项"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>2.肿瘤药物治疗</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u15-2-3",
+              "name": "3.典型不良反应及处理",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-2-3-1",
+                  "content": "(1)不良反应类别"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-3-2",
+                  "content": "(2)不良反应分级"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-3-3",
+                  "content": "(3)典型不良反应及处理方式"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-3-4",
+                  "content": "(4)肿瘤急症处理"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>3.典型不良反应及处理</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            },
+            {
+              "id": "pharmacy_comprehensive-u15-2-4",
+              "name": "4.肿瘤预防",
+              "points": [
+                {
+                  "id": "pharmacy_comprehensive-u15-2-4-1",
+                  "content": "(1)一级预防"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-4-2",
+                  "content": "(2)二级预防"
+                },
+                {
+                  "id": "pharmacy_comprehensive-u15-2-4-3",
+                  "content": "(3)三级预防"
+                }
+              ],
+              "content": {
+                "coreExplanation": "<p><strong>4.肿瘤预防</strong></p><p>该知识点是药学综合知识与技能的重要内容。在实际工作中，药师需要准确理解和应用相关知识，为患者提供专业的药学服务。</p>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

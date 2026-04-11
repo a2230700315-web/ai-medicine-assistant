@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地Whisper语音识别测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .status-value {
+            color: #667eea;
+            font-weight: 700;
+        }
+        
+        .status-value.ready {
+            color: #10b981;
+        }
+        
+        .status-value.error {
+            color: #ef4444;
+        }
+        
+        .recording-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .record-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .record-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        .record-button.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .record-icon {
+            font-size: 48px;
+        }
+        
+        .record-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .result-section {
+            margin-top: 30px;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .result-text {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .result-text.placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .result-text.loading {
+            color: #667eea;
+        }
+        
+        .info-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #c53030;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 本地Whisper语音识别</h1>
+            <p>快速、准确、离线的语音识别解决方案</p>
+        </div>
+        
+        <div class="status">
+            <div class="status-item">
+                <span class="status-label">服务状态:</span>
+                <span class="status-value" id="serviceStatus">检查中...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">识别模型:</span>
+                <span class="status-value" id="modelInfo">加载中...</span>
+            </div>
+        </div>
+        
+        <div class="recording-section">
+            <button class="record-button" id="recordButton" onclick="toggleRecording()">
+                <div class="record-icon">🎤</div>
+                <div class="record-text" id="recordText">点击开始录音</div>
+            </button>
+        </div>
+        
+        <div class="result-section">
+            <div class="result-title">识别结果</div>
+            <div class="result-text placeholder" id="resultText">
+                等待录音...
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-title">📋 使用说明</div>
+            <div class="info-text">
+                1. 点击圆形按钮开始录音<br>
+                2. 再次点击按钮停止录音<br>
+                3. 系统会自动进行语音识别<br>
+                4. 识别结果会显示在上方文本框中<br>
+                5. 支持中文语音识别，速度快且准确
+            </div>
+        </div>
+        
+        <div id="messageArea"></div>
+    </div>
+    
+    <script>
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        let audioContext = null;
+        
+        const API_URL = 'http://localhost:5000/api/voice/transcribe';
+        
+        async function checkServiceStatus() {
+            try {
+                const response = await fetch('http://localhost:5000/api/voice/status');
+                const data = await response.json();
+                
+                document.getElementById('serviceStatus').textContent = '运行中';
+                document.getElementById('serviceStatus').className = 'status-value ready';
+                document.getElementById('modelInfo').textContent = `${data.model} (${data.device})`;
+                
+                showMessage('✅ 本地Whisper服务连接成功', 'success');
+            } catch (error) {
+                document.getElementById('serviceStatus').textContent = '未连接';
+                document.getElementById('serviceStatus').className = 'status-value error';
+                document.getElementById('modelInfo').textContent = '服务不可用';
+                
+                showMessage('❌ 本地Whisper服务未启动，请先启动服务', 'error');
+            }
+        }
+        
+        async function toggleRecording() {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                await stopRecording();
+            }
+        }
+        
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaStreamSource(stream);
+                const processor = audioContext.createScriptProcessor(4096, 1, 1);
+                
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+                
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    await transcribeAudio(audioBlob);
+                    audioChunks = [];
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                
+                updateUIState();
+                showMessage('🎤 开始录音，请说话...', 'info');
+                
+            } catch (error) {
+                console.error('录音启动失败:', error);
+                showMessage('❌ 无法访问麦克风，请检查权限设置', 'error');
+            }
+        }
+        
+        async function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                
+                updateUIState();
+                showMessage('⏹️ 录音停止，正在识别...', 'info');
+            }
+        }
+        
+        async function transcribeAudio(audioBlob) {
+            try {
+                document.getElementById('resultText').textContent = '正在识别中...';
+                document.getElementById('resultText').className = 'result-text loading';
+                
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.wav');
+                
+                const startTime = Date.now();
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                const endTime = Date.now();
+                const duration = ((endTime - startTime) / 1000).toFixed(2);
+                
+                if (data.status === 'success') {
+                    document.getElementById('resultText').textContent = data.text;
+                    document.getElementById('resultText').className = 'result-text';
+                    
+                    showMessage(`✅ 识别成功！耗时: ${duration}秒`, 'success');
+                    console.log('识别详情:', data);
+                } else {
+                    document.getElementById('resultText').textContent = '识别失败: ' + (data.error || '未知错误');
+                    document.getElementById('resultText').className = 'result-text';
+                    
+                    showMessage('❌ 识别失败: ' + (data.error || '未知错误'), 'error');
+                }
+                
+            } catch (error) {
+                console.error('语音识别失败:', error);
+                document.getElementById('resultText').textContent = '识别失败: ' + error.message;
+                document.getElementById('resultText').className = 'result-text';
+                
+                showMessage('❌ 识别请求失败: ' + error.message, 'error');
+            }
+        }
+        
+        function updateUIState() {
+            const button = document.getElementById('recordButton');
+            const text = document.getElementById('recordText');
+            
+            if (isRecording) {
+                button.classList.add('recording');
+                text.textContent = '点击停止录音';
+            } else {
+                button.classList.remove('recording');
+                text.textContent = '点击开始录音';
+            }
+        }
+        
+        function showMessage(message, type) {
+            const messageArea = document.getElementById('messageArea');
+            const messageDiv = document.createElement('div');
+            
+            if (type === 'error') {
+                messageDiv.className = 'error-message';
+            } else if (type === 'success') {
+                messageDiv.className = 'success-message';
+            } else {
+                messageDiv.className = 'info-section';
+            }
+            
+            messageDiv.textContent = message;
+            messageArea.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+        
+        window.onload = function() {
+            checkServiceStatus();
+            setInterval(checkServiceStatus, 30000);
+        };
+    </script>
+</body>
+</html>

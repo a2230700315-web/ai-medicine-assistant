@@ -1,0 +1,44 @@
+[
+  {
+    "name": "药事管理与法规",
+    "index": 137,
+    "table_start": 2,
+    "table_end": 12
+  },
+  {
+    "name": "中药学专业知识(一)",
+    "index": 155,
+    "table_start": 12,
+    "table_end": 22
+  },
+  {
+    "name": "中药学专业知识(二)",
+    "index": 170,
+    "table_start": 22,
+    "table_end": 32
+  },
+  {
+    "name": "中药学综合知识与技能",
+    "index": 205,
+    "table_start": 32,
+    "table_end": 42
+  },
+  {
+    "name": "药学专业知识(一)",
+    "index": 227,
+    "table_start": 42,
+    "table_end": 52
+  },
+  {
+    "name": "药学专业知识(二)",
+    "index": 244,
+    "table_start": 52,
+    "table_end": 62
+  },
+  {
+    "name": "药学综合知识与技能",
+    "index": 270,
+    "table_start": 62,
+    "table_end": 137
+  }
+]
