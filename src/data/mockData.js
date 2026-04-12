@@ -116,6 +116,67 @@ export const mockErrorDistribution = {
   }
 }
 
+export const mockExamStats = {
+  store_001: {
+    totalExams: 156,
+    averageScore: 72.5,
+    passRate: 68,
+    staffExamStats: [
+      { staffId: 'staff_001', name: '张小明', exams: 18, avgScore: 85, passRate: 89, totalTime: 2850 },
+      { staffId: 'staff_002', name: '李小红', exams: 15, avgScore: 72, passRate: 73, totalTime: 2400 },
+      { staffId: 'staff_003', name: '王小华', exams: 12, avgScore: 65, passRate: 58, totalTime: 1920 },
+      { staffId: 'staff_004', name: '赵丽丽', exams: 16, avgScore: 78, passRate: 81, totalTime: 2640 },
+      { staffId: 'staff_005', name: '陈大伟', exams: 8, avgScore: 55, passRate: 38, totalTime: 1280 },
+      { staffId: 'staff_006', name: '刘小芳', exams: 20, avgScore: 82, passRate: 85, totalTime: 3200 },
+      { staffId: 'staff_007', name: '黄志强', exams: 6, avgScore: 48, passRate: 33, totalTime: 960 },
+      { staffId: 'staff_008', name: '周小燕', exams: 14, avgScore: 70, passRate: 64, totalTime: 2240 },
+      { staffId: 'staff_009', name: '吴建国', exams: 11, avgScore: 62, passRate: 55, totalTime: 1760 },
+      { staffId: 'staff_010', name: '郑小梅', exams: 17, avgScore: 75, passRate: 76, totalTime: 2720 },
+      { staffId: 'staff_011', name: '孙志明', exams: 10, avgScore: 58, passRate: 50, totalTime: 1600 },
+      { staffId: 'staff_012', name: '钱小雪', exams: 9, avgScore: 52, passRate: 44, totalTime: 1440 }
+    ],
+    categoryStats: [
+      { category: '药事管理与法规', exams: 28, avgScore: 75.2, passRate: 82 },
+      { category: '药学专业知识(一)', exams: 25, avgScore: 68.5, passRate: 65 },
+      { category: '药学专业知识(二)', exams: 22, avgScore: 70.2, passRate: 70 },
+      { category: '药学综合知识与技能', exams: 20, avgScore: 72.8, passRate: 74 },
+      { category: '中药学专业知识(一)', exams: 18, avgScore: 65.3, passRate: 58 },
+      { category: '中药学专业知识(二)', exams: 24, avgScore: 67.8, passRate: 62 },
+      { category: '中药学综合知识与技能', exams: 19, avgScore: 71.5, passRate: 72 }
+    ]
+  }
+}
+
+export const mockHeadquartersExamData = {
+  totalExams: 8560,
+  averageScore: 68.5,
+  passRate: 62,
+  todayExams: 125,
+  weekExams: 856,
+  monthExams: 3420,
+  storeExamRankings: [
+    { rank: 1, storeId: 'store_009', name: '深圳福田店', exams: 245, avgScore: 82.5, passRate: 88 },
+    { rank: 2, storeId: 'store_004', name: '上海浦东店', exams: 228, avgScore: 80.2, passRate: 85 },
+    { rank: 3, storeId: 'store_007', name: '广州天河店', exams: 215, avgScore: 78.8, passRate: 82 },
+    { rank: 4, storeId: 'store_010', name: '深圳南山店', exams: 198, avgScore: 76.5, passRate: 78 },
+    { rank: 5, storeId: 'store_005', name: '上海徐汇店', exams: 185, avgScore: 75.2, passRate: 76 },
+    { rank: 6, storeId: 'store_011', name: '杭州西湖店', exams: 178, avgScore: 74.8, passRate: 74 },
+    { rank: 7, storeId: 'store_019', name: '武汉江汉店', exams: 172, avgScore: 73.5, passRate: 72 },
+    { rank: 8, storeId: 'store_015', name: '成都锦江店', exams: 165, avgScore: 72.2, passRate: 70 },
+    { rank: 9, storeId: 'store_033', name: '郑州金水店', exams: 158, avgScore: 71.5, passRate: 68 },
+    { rank: 10, storeId: 'store_001', name: '北京朝阳店', exams: 156, avgScore: 72.5, passRate: 68 }
+  ],
+  categoryExamStats: [
+    { category: '药事管理与法规', totalExams: 1420, avgScore: 72.5, passRate: 78 },
+    { category: '药学专业知识(一)', totalExams: 1280, avgScore: 65.8, passRate: 62 },
+    { category: '药学专业知识(二)', totalExams: 1150, avgScore: 68.2, passRate: 66 },
+    { category: '药学综合知识与技能', totalExams: 1080, avgScore: 70.5, passRate: 72 },
+    { category: '中药学专业知识(一)', totalExams: 920, avgScore: 62.3, passRate: 55 },
+    { category: '中药学专业知识(二)', totalExams: 1350, avgScore: 64.8, passRate: 58 },
+    { category: '中药学综合知识与技能', totalExams: 1360, avgScore: 66.5, passRate: 65 }
+  ]
+}
+
 export const mockHeadquartersData = {
   totalStores: 50,
   totalStaff: 512,

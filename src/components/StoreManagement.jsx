@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import ReactECharts from 'echarts-for-react'
-import { Users, TrendingUp, AlertTriangle, BookOpen, Clock, Award } from 'lucide-react'
+import { Users, TrendingUp, AlertTriangle, BookOpen, Clock, Award, FileText, BarChart2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
-import { mockLearningProgress, mockErrorDistribution, mockStaff } from '../data/mockData'
+import { mockLearningProgress, mockErrorDistribution, mockStaff, mockExamStats } from '../data/mockData'
 
 function StoreManagement() {
   const { user } = useAuth()
@@ -14,6 +14,7 @@ function StoreManagement() {
   const storeProgress = mockLearningProgress[storeId] || mockLearningProgress.store_001
   const storeErrors = mockErrorDistribution[storeId] || mockErrorDistribution.store_001
   const storeStaff = mockStaff.filter(s => s.storeId === storeId)
+  const storeExamStats = mockExamStats[storeId] || mockExamStats.store_001
 
   const progressOption = {
     title: {
@@ -103,6 +104,112 @@ function StoreManagement() {
     }]
   }
 
+  const examScoreOption = {
+    title: {
+      text: '员工考试成绩分布',
+      left: 'center',
+      textStyle: { fontSize: 16, fontWeight: 'bold' }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' }
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: storeExamStats.staffExamStats.map(s => s.name),
+      axisLabel: { rotate: 30, fontSize: 11 }
+    },
+    yAxis: {
+      type: 'value',
+      max: 100,
+      axisLabel: { formatter: '{value}分' }
+    },
+    series: [{
+      name: '平均分',
+      type: 'bar',
+      data: storeExamStats.staffExamStats.map(s => ({
+        value: s.avgScore,
+        itemStyle: {
+          color: s.avgScore >= 80 ? '#10B981' : s.avgScore >= 60 ? '#3B82F6' : '#EF4444'
+        }
+      })),
+      label: {
+        show: true,
+        position: 'top',
+        formatter: '{c}分'
+      }
+    }]
+  }
+
+  const examCategoryOption = {
+    title: {
+      text: '各科目考试统计',
+      left: 'center',
+      textStyle: { fontSize: 16, fontWeight: 'bold' }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' }
+    },
+    legend: {
+      data: ['考试次数', '平均分', '通过率'],
+      bottom: 0
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '15%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: storeExamStats.categoryStats.map(c => c.category.replace('药学专业知识', '西药').replace('中药学专业知识', '中药').replace('综合知识与技能', '综合')),
+      axisLabel: { rotate: 30, fontSize: 10 }
+    },
+    yAxis: [
+      {
+        type: 'value',
+        name: '次数/分数',
+        axisLabel: { formatter: '{value}' }
+      },
+      {
+        type: 'value',
+        name: '通过率%',
+        max: 100,
+        axisLabel: { formatter: '{value}' }
+      }
+    ],
+    series: [
+      {
+        name: '考试次数',
+        type: 'bar',
+        data: storeExamStats.categoryStats.map(c => c.exams),
+        itemStyle: { color: '#8B5CF6', borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: '平均分',
+        type: 'bar',
+        data: storeExamStats.categoryStats.map(c => c.avgScore),
+        itemStyle: { color: '#3B82F6', borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: '通过率',
+        type: 'line',
+        yAxisIndex: 1,
+        data: storeExamStats.categoryStats.map(c => c.passRate),
+        smooth: true,
+        lineStyle: { color: '#10B981', width: 3 },
+        itemStyle: { color: '#10B981' }
+      }
+    ]
+  }
+
   const getProgressColor = (progress) => {
     if (progress >= 80) return 'text-green-600 bg-green-100'
     if (progress >= 60) return 'text-blue-600 bg-blue-100'
@@ -145,6 +252,16 @@ function StoreManagement() {
               }`}
             >
               错题分析
+            </button>
+            <button
+              onClick={() => setActiveTab('exam')}
+              className={`px-4 py-2 rounded-lg transition-all ${
+                activeTab === 'exam' 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              刷题统计
             </button>
           </div>
         </div>
@@ -266,6 +383,124 @@ function StoreManagement() {
                     </div>
                   )
                 })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'exam' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">总考试次数</p>
+                  <p className="text-2xl font-bold text-gray-800">{storeExamStats.totalExams}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                  <Award className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">平均分数</p>
+                  <p className="text-2xl font-bold text-gray-800">{storeExamStats.averageScore}分</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">通过率</p>
+                  <p className="text-2xl font-bold text-gray-800">{storeExamStats.passRate}%</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <BarChart2 className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">科目覆盖</p>
+                  <p className="text-2xl font-bold text-gray-800">{storeExamStats.categoryStats.length}科</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <ReactECharts option={examScoreOption} style={{ height: '400px' }} />
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <ReactECharts option={examCategoryOption} style={{ height: '400px' }} />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">员工考试详情</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">员工</th>
+                    <th className="px-4 py-3 text-center text-sm font-medium text-gray-600">考试次数</th>
+                    <th className="px-4 py-3 text-center text-sm font-medium text-gray-600">平均分</th>
+                    <th className="px-4 py-3 text-center text-sm font-medium text-gray-600">通过率</th>
+                    <th className="px-4 py-3 text-center text-sm font-medium text-gray-600">总用时</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {storeExamStats.staffExamStats.map((staff, index) => {
+                    const staffInfo = storeStaff.find(s => s.id === staff.staffId)
+                    const timeMinutes = Math.floor(staff.totalTime / 60)
+                    return (
+                      <tr key={staff.staffId} className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{staffInfo?.avatar || '👤'}</span>
+                            <span className="font-medium text-gray-800">{staff.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">{staff.exams}次</span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <span className={`px-2 py-1 rounded-full text-sm ${
+                            staff.avgScore >= 80 ? 'bg-green-100 text-green-700' :
+                            staff.avgScore >= 60 ? 'bg-blue-100 text-blue-700' :
+                            'bg-red-100 text-red-700'
+                          }`}>
+                            {staff.avgScore}分
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <span className={`px-2 py-1 rounded-full text-sm ${
+                            staff.passRate >= 80 ? 'bg-green-100 text-green-700' :
+                            staff.passRate >= 60 ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-red-100 text-red-700'
+                          }`}>
+                            {staff.passRate}%
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center text-gray-600">
+                          {timeMinutes}分钟
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
