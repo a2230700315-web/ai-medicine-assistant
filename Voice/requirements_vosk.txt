@@ -1,0 +1,6 @@
+vosk
+sounddevice
+numpy
+websocket-server
+python-dotenv
+pyaudio

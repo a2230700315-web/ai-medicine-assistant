@@ -1,0 +1,60 @@
+[
+  {
+    "level": "major",
+    "title": "一   执 业 药 师 与 公 众 健 康",
+    "children": [
+      {
+        "level": "minor",
+        "title": "( 一 ) 健 康 中 国建设",
+        "children": [
+          {
+            "level": "detail",
+            "title": "1.健康中国战略概要",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "2.基本医疗卫生与健 康促进法",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "3.深化医药卫生体制 改革",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "4.全面深化药品医疗 器械监管改革",
+            "children": []
+          }
+        ]
+      },
+      {
+        "level": "minor",
+        "title": "( 二 ) 药 品 管 理与药品安全 风险",
+        "children": [
+          {
+            "level": "detail",
+            "title": "1.药品的界定",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "2.国家基本药物管理",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "3.基本医疗保险药品 管理",
+            "children": []
+          },
+          {
+            "level": "detail",
+            "title": "4.药品安全与风险 管理",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]

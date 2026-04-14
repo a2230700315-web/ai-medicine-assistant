@@ -1,0 +1,7 @@
+faster-whisper
+torch
+torchaudio
+numpy
+flask
+flask-cors
+python-dotenv
