@@ -131,7 +131,15 @@ function Dashboard() {
         </div>
       )}
 
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white shadow-lg transition-all duration-300 flex flex-col`}>
+      {/* 移动端遮罩层 */}
+      {sidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <aside className={`fixed lg:relative inset-y-0 left-0 z-50 ${sidebarOpen ? 'w-64 translate-x-0' : 'w-64 -translate-x-full lg:w-20 lg:translate-x-0'} bg-white shadow-lg transition-all duration-300 flex flex-col`}>
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -196,18 +204,26 @@ function Dashboard() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-6 py-4">
+          <div className="px-4 lg:px-6 py-4">
             <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-gray-800">
-                  {currentMode === 'learning' && '学习中心'}
-                  {currentMode === 'practice' && '案例练习'}
-                  {currentMode === 'practiceExam' && '模拟题'}
-                  {currentMode === 'realExam' && '真题考试'}
-                  {currentMode === 'storeManagement' && '门店管理'}
-                  {currentMode === 'headquarters' && '总部看板'}
-                </h2>
-                <p className="text-sm text-gray-500 mt-1">{getWelcomeText()}</p>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all"
+                >
+                  <Menu className="w-5 h-5 text-gray-600" />
+                </button>
+                <div>
+                  <h2 className="text-lg lg:text-xl font-bold text-gray-800">
+                    {currentMode === 'learning' && '学习中心'}
+                    {currentMode === 'practice' && '案例练习'}
+                    {currentMode === 'practiceExam' && '模拟题'}
+                    {currentMode === 'realExam' && '真题考试'}
+                    {currentMode === 'storeManagement' && '门店管理'}
+                    {currentMode === 'headquarters' && '总部看板'}
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">{getWelcomeText()}</p>
+                </div>
               </div>
               {currentMode === 'practice' && (
                 <button
@@ -226,7 +242,7 @@ function Dashboard() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-3 lg:p-6">
           {currentMode === 'practice' ? (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">

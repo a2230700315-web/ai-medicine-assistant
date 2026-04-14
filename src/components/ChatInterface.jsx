@@ -527,14 +527,14 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         />
       )}
 
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
           placeholder="输入您的回复..."
           disabled={isLoading}
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 resize-none min-h-[60px] max-h-[200px] overflow-y-auto"
+          className="w-full sm:flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 resize-none min-h-[60px] max-h-[200px] overflow-y-auto"
           style={{ height: 'auto' }}
           ref={(textarea) => {
             if (textarea) {

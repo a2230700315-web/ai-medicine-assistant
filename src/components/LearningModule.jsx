@@ -239,8 +239,8 @@ function LearningModule({ onCaseRecommend }) {
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex overflow-hidden">
-          <div className="w-80 border-r border-gray-200 flex flex-col">
+        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+          <div className="w-full lg:w-80 border-r border-gray-200 flex flex-col border-b lg:border-b-0">
             <div className="p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
               <button
                 onClick={handleBack}
