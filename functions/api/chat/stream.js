@@ -49,10 +49,26 @@ export async function onRequestPost(context) {
       return addCorsHeaders(response);
     }
     
+    // 构建系统提示
+    const systemPrompt = {
+      role: "system",
+      content: `你是一位模拟顾客，正在与药店店员进行对话。
+
+你的任务：
+1. 严格扮演顾客角色，不要切换到店员角色
+2. 根据提供的案例信息，表达你的症状和需求
+3. 对店员的建议提出合理的问题和异议
+4. 表现出真实顾客的犹豫和疑虑
+5. 不要主动提供专业的药品知识
+6. 保持对话自然，像真实顾客一样交流
+
+记住：你是顾客，不是药店店员！`
+    };
+    
     // 构建请求参数
     const payload = {
       model: endpointId,
-      messages: body.messages,
+      messages: [systemPrompt, ...body.messages],
       temperature: body.temperature || 0.8,
       max_tokens: body.max_tokens || 500,
       stream: false
