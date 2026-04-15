@@ -35,10 +35,13 @@ export async function onRequestPost(context) {
     const body = await request.json();
     
     // 获取环境变量
-    const apiKey = context.env.VOLCANO_API_KEY;
-    const endpointId = context.env.VOLCANO_ENDPOINT_ID;
+    const apiKey = context.env.VOLC_API_KEY;
+    const endpointId = context.env.VOLC_ENDPOINT_ID;
     
     if (!apiKey || !endpointId) {
+      console.log('环境变量配置检查:');
+      console.log('VOLC_API_KEY:', apiKey ? '已配置' : '未配置');
+      console.log('VOLC_ENDPOINT_ID:', endpointId ? '已配置' : '未配置');
       const response = new Response(
         JSON.stringify({ error: 'API密钥未配置' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
