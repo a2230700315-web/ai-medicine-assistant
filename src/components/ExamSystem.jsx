@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Clock, ChevronLeft, ChevronRight, Flag, Check, X, AlertCircle, BookOpen, Award, RotateCcw, Home, BarChart2, Save } from 'lucide-react'
+import { Clock, ChevronLeft, ChevronRight, Flag, Check, X, AlertCircle, BookOpen, Award, RotateCcw, Home, BarChart2, Save, Grid, XCircle } from 'lucide-react'
 import { examCategories, sampleQuestions, shuffleArray, calculateScore } from '../data/examQuestions'
 import { useAuth } from '../context/AuthContext'
 
@@ -20,6 +20,15 @@ function ExamSystem({ onBack }) {
   const [reviewMode, setReviewMode] = useState(false)
   const [examStartTime, setExamStartTime] = useState(null)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const [showAnswerSheet, setShowAnswerSheet] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     let timer
@@ -115,6 +124,7 @@ function ExamSystem({ onBack }) {
     setResult(null)
     setReviewMode(false)
     setShowSaveDialog(false)
+    setShowAnswerSheet(false)
   }
 
   const handleSaveProgress = () => {
@@ -154,44 +164,44 @@ function ExamSystem({ onBack }) {
 
   if (stage === 'select') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-3 md:p-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-4 md:mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">真题考试</h1>
-              <p className="text-gray-500 mt-1">选择科目开始考试</p>
+              <h1 className="text-xl md:text-3xl font-bold text-gray-800">真题考试</h1>
+              <p className="text-gray-500 mt-1 text-sm md:text-base">选择科目开始考试</p>
             </div>
             <button
               onClick={onBack}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+              className="flex items-center gap-2 px-3 md:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm"
             >
-              <Home className="w-5 h-5" />
-              返回首页
+              <Home className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="hidden md:inline">返回首页</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {examCategories.map((category) => (
               <div
                 key={category.id}
                 onClick={() => handleSelectCategory(category)}
-                className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 border-2 border-transparent hover:border-blue-500"
+                className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 border-2 border-transparent hover:border-blue-500 active:scale-98"
               >
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
                   <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
+                    className="w-10 h-10 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-xl md:text-2xl"
                     style={{ backgroundColor: `${category.color}20` }}
                   >
                     {category.icon}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-800">{category.name}</h3>
-                    <p className="text-sm text-gray-500">{category.shortName}</p>
+                    <h3 className="text-base md:text-lg font-bold text-gray-800">{category.name}</h3>
+                    <p className="text-xs md:text-sm text-gray-500">{category.shortName}</p>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mb-4">{category.description}</p>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">题目数量: {category.totalQuestions}题</span>
+                <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 line-clamp-2">{category.description}</p>
+                <div className="flex items-center justify-between text-xs md:text-sm">
+                  <span className="text-gray-500">{category.totalQuestions}题</span>
                   <span className="text-gray-500">{category.years.length}年真题</span>
                 </div>
               </div>
@@ -204,50 +214,50 @@ function ExamSystem({ onBack }) {
 
   if (stage === 'year') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-3 md:p-6">
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => setStage('select')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 md:mb-6 text-sm"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
             返回选择科目
           </button>
 
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <div className="flex items-center gap-4 mb-8">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 md:p-8">
+            <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
               <div
-                className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl"
+                className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center text-2xl md:text-3xl"
                 style={{ backgroundColor: `${selectedCategory.color}20` }}
               >
                 {selectedCategory.icon}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">{selectedCategory.name}</h2>
-                <p className="text-gray-500">{selectedCategory.description}</p>
+                <h2 className="text-lg md:text-2xl font-bold text-gray-800">{selectedCategory.name}</h2>
+                <p className="text-gray-500 text-sm md:text-base">{selectedCategory.description}</p>
               </div>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">选择考试年份</h3>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-3 md:mb-4">选择考试年份</h3>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4">
               {selectedCategory.years.map((year) => (
                 <button
                   key={year}
                   onClick={() => handleSelectYear(year)}
-                  className="p-4 bg-gray-50 rounded-xl text-center hover:bg-blue-50 hover:text-blue-600 transition-all border-2 border-transparent hover:border-blue-500"
+                  className="p-3 md:p-4 bg-gray-50 rounded-xl text-center hover:bg-blue-50 hover:text-blue-600 transition-all border-2 border-transparent hover:border-blue-500 active:scale-95"
                 >
-                  <span className="text-xl font-bold">{year}</span>
-                  <span className="block text-sm text-gray-500">年真题</span>
+                  <span className="text-lg md:text-xl font-bold">{year}</span>
+                  <span className="block text-xs md:text-sm text-gray-500">年真题</span>
                 </button>
               ))}
             </div>
 
-            <div className="mt-8 p-4 bg-yellow-50 rounded-xl">
+            <div className="mt-6 md:mt-8 p-3 md:p-4 bg-yellow-50 rounded-xl">
               <div className="flex items-center gap-2 text-yellow-700">
-                <AlertCircle className="w-5 h-5" />
-                <span className="font-medium">考试说明</span>
+                <AlertCircle className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="font-medium text-sm md:text-base">考试说明</span>
               </div>
-              <ul className="mt-2 text-sm text-yellow-600 space-y-1">
+              <ul className="mt-2 text-xs md:text-sm text-yellow-600 space-y-1">
                 <li>• 考试时间：150分钟</li>
                 <li>• 题目数量：根据实际真题设置</li>
                 <li>• 考试过程中可标记题目，方便后续检查</li>
@@ -265,47 +275,47 @@ function ExamSystem({ onBack }) {
     const timeUsedSeconds = result.timeUsed % 60
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-3 md:p-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-8 text-white text-center">
-              <Award className="w-16 h-16 mx-auto mb-4" />
-              <h2 className="text-3xl font-bold mb-2">考试完成</h2>
-              <p className="text-blue-100">{selectedCategory.name} - {selectedYear}年真题</p>
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 md:p-8 text-white text-center">
+              <Award className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4" />
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">考试完成</h2>
+              <p className="text-blue-100 text-sm md:text-base">{selectedCategory.name} - {selectedYear}年真题</p>
             </div>
 
-            <div className="p-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <div className="text-3xl font-bold text-green-600">{result.correct}</div>
-                  <div className="text-sm text-gray-600">正确</div>
+            <div className="p-4 md:p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+                <div className="text-center p-3 md:p-4 bg-green-50 rounded-xl">
+                  <div className="text-2xl md:text-3xl font-bold text-green-600">{result.correct}</div>
+                  <div className="text-xs md:text-sm text-gray-600">正确</div>
                 </div>
-                <div className="text-center p-4 bg-red-50 rounded-xl">
-                  <div className="text-3xl font-bold text-red-600">{result.wrong}</div>
-                  <div className="text-sm text-gray-600">错误</div>
+                <div className="text-center p-3 md:p-4 bg-red-50 rounded-xl">
+                  <div className="text-2xl md:text-3xl font-bold text-red-600">{result.wrong}</div>
+                  <div className="text-xs md:text-sm text-gray-600">错误</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-xl">
-                  <div className="text-3xl font-bold text-gray-600">{result.unanswered}</div>
-                  <div className="text-sm text-gray-600">未答</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-600">{result.unanswered}</div>
+                  <div className="text-xs md:text-sm text-gray-600">未答</div>
                 </div>
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <div className="text-3xl font-bold text-blue-600">{result.accuracy}%</div>
-                  <div className="text-sm text-gray-600">正确率</div>
+                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl">
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600">{result.accuracy}%</div>
+                  <div className="text-xs md:text-sm text-gray-600">正确率</div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-center gap-8 mb-8 text-gray-600">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-8 mb-6 md:mb-8 text-gray-600 text-sm">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
+                  <Clock className="w-4 h-4 md:w-5 md:h-5" />
                   <span>用时: {timeUsedMinutes}分{timeUsedSeconds}秒</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <BarChart2 className="w-5 h-5" />
+                  <BarChart2 className="w-4 h-4 md:w-5 md:h-5" />
                   <span>得分: {result.score}分</span>
                 </div>
               </div>
 
-              <div className="flex justify-center gap-4">
+              <div className="flex flex-col md:flex-row justify-center gap-3 md:gap-4">
                 <button
                   onClick={() => {
                     setReviewMode(true)
@@ -313,16 +323,16 @@ function ExamSystem({ onBack }) {
                     setStage('exam')
                     setShowResult(false)
                   }}
-                  className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all"
                 >
-                  <BookOpen className="w-5 h-5" />
+                  <BookOpen className="w-4 h-4 md:w-5 md:h-5" />
                   查看解析
                 </button>
                 <button
                   onClick={handleRestart}
-                  className="flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all"
                 >
-                  <RotateCcw className="w-5 h-5" />
+                  <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
                   重新开始
                 </button>
               </div>
@@ -336,63 +346,75 @@ function ExamSystem({ onBack }) {
   if (stage === 'exam') {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col">
-        <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-4 py-3">
+        <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 safe-area-top">
+          <div className="max-w-7xl mx-auto px-3 md:px-4 py-2 md:py-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 md:gap-4">
                 <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-xl"
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-base md:text-xl"
                   style={{ backgroundColor: `${selectedCategory.color}20` }}
                 >
                   {selectedCategory.icon}
                 </div>
-                <div>
+                <div className="hidden md:block">
                   <h2 className="font-bold text-gray-800">{selectedCategory.name}</h2>
                   <p className="text-sm text-gray-500">{selectedYear}年真题</p>
                 </div>
+                <div className="md:hidden">
+                  <h2 className="font-bold text-gray-800 text-sm">{selectedCategory.shortName}</h2>
+                  <p className="text-xs text-gray-500">{selectedYear}年</p>
+                </div>
               </div>
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 md:gap-6">
                 {!reviewMode && (
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                  <div className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 md:py-2 rounded-lg ${
                     timeLeft < 600 ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-700'
                   }`}>
-                    <Clock className="w-5 h-5" />
-                    <span className="font-mono text-lg font-bold">{formatTime(timeLeft)}</span>
+                    <Clock className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="font-mono text-base md:text-lg font-bold">{formatTime(timeLeft)}</span>
                   </div>
                 )}
                 
                 {reviewMode && (
-                  <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg">
+                  <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg">
                     <BookOpen className="w-5 h-5" />
                     <span>解析模式</span>
                   </div>
                 )}
 
-                <div className="text-sm text-gray-600">
+                <div className="hidden md:block text-sm text-gray-600">
                   <span className="font-bold text-blue-600">{answeredCount}</span> / {questions.length} 已答
                 </div>
 
                 {!reviewMode && (
                   <button
                     onClick={handleSubmit}
-                    className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all font-medium"
+                    className="px-3 md:px-6 py-1.5 md:py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all font-medium text-sm"
                   >
-                    提交试卷
+                    提交
                   </button>
                 )}
 
                 <button
                   onClick={handleBackToLibrary}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                  className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm"
                 >
                   <Home className="w-4 h-4" />
-                  返回题库
+                  <span className="hidden md:inline">返回题库</span>
+                </button>
+
+                <button
+                  onClick={() => setShowAnswerSheet(true)}
+                  className="md:hidden flex items-center gap-1 px-2 py-1.5 bg-blue-100 text-blue-600 rounded-lg"
+                >
+                  <Grid className="w-4 h-4" />
+                  <span className="text-xs">{currentIndex + 1}/{questions.length}</span>
                 </button>
               </div>
             </div>
 
-            <div className="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div className="mt-2 md:mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-blue-500 transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -402,21 +424,21 @@ function ExamSystem({ onBack }) {
         </header>
 
         <div className="flex-1 flex">
-          <main className="flex-1 p-6 overflow-y-auto">
+          <main className="flex-1 p-3 md:p-6 overflow-y-auto pb-safe">
             {currentQuestion && (
               <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-lg p-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
+                <div className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 md:p-8">
+                  <div className="flex items-center justify-between mb-4 md:mb-6">
+                    <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                      <span className="px-2 md:px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs md:text-sm font-medium">
                         第 {currentIndex + 1} 题
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      <span className={`px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ${
                         currentQuestion.type === 'single' ? 'bg-green-100 text-green-600' : 'bg-purple-100 text-purple-600'
                       }`}>
-                        {currentQuestion.type === 'single' ? '单选题' : '多选题'}
+                        {currentQuestion.type === 'single' ? '单选' : '多选'}
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      <span className={`px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium hidden md:block ${
                         currentQuestion.difficulty === 'easy' ? 'bg-gray-100 text-gray-600' :
                         currentQuestion.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-600' :
                         'bg-red-100 text-red-600'
@@ -426,28 +448,28 @@ function ExamSystem({ onBack }) {
                     </div>
                     <button
                       onClick={() => handleMark(currentQuestion.id)}
-                      className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all ${
+                      className={`flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 rounded-lg transition-all ${
                         markedQuestions.has(currentQuestion.id)
                           ? 'bg-yellow-100 text-yellow-600'
                           : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                       }`}
                     >
-                      <Flag className="w-4 h-4" />
-                      {markedQuestions.has(currentQuestion.id) ? '已标记' : '标记'}
+                      <Flag className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="text-xs md:text-sm">{markedQuestions.has(currentQuestion.id) ? '已标记' : '标记'}</span>
                     </button>
                   </div>
 
-                  <div className="mb-8">
-                    <p className="text-lg text-gray-800 leading-relaxed">{currentQuestion.question}</p>
+                  <div className="mb-4 md:mb-8">
+                    <p className="text-base md:text-lg text-gray-800 leading-relaxed">{currentQuestion.question}</p>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {currentQuestion.options.map((option, index) => {
                       const optionLetter = option.charAt(0)
                       const isSelected = answers[currentQuestion.id]?.includes(optionLetter)
                       const isCorrect = currentQuestion.answer.includes(optionLetter)
                       
-                      let optionClass = 'border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                      let optionClass = 'border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 active:bg-blue-100'
                       
                       if (reviewMode) {
                         if (isCorrect) {
@@ -470,19 +492,19 @@ function ExamSystem({ onBack }) {
                                 ? (answers[currentQuestion.id] || '').replace(optionLetter, '')
                                 : (answers[currentQuestion.id] || '') + optionLetter
                           )}
-                          className={`w-full text-left p-4 rounded-xl transition-all ${optionClass} ${reviewMode ? 'cursor-default' : ''}`}
+                          className={`w-full text-left p-3 md:p-4 rounded-xl transition-all ${optionClass} ${reviewMode ? 'cursor-default' : ''}`}
                         >
-                          <div className="flex items-start gap-3">
-                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                          <div className="flex items-start gap-2 md:gap-3">
+                            <span className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0 ${
                               reviewMode && isCorrect ? 'bg-green-500 text-white' :
                               reviewMode && isSelected && !isCorrect ? 'bg-red-500 text-white' :
                               isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
                             }`}>
-                              {reviewMode && isCorrect ? <Check className="w-4 h-4" /> :
-                               reviewMode && isSelected && !isCorrect ? <X className="w-4 h-4" /> :
+                              {reviewMode && isCorrect ? <Check className="w-3 h-3 md:w-4 md:h-4" /> :
+                               reviewMode && isSelected && !isCorrect ? <X className="w-3 h-3 md:w-4 md:h-4" /> :
                                optionLetter}
                             </span>
-                            <span className="text-gray-700 pt-1">{option.substring(3)}</span>
+                            <span className="text-gray-700 pt-1 text-sm md:text-base">{option.substring(3)}</span>
                           </div>
                         </button>
                       )
@@ -490,47 +512,47 @@ function ExamSystem({ onBack }) {
                   </div>
 
                   {reviewMode && (
-                    <div className="mt-8 p-6 bg-blue-50 rounded-xl">
-                      <div className="flex items-center gap-2 mb-3">
-                        <BookOpen className="w-5 h-5 text-blue-600" />
-                        <span className="font-bold text-blue-600">答案解析</span>
+                    <div className="mt-4 md:mt-8 p-3 md:p-6 bg-blue-50 rounded-xl">
+                      <div className="flex items-center gap-2 mb-2 md:mb-3">
+                        <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                        <span className="font-bold text-blue-600 text-sm md:text-base">答案解析</span>
                       </div>
-                      <div className="mb-3">
-                        <span className="text-sm text-gray-600">正确答案：</span>
-                        <span className="font-bold text-green-600">{currentQuestion.answer}</span>
+                      <div className="mb-2 md:mb-3">
+                        <span className="text-xs md:text-sm text-gray-600">正确答案：</span>
+                        <span className="font-bold text-green-600 text-sm md:text-base">{currentQuestion.answer}</span>
                       </div>
                       {currentQuestion.explanation && (
-                        <div className="mt-3">
-                          <span className="text-sm text-gray-600">解析：</span>
-                          <p className="text-gray-700 leading-relaxed mt-1">{currentQuestion.explanation}</p>
+                        <div className="mt-2 md:mt-3">
+                          <span className="text-xs md:text-sm text-gray-600">解析：</span>
+                          <p className="text-gray-700 leading-relaxed mt-1 text-sm md:text-base">{currentQuestion.explanation}</p>
                         </div>
                       )}
                       {currentQuestion.chapter && (
-                        <div className="mt-3 p-3 bg-yellow-50 rounded-lg">
-                          <span className="text-sm text-yellow-700">考点：{currentQuestion.chapter}</span>
+                        <div className="mt-2 md:mt-3 p-2 md:p-3 bg-yellow-50 rounded-lg">
+                          <span className="text-xs md:text-sm text-yellow-700">考点：{currentQuestion.chapter}</span>
                         </div>
                       )}
                     </div>
                   )}
                 </div>
 
-                <div className="flex items-center justify-between mt-6">
+                <div className="flex items-center justify-between mt-4 md:mt-6">
                   <button
                     onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
                     disabled={currentIndex === 0}
-                    className="flex items-center gap-2 px-6 py-3 bg-white rounded-xl shadow hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-1 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-white rounded-xl shadow hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                     上一题
                   </button>
 
                   <button
                     onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}
                     disabled={currentIndex === questions.length - 1}
-                    className="flex items-center gap-2 px-6 py-3 bg-white rounded-xl shadow hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-1 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-white rounded-xl shadow hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   >
                     下一题
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                 </div>
               </div>
@@ -585,39 +607,96 @@ function ExamSystem({ onBack }) {
           </aside>
         </div>
 
+        {showAnswerSheet && isMobile && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+            <div className="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-hidden safe-area-bottom">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 className="font-bold text-gray-800">答题卡</h3>
+                <button
+                  onClick={() => setShowAnswerSheet(false)}
+                  className="p-2 text-gray-500"
+                >
+                  <XCircle className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-4 overflow-y-auto max-h-[50vh]">
+                <div className="grid grid-cols-6 gap-2">
+                  {questions.map((q, index) => {
+                    const isAnswered = answers[q.id]
+                    const isMarked = markedQuestions.has(q.id)
+                    const isCurrent = index === currentIndex
+
+                    return (
+                      <button
+                        key={q.id}
+                        onClick={() => {
+                          setCurrentIndex(index)
+                          setShowAnswerSheet(false)
+                        }}
+                        className={`w-10 h-10 rounded-lg text-sm font-medium transition-all relative ${
+                          isCurrent ? 'ring-2 ring-blue-500 ring-offset-2' : ''
+                        } ${
+                          isAnswered
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
+                        {index + 1}
+                        {isMarked && (
+                          <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-500 rounded-full" />
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+              <div className="p-4 border-t border-gray-200 flex items-center justify-around text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <span className="w-4 h-4 bg-blue-500 rounded" />
+                  <span>已答 {answeredCount}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-4 h-4 bg-gray-100 rounded" />
+                  <span>未答 {questions.length - answeredCount}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {showSaveDialog && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl shadow-xl p-4 md:p-6 max-w-md w-full">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Save className="w-6 h-6 text-blue-600" />
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Save className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800">保存做题记录</h3>
-                  <p className="text-sm text-gray-500">您已答 {Object.keys(answers).length} 题</p>
+                  <h3 className="text-base md:text-lg font-bold text-gray-800">保存做题记录</h3>
+                  <p className="text-xs md:text-sm text-gray-500">您已答 {Object.keys(answers).length} 题</p>
                 </div>
               </div>
               
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
                 返回题库前是否保存当前做题进度？保存后可随时继续答题。
               </p>
               
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-2 md:gap-3">
                 <button
                   onClick={handleSaveProgress}
-                  className="flex-1 px-4 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all font-medium"
+                  className="flex-1 px-4 py-2.5 md:py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all font-medium text-sm"
                 >
                   保存并返回
                 </button>
                 <button
                   onClick={handleRestart}
-                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all font-medium"
+                  className="flex-1 px-4 py-2.5 md:py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all font-medium text-sm"
                 >
                   不保存
                 </button>
                 <button
                   onClick={() => setShowSaveDialog(false)}
-                  className="px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all"
+                  className="px-4 py-2.5 md:py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all text-sm"
                 >
                   取消
                 </button>

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, MessageSquare, User, Bot, RotateCcw, TrendingUp, AlertCircle } from 'lucide-react'
+import { Send, MessageSquare, User, Bot, RotateCcw, TrendingUp, AlertCircle, ChevronUp, ChevronDown } from 'lucide-react'
 import ReviewModal from './ReviewModal'
 import { saveProgress } from '../utils/progressStorage'
 import VoiceHoldButton from './VoiceHoldButton'
@@ -30,26 +30,23 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   const [reviewData, setReviewData] = useState(null)
   const [trustScore, setTrustScore] = useState(50)
   const [currentStage, setCurrentStage] = useState('initial')
+  const [showStatusBar, setShowStatusBar] = useState(true)
   const messagesEndRef = useRef(null)
 
   const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {
     console.log('handleVoiceTranscript 被调用:', { transcript, isInterim, isFinal })
     
     if (transcript && transcript.trim()) {
-      // 累积文本而不是覆盖
       setInput(prevInput => {
         let newText = transcript
         
-        // 如果是临时结果，替换最后一句
         if (isInterim) {
           const sentences = prevInput.split(/[。！？.!?]/).filter(s => s.trim())
           if (sentences.length > 0) {
-            // 保留之前的句子，只替换最后一句
             sentences[sentences.length - 1] = transcript
             newText = sentences.join('。') + '。'
           }
         } else if (isFinal) {
-          // 最终结果，添加到现有文本后面
           newText = prevInput ? prevInput + ' ' + transcript : transcript
         }
         
@@ -57,7 +54,6 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         return newText
       })
       
-      // 如果是最终结果，自动发送
       if (isFinal) {
         console.log('检测到最终结果，准备发送消息')
         setTimeout(() => {
@@ -75,7 +71,6 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     scrollToBottom()
   }, [messages])
 
-  // 输入框自动调整高度
   useEffect(() => {
     const textarea = document.querySelector('textarea')
     if (textarea) {
@@ -252,30 +247,25 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(requestBody),
-      signal: AbortSignal.timeout(45000) // 45秒超时
+      signal: AbortSignal.timeout(45000)
     })
 
-    // 先读取响应体内容（只能读取一次）
     const responseText = await response.text()
     
     if (!response.ok) {
       console.error('API 请求失败:', response.status, responseText)
-      // 尝试解析错误信息
       try {
         const errorData = JSON.parse(responseText)
         throw new Error(`HTTP error! status: ${response.status}: ${errorData.message || errorData.error || JSON.stringify(errorData)}`)
       } catch (jsonError) {
-        // 如果无法解析为JSON，使用原始文本
         throw new Error(`HTTP error! status: ${response.status}: ${responseText}`)
       }
     }
 
-    // 尝试解析JSON响应，如果失败则处理为文本响应
     try {
       const responseData = JSON.parse(responseText)
       console.log('接收到JSON响应:', responseData)
       
-      // 检查是否有错误信息
       if (responseData.error) {
         console.error('API返回错误:', responseData)
         throw new Error(`API错误: ${responseData.message || responseData.error}`)
@@ -291,17 +281,14 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         throw new Error('API响应格式错误')
       }
     } catch (jsonError) {
-      // 如果JSON解析失败，处理为文本响应
       console.log('JSON解析失败，处理为文本响应:', jsonError.message)
       console.log('接收到文本响应:', responseText)
       
-      // 检查文本响应是否包含错误信息
       if (responseText.includes('error') || responseText.includes('Error')) {
         console.error('文本响应包含错误:', responseText)
         throw new Error(`API错误: ${responseText}`)
       }
       
-      // 处理正常的文本响应
       const parsed = parseMetadata(responseText)
       onComplete(parsed)
     }
@@ -312,7 +299,6 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     try {
       const review = await fetchReview(messages)
       
-      // 根据难度计算倍率
       const difficultyMultiplier = {
         'easy': 1.0,
         'medium': 1.2,
@@ -320,7 +306,6 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       }
       const multiplier = difficultyMultiplier[practiceCase?.difficulty || 'medium']
       
-      // 应用难度倍率
       const adjustedReview = {
         ...review,
         originalTotalScore: review.totalScore,
@@ -413,8 +398,8 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white md:rounded-xl md:shadow-lg md:p-6 h-full flex flex-col">
+      <div className="hidden md:flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center">
             <MessageSquare className="w-5 h-5 text-white" />
@@ -440,7 +425,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         </div>
       </div>
 
-      <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+      <div className={`mb-4 p-3 md:p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg ${showStatusBar ? '' : 'hidden md:block'}`}>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-gray-700">顾客满意度</span>
@@ -448,13 +433,21 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
               <AlertCircle className="w-4 h-4 text-red-500 animate-pulse" />
             )}
           </div>
-          <span className={`text-2xl font-bold ${trustScore < 30 ? 'text-red-600' : 'text-purple-600'}`}>
-            {trustScore}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className={`text-xl md:text-2xl font-bold ${trustScore < 30 ? 'text-red-600' : 'text-purple-600'}`}>
+              {trustScore}
+            </span>
+            <button 
+              onClick={() => setShowStatusBar(!showStatusBar)}
+              className="md:hidden p-1 text-gray-400"
+            >
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3">
+        <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
           <div
-            className={`h-3 rounded-full transition-all duration-500 ${getTrustColor(trustScore)}`}
+            className={`h-2 md:h-3 rounded-full transition-all duration-500 ${getTrustColor(trustScore)}`}
             style={{ width: `${trustScore}%` }}
           />
         </div>
@@ -466,27 +459,37 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-gray-50 rounded-lg">
+      {!showStatusBar && (
+        <button 
+          onClick={() => setShowStatusBar(true)}
+          className="md:hidden mb-2 p-2 bg-purple-50 rounded-lg flex items-center justify-center gap-2 text-purple-600"
+        >
+          <ChevronUp className="w-4 h-4" />
+          <span className="text-sm">显示状态栏</span>
+        </button>
+      )}
+
+      <div className="flex-1 overflow-y-auto space-y-3 md:space-y-4 mb-4 p-3 md:p-4 bg-gray-50 rounded-lg">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex items-start gap-3 ${
+            className={`flex items-start gap-2 md:gap-3 ${
               message.role === 'user' ? 'flex-row-reverse' : ''
             }`}
           >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
               message.role === 'user'
                 ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
                 : 'bg-gradient-to-r from-orange-400 to-red-500'
             }`}>
               {message.role === 'user' ? (
-                <User className="w-4 h-4 text-white" />
+                <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
               ) : (
-                <Bot className="w-4 h-4 text-white" />
+                <Bot className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
               )}
             </div>
             <div
-              className={`max-w-[80%] p-4 rounded-2xl ${
+              className={`max-w-[85%] md:max-w-[80%] p-3 md:p-4 rounded-2xl ${
                 message.role === 'user'
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
                   : 'bg-white border border-gray-200 text-gray-800'
@@ -504,11 +507,11 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
           </div>
         ))}
         {isLoading && !messages.find(m => m.isStreaming) && (
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-orange-400 to-red-500">
-              <Bot className="w-4 h-4 text-white" />
+          <div className="flex items-start gap-2 md:gap-3">
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-orange-400 to-red-500">
+              <Bot className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
             </div>
-            <div className="bg-white border border-gray-200 p-4 rounded-2xl">
+            <div className="bg-white border border-gray-200 p-3 md:p-4 rounded-2xl">
               <div className="flex gap-1">
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
@@ -527,34 +530,52 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         />
       )}
 
-      <div className="flex gap-3">
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
-          placeholder="输入您的回复..."
-          disabled={isLoading}
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 resize-none min-h-[60px] max-h-[200px] overflow-y-auto"
-          style={{ height: 'auto' }}
-          ref={(textarea) => {
-            if (textarea) {
-              textarea.style.height = 'auto'
-              textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px'
-            }
-          }}
-        />
-        <VoiceHoldButton
-          onTranscript={handleVoiceTranscript}
-          disabled={isLoading}
-        />
-        <button
-          onClick={handleSendMessage}
-          disabled={!input.trim() || isLoading}
-          className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          <Send className="w-4 h-4" />
-          发送
-        </button>
+      <div className="flex flex-col md:flex-row gap-2 md:gap-3">
+        <div className="flex gap-2">
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
+            placeholder="输入您的回复..."
+            disabled={isLoading}
+            className="flex-1 px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 resize-none min-h-[44px] max-h-[120px] md:max-h-[200px] overflow-y-auto text-sm md:text-base"
+            style={{ height: 'auto' }}
+            ref={(textarea) => {
+              if (textarea) {
+                textarea.style.height = 'auto'
+                textarea.style.height = Math.min(textarea.scrollHeight, window.innerWidth < 768 ? 120 : 200) + 'px'
+              }
+            }}
+          />
+          <VoiceHoldButton
+            onTranscript={handleVoiceTranscript}
+            disabled={isLoading}
+          />
+          <button
+            onClick={handleSendMessage}
+            disabled={!input.trim() || isLoading}
+            className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="flex gap-2 md:hidden">
+          <button
+            onClick={handleReset}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg"
+          >
+            <RotateCcw className="w-4 h-4" />
+            <span className="text-sm">重新开始</span>
+          </button>
+          <button
+            onClick={handleReview}
+            disabled={messages.length < 3 || isLoading}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg disabled:opacity-50"
+          >
+            <TrendingUp className="w-4 h-4" />
+            <span className="text-sm">复盘分析</span>
+          </button>
+        </div>
       </div>
     </div>
   )

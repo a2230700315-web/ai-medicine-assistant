@@ -16,25 +16,24 @@ function LearningModule({ onCaseRecommend }) {
 
   const mainCategories = [
     {
-      id: 'public',
-      name: '公共科目',
-      icon: '📚',
+      id: 'professional',
+      name: '专业化学习',
+      icon: '📖',
       color: 'from-blue-50 to-blue-100',
-      data: learningContent.publicSubjects
+      data: {
+        subjects: [
+          ...learningContent.publicSubjects.subjects,
+          ...learningContent.pharmacySubjects.subjects,
+          ...learningContent.tcmSubjects.subjects
+        ]
+      }
     },
     {
-      id: 'pharmacy',
-      name: '药学类专业科目',
-      icon: '💊',
-      color: 'from-green-50 to-green-100',
-      data: learningContent.pharmacySubjects
-    },
-    {
-      id: 'tcm',
-      name: '中药学类专业科目',
-      icon: '🌿',
-      color: 'from-yellow-50 to-yellow-100',
-      data: learningContent.tcmSubjects
+      id: 'scenario',
+      name: '场景化学习',
+      icon: '🎯',
+      color: 'from-green-50 to-emerald-100',
+      data: learningContent.scenarioLearning
     }
   ]
 
@@ -254,77 +253,99 @@ function LearningModule({ onCaseRecommend }) {
             </div>
             <div className="flex-1 overflow-y-auto p-2">
               {selectedSubject?.units.map((unit) => {
-                const isExpanded = expandedUnits[unit.id]
+                const isExpanded = expandedUnits[unit.id] || selectedSubject.id.includes('scenario')
                 return (
                   <div key={unit.id} className="mb-2">
-                    <button
-                      onClick={() => toggleUnit(unit.id)}
-                      className="w-full flex items-center justify-between p-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FolderOpen className="w-4 h-4 text-indigo-600" />
-                        <span className="font-medium text-gray-800 text-sm">{unit.name}</span>
-                      </div>
-                      {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 text-gray-600" />
-                      )}
-                    </button>
-                    {isExpanded && unit.subunits && (
-                      <div className="mt-1 ml-2 space-y-1">
-                        {unit.subunits.map((subunit) => {
-                          const isSubunitExpanded = expandedSubunits[subunit.id]
-                          return (
-                            <div key={subunit.id}>
-                              <button
-                                onClick={() => toggleSubunit(subunit.id)}
-                                className="w-full flex items-center justify-between p-2 bg-white hover:bg-gray-50 rounded-lg transition-all"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <Folder className="w-3 h-3 text-purple-600" />
-                                  <span className="text-sm text-gray-700">{subunit.name}</span>
+                    {selectedSubject.id.includes('scenario') ? (
+                      // 场景化学习：点击单元标题直接展示内容
+                      <button
+                        onClick={() => {
+                          // 找到该单元的第一个知识点并点击
+                          if (unit.subunits && unit.subunits.length > 0 && unit.subunits[0].details && unit.subunits[0].details.length > 0) {
+                            handleTopicClick(unit.subunits[0].details[0])
+                          }
+                        }}
+                        className="w-full flex items-center justify-between p-3 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 rounded-lg transition-all border border-indigo-100"
+                      >
+                        <div className="flex items-center gap-3">
+                          <BookOpen className="w-4 h-4 text-indigo-600" />
+                          <span className="font-semibold text-gray-800">{unit.name}</span>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-indigo-600" />
+                      </button>
+                    ) : (
+                      // 其他学习内容：保持原有折叠逻辑
+                      <>
+                        <button
+                          onClick={() => toggleUnit(unit.id)}
+                          className="w-full flex items-center justify-between p-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
+                        >
+                          <div className="flex items-center gap-2">
+                            <FolderOpen className="w-4 h-4 text-indigo-600" />
+                            <span className="font-medium text-gray-800 text-sm">{unit.name}</span>
+                          </div>
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4 text-gray-600" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-gray-600" />
+                          )}
+                        </button>
+                        {isExpanded && unit.subunits && (
+                          <div className="mt-1 ml-2 space-y-1">
+                            {unit.subunits.map((subunit) => {
+                              const isSubunitExpanded = expandedSubunits[subunit.id]
+                              return (
+                                <div key={subunit.id}>
+                                  <button
+                                    onClick={() => toggleSubunit(subunit.id)}
+                                    className="w-full flex items-center justify-between p-2 bg-white hover:bg-gray-50 rounded-lg transition-all"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <Folder className="w-3 h-3 text-purple-600" />
+                                      <span className="text-sm text-gray-700">{subunit.name}</span>
+                                    </div>
+                                    {isSubunitExpanded ? (
+                                      <ChevronDown className="w-3 h-3 text-gray-600" />
+                                    ) : (
+                                      <ChevronRight className="w-3 h-3 text-gray-600" />
+                                    )}
+                                  </button>
+                                  {isSubunitExpanded && subunit.details && (
+                                    <div className="mt-1 ml-4 space-y-1">
+                                      {subunit.details.map((detail) => {
+                                        const isCompleted = completedTopics.includes(detail.id)
+                                        const isSelected = selectedTopic?.id === detail.id
+                                        return (
+                                          <button
+                                            key={detail.id}
+                                            onClick={() => handleTopicClick(detail)}
+                                            className={`w-full flex items-center gap-2 p-2 rounded-lg transition-all text-left ${
+                                              isSelected
+                                                ? 'bg-indigo-50 border-2 border-indigo-300'
+                                                : 'bg-white border-2 border-gray-200 hover:border-indigo-300'
+                                            }`}
+                                          >
+                                            <div className="flex-shrink-0">
+                                              {isCompleted ? (
+                                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                              ) : (
+                                                <Circle className="w-4 h-4 text-gray-400" />
+                                              )}
+                                            </div>
+                                            <span className={`text-sm ${isSelected ? 'font-semibold text-indigo-700' : 'text-gray-700'}`}>
+                                              {detail.name}
+                                            </span>
+                                          </button>
+                                        )
+                                      })}
+                                    </div>
+                                  )}
                                 </div>
-                                {isSubunitExpanded ? (
-                                  <ChevronDown className="w-3 h-3 text-gray-600" />
-                                ) : (
-                                  <ChevronRight className="w-3 h-3 text-gray-600" />
-                                )}
-                              </button>
-                              {isSubunitExpanded && subunit.details && (
-                                <div className="mt-1 ml-4 space-y-1">
-                                  {subunit.details.map((detail) => {
-                                    const isCompleted = completedTopics.includes(detail.id)
-                                    const isSelected = selectedTopic?.id === detail.id
-                                    return (
-                                      <button
-                                        key={detail.id}
-                                        onClick={() => handleTopicClick(detail)}
-                                        className={`w-full flex items-center gap-2 p-2 rounded-lg transition-all text-left ${
-                                          isSelected
-                                            ? 'bg-indigo-50 border-2 border-indigo-300'
-                                            : 'bg-white border-2 border-gray-200 hover:border-indigo-300'
-                                        }`}
-                                      >
-                                        <div className="flex-shrink-0">
-                                          {isCompleted ? (
-                                            <CheckCircle2 className="w-4 h-4 text-green-600" />
-                                          ) : (
-                                            <Circle className="w-4 h-4 text-gray-400" />
-                                          )}
-                                        </div>
-                                        <span className={`text-sm ${isSelected ? 'font-semibold text-indigo-700' : 'text-gray-700'}`}>
-                                          {detail.name}
-                                        </span>
-                                      </button>
-                                    )
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          )
-                        })}
-                      </div>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 )
@@ -357,9 +378,11 @@ function LearningModule({ onCaseRecommend }) {
                         💡 提示：滚动到内容底部会自动标记为已完成
                       </div>
                     )}
-                    <div className="prose prose max-w-none space-y-6">
+                    <div className="prose prose-indigo max-w-none space-y-6 text-gray-700 leading-relaxed">
                       {selectedTopic.content.coreExplanation && (
-                        <div dangerouslySetInnerHTML={{ __html: selectedTopic.content.coreExplanation }} />
+                        <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm">
+                          <div className="space-y-4" dangerouslySetInnerHTML={{ __html: selectedTopic.content.coreExplanation }} />
+                        </div>
                       )}
                     </div>
                   </div>
