@@ -1,14 +1,7 @@
-import { OpenAI } from 'openai';
-
 export async function onRequestPost(context) {
   console.log('API Request Received');
   
   const { request, env } = context;
-  
-  const client = new OpenAI({
-    apiKey: env.VOLC_API_KEY,
-    baseURL: "https://ark.cn-beijing.volces.com/api/v3"
-  });
 
   try {
     const body = await request.json();
@@ -18,7 +11,7 @@ export async function onRequestPost(context) {
     console.log("=== 收到复盘请求 ===");
     console.log(`消息数量: ${messages.length}`);
 
-    const result = await handleReview(messages, practice_case, client, env);
+    const result = await handleReview(messages, practice_case, env);
 
     return new Response(
       JSON.stringify(result),
@@ -38,7 +31,30 @@ export async function onRequestPost(context) {
   }
 }
 
-async function handleReview(messages, practice_case, client, env) {
+async function callVolcAPI(messages, env) {
+  const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.VOLC_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: env.VOLC_ENDPOINT_ID,
+      messages: messages,
+      stream: false
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`API请求失败: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function handleReview(messages, practice_case, env) {
   const system_prompt = `你是一位专业的药店销售培训师，请根据店员与顾客的对话进行评价。
 
 对话内容：
@@ -63,13 +79,9 @@ ${JSON.stringify(messages, null, 2)}
   "suggestions": ["改进建议1", "改进建议2"]
 }`;
 
-  const response = await client.chat.completions.create({
-    model: env.VOLC_ENDPOINT_ID,
-    messages: [{ "role": "system", "content": system_prompt }],
-    stream: false
-  });
-
-  const content = response.choices[0].message.content;
+  const api_messages = [{ "role": "system", "content": system_prompt }];
+  
+  const content = await callVolcAPI(api_messages, env);
   console.log(`复盘结果: ${content.length > 100 ? content.substring(0, 100) + '...' : content}`);
 
   try {
