@@ -1,0 +1,9 @@
+{
+  "routes": [
+    { "pattern": "/api/chat/stream" },
+    { "pattern": "/api/chat/review" },
+    { "pattern": "/api/cases" },
+    { "pattern": "/" }
+  ],
+  "exclude": []
+}
