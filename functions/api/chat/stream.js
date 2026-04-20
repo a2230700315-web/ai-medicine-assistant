@@ -1,63 +1,53 @@
-const { OpenAI } = require('openai');
+import { OpenAI } from 'openai';
 
-// 初始化 OpenAI 客户端
-const client = new OpenAI({
-    apiKey: process.env.VOLC_API_KEY,
+export async function onRequestPost(context) {
+  console.log('API Request Received');
+  
+  const { request, env } = context;
+  
+  const client = new OpenAI({
+    apiKey: env.VOLC_API_KEY,
     baseURL: "https://ark.cn-beijing.volces.com/api/v3"
-});
+  });
 
-// Cloudflare Pages 函数导出
-module.exports = {
-  async fetch(request, env) {
-    // 只处理 POST 请求
-    if (request.method !== 'POST') {
-      return new Response(
-        JSON.stringify({ error: 'Method Not Allowed' }),
-        { status: 405, headers: { 'Content-Type': 'application/json' } }
-      );
+  try {
+    const body = await request.json();
+    const messages = body.messages || [];
+    const practice_case = body.practice_case;
+    const request_type = body.type || "chat";
+
+    console.log("=== 收到请求 ===");
+    console.log(`请求数据: ${JSON.stringify(body)}`);
+    console.log(`消息数量: ${messages.length}`);
+    console.log(`案例信息: ${practice_case}`);
+    console.log(`请求类型: ${request_type}`);
+
+    let content;
+    if (request_type === "review") {
+      content = await handleReview(messages, practice_case, client, env);
+    } else {
+      content = await handleChat(messages, practice_case, client, env);
     }
 
-    try {
-      // 解析请求体
-      const body = await request.json();
-      const messages = body.messages || [];
-      const practice_case = body.practice_case;
-      const request_type = body.type || "chat";
+    return new Response(
+      JSON.stringify(content),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
 
-      console.log("=== 收到请求 ===");
-      console.log(`请求数据: ${JSON.stringify(body)}`);
-      console.log(`消息数量: ${messages.length}`);
-      console.log(`案例信息: ${practice_case}`);
-      console.log(`请求类型: ${request_type}`);
+  } catch (e) {
+    console.error("=== 错误 ===");
+    console.error(`错误类型: ${e.name}`);
+    console.error(`错误信息: ${e.message}`);
+    console.error(e.stack);
 
-      let content;
-      if (request_type === "review") {
-        content = await handleReview(messages, practice_case);
-      } else {
-        content = await handleChat(messages, practice_case);
-      }
-
-      return new Response(
-        JSON.stringify(content),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-
-    } catch (e) {
-      console.error("=== 错误 ===");
-      console.error(`错误类型: ${e.name}`);
-      console.error(`错误信息: ${e.message}`);
-      console.error(e.stack);
-
-      return new Response(
-        JSON.stringify({ error: e.message }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+    return new Response(
+      JSON.stringify({ error: e.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
-};
+}
 
-// 处理聊天请求
-async function handleChat(messages, practice_case) {
+async function handleChat(messages, practice_case, client, env) {
   const system_prompt = buildSystemPrompt(practice_case);
   
   const api_messages = [
@@ -67,7 +57,7 @@ async function handleChat(messages, practice_case) {
   console.log(`发送给 OpenAI 的消息数量: ${api_messages.length}`);
 
   const response = await client.chat.completions.create({
-    model: process.env.VOLC_ENDPOINT_ID,
+    model: env.VOLC_ENDPOINT_ID,
     messages: api_messages,
     stream: false
   });
@@ -78,8 +68,7 @@ async function handleChat(messages, practice_case) {
   return { "content": content };
 }
 
-// 处理复盘请求
-async function handleReview(messages, practice_case) {
+async function handleReview(messages, practice_case, client, env) {
   const system_prompt = `你是一位专业的药店销售培训师，请根据店员与顾客的对话进行评价。
 
 对话内容：
@@ -105,7 +94,7 @@ ${JSON.stringify(messages, null, 2)}
 }`;
 
   const response = await client.chat.completions.create({
-    model: process.env.VOLC_ENDPOINT_ID,
+    model: env.VOLC_ENDPOINT_ID,
     messages: [{ "role": "system", "content": system_prompt }],
     stream: false
   });
@@ -132,7 +121,6 @@ ${JSON.stringify(messages, null, 2)}
   }
 }
 
-// 构建系统提示词
 function buildSystemPrompt(practice_case) {
   const base_prompt = `你是一位挑剔的顾客，正在药店咨询产品。请按照以下要求回复：
 

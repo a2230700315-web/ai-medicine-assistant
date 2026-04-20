@@ -1,8 +1,0 @@
-{
-  "routes": [
-    { "pattern": "/api/chat/stream", "script": "api/chat/stream" },
-    { "pattern": "/api/chat/review", "script": "api/chat/review" },
-    { "pattern": "/api/cases", "script": "api/cases" }
-  ],
-  "exclude": []
-}
