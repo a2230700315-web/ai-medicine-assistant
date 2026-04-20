@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 // Cloudflare Pages 函数导出
-export default {
+module.exports = {
   async fetch(request, env) {
     // 只处理 GET 请求
     if (request.method !== 'GET') {

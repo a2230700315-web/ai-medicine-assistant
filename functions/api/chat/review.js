@@ -1,15 +1,13 @@
-import os
-import json
-from openai import OpenAI
+const { OpenAI } = require('openai');
 
-# 初始化 OpenAI 客户端
-client = OpenAI(
-    api_key=os.environ.get("VOLC_API_KEY"),
-    base_url="https://ark.cn-beijing.volces.com/api/v3"
-)
+// 初始化 OpenAI 客户端
+const client = new OpenAI({
+    apiKey: process.env.VOLC_API_KEY,
+    baseURL: "https://ark.cn-beijing.volces.com/api/v3"
+});
 
-# Cloudflare Pages 函数导出
-export default {
+// Cloudflare Pages 函数导出
+module.exports = {
   async fetch(request, env) {
     // 只处理 POST 请求
     if (request.method !== 'POST') {
@@ -76,7 +74,7 @@ ${JSON.stringify(messages, null, 2)}
 }`;
 
   const response = await client.chat.completions.create({
-    model: os.environ.get("VOLC_ENDPOINT_ID"),
+    model: process.env.VOLC_ENDPOINT_ID,
     messages: [{ "role": "system", "content": system_prompt }],
     stream: false
   });
