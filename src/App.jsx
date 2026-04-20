@@ -1,8 +1,14 @@
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Dashboard from './components/Dashboard'
 import Login from './components/Login'
-import { useMobileBridge, isNativeApp } from './hooks/useMobileBridge'
+import useMobileBridge from './hooks/use-mobile-bridge'
 import { useEffect, useState } from 'react'
+
+function isNativeApp() {
+  return typeof window !== 'undefined' &&
+         window.Capacitor &&
+         window.Capacitor.isNativePlatform()
+}
 
 function AppContent() {
   const { user, loading } = useAuth()

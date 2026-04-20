@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">药房培训平台</string>
+    <string name="title_activity_main">药房培训平台</string>
+    <string name="package_name">com.pharmacy.training</string>
+    <string name="custom_url_scheme">com.pharmacy.training</string>
+</resources>

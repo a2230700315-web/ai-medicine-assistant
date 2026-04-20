@@ -1,0 +1,22 @@
+{
+  "appId": "com.pharmacy.training",
+  "appName": "药房培训平台",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "Light",
+      "backgroundColor": "#3b82f6"
+    },
+    "App": {
+      "launchAutoHide": true
+    }
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  }
+}
