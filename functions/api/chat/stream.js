@@ -1,3 +1,28 @@
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Content-Type': 'application/json'
+};
+
+export async function onRequestOptions() {
+  return new Response(null, { status: 204, headers: corsHeaders });
+}
+
+export async function onRequest(context) {
+  const { request } = context;
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+  if (request.method === 'POST') {
+    return onRequestPost(context);
+  }
+  return new Response(
+    JSON.stringify({ error: 'Method not allowed' }),
+    { status: 405, headers: corsHeaders }
+  );
+}
+
 export async function onRequestPost(context) {
   console.log('API Request Received');
   
@@ -26,7 +51,7 @@ export async function onRequestPost(context) {
 
     return new Response(
       JSON.stringify(content),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: corsHeaders }
     );
 
   } catch (e) {
@@ -37,7 +62,7 @@ export async function onRequestPost(context) {
 
     return new Response(
       JSON.stringify({ error: e.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
