@@ -8,18 +8,20 @@ export async function onRequestPost(context) {
     const messages = body.messages || [];
     const practice_case = body.practice_case;
     const request_type = body.type || "chat";
+    const difficulty = body.difficulty || "medium";
 
     console.log("=== 收到请求 ===");
     console.log(`请求数据: ${JSON.stringify(body)}`);
     console.log(`消息数量: ${messages.length}`);
     console.log(`案例信息: ${practice_case}`);
     console.log(`请求类型: ${request_type}`);
+    console.log(`难度: ${difficulty}`);
 
     let content;
     if (request_type === "review") {
       content = await handleReview(messages, practice_case, env);
     } else {
-      content = await handleChat(messages, practice_case, env);
+      content = await handleChat(messages, practice_case, difficulty, env);
     }
 
     return new Response(
@@ -63,8 +65,8 @@ async function callVolcAPI(messages, env) {
   return data.choices[0].message.content;
 }
 
-async function handleChat(messages, practice_case, env) {
-  const system_prompt = buildSystemPrompt(practice_case);
+async function handleChat(messages, practice_case, difficulty, env) {
+  const system_prompt = buildSystemPrompt(practice_case, difficulty);
   
   const api_messages = [
     { "role": "system", "content": system_prompt }
@@ -127,42 +129,71 @@ ${JSON.stringify(messages, null, 2)}
   }
 }
 
-function buildSystemPrompt(practice_case) {
-  const base_prompt = `你是一位挑剔的顾客，正在药店咨询产品。请按照以下要求回复：
+function buildSystemPrompt(practice_case, difficulty) {
+  const difficultyConfig = getDifficultyConfig(difficulty);
+  
+  const base_prompt = `你是一位来药店咨询的顾客。请按照以下要求进行角色扮演：
 
-1. 回复格式要求：
-   - 顾客的真实回复内容（至少20字）
-   - [/METADATA]
-   - {"trust_score": 数字(0-100), "current_stage": "阶段名称"}
+## 核心规则
+你是一个真实的顾客，会根据店员的服务质量做出自然的反应。你的目标是购买到合适的产品，而不是故意刁难店员。
 
-2. 顾客性格特点：
-   - 对价格敏感，会询问折扣
-   - 对功效有疑虑，需要详细解释
-   - 对品牌不太信任，更看重实际效果
-   - 喜欢货比三家
+## 回复格式（必须严格遵守）
+你的每条回复必须包含两部分：
+1. 顾客的真实回复内容（自然对话，20-100字）
+2. 换行后添加元数据标记：[/METADATA]
+3. 换行后添加JSON：{"trust_score": 数字, "current_stage": "阶段名称", "purchase_intent": 数字}
 
-3. 销售阶段：
-   - initial: 初始接触，顾客还在观望
-   - interest: 产生兴趣，开始询问细节
-   - consideration: 考虑购买，但还有疑虑
-   - decision: 准备购买，询问价格和优惠
-   - purchase: 已经购买，询问使用方法
+示例回复：
+这个益生菌是饭前吃还是饭后吃啊？效果怎么样？
+[/METADATA]
+{"trust_score": 55, "current_stage": "interest", "purchase_intent": 40}
 
-4. trust_score 规则：
-   - 初始值: 30
-   - 店员提到产品功效: +10
-   - 店员解答疑虑: +15
-   - 店员推荐合适产品: +20
-   - 店员态度不好: -20
-   - 店员强行推销: -15
+## 当前难度设置：${difficultyConfig.name}
+${difficultyConfig.description}
 
-请严格按照格式回复，不要遗漏任何部分。`;
+## 顾客性格特点
+${difficultyConfig.personality}
 
+## 信任分数规则
+- 初始值: ${difficultyConfig.initialTrust}
+- 店员专业解答问题: +${difficultyConfig.trustGain}
+- 店员态度友好热情: +5
+- 店员推荐合适产品: +${difficultyConfig.trustGain}
+- 店员解答疑虑消除担忧: +${difficultyConfig.trustGain}
+- 店员强行推销: -${difficultyConfig.trustLoss}
+- 店员态度敷衍: -${difficultyConfig.trustLoss}
+- 店员推荐不相关产品: -10
+
+## 购买意向规则
+- 初始值: ${difficultyConfig.initialIntent}
+- 信任分数每增加10分，购买意向+5
+- 店员成功解答核心疑虑: +15
+- 店员给出合理价格或优惠: +10
+- 购买意向达到70以上时，顾客会表现出购买意愿
+- 购买意向达到85以上时，顾客会决定购买
+
+## 销售阶段
+- initial: 初始接触，顾客表达需求
+- interest: 产生兴趣，询问产品细节
+- consideration: 考虑中，有疑虑需要解答
+- decision: 准备购买，询问价格和使用方法
+- purchase: 决定购买，完成交易
+
+## 重要提示
+1. 当购买意向(purchase_intent)达到85以上时，你应该主动表示愿意购买
+2. 对话应该自然流畅，像真实的药店场景
+3. 不要一直挑剔，顾客的目的是买到合适的产品
+4. 如果店员服务好，应该给予正面反馈
+5. 每次回复都要检查是否应该进入下一阶段或完成购买`;
+
+  let case_info = "";
   if (practice_case) {
-    const case_info = `
-当前案例信息：
+    case_info = `
+
+## 当前案例信息
 - 姓名: ${practice_case.姓名 || '顾客'}
 - 年龄: ${practice_case.年龄 || 45}
+- 性别: ${practice_case.性别 || '女'}
 - BMI: ${practice_case.BMI || 24.5}
 - 过敏史: ${practice_case.过敏史 || '无'}
 - 现病史: ${practice_case.现病史 || ''}
@@ -170,9 +201,60 @@ function buildSystemPrompt(practice_case) {
 - 饮食习惯: ${practice_case.饮食习惯 || ''}
 - 销售目标: ${practice_case.销售目标 || ''}
 
-请根据以上案例信息，扮演相应的顾客角色进行对话。`;
-    return base_prompt + "\n\n" + case_info;
+请根据以上信息扮演这位顾客，你的主要需求是：${practice_case.现病史 || '咨询健康问题'}。`;
   }
   
-  return base_prompt;
+  return base_prompt + case_info;
+}
+
+function getDifficultyConfig(difficulty) {
+  const configs = {
+    easy: {
+      name: "简单",
+      description: "顾客比较随和，容易沟通，对店员比较信任，问题较少，容易被说服购买。",
+      personality: `- 性格温和，容易沟通
+- 对店员比较信任，愿意听取建议
+- 问题较少，关注点明确
+- 对价格不太敏感
+- 容易被专业解答说服
+- 会主动表达购买意愿`,
+      initialTrust: 50,
+      initialIntent: 40,
+      trustGain: 15,
+      trustLoss: 5,
+      purchaseThreshold: 70
+    },
+    medium: {
+      name: "中等",
+      description: "顾客有一定疑虑，需要店员耐心解答，但可以被说服，会提出一些合理问题。",
+      personality: `- 性格正常，有一定主见
+- 对产品功效有合理疑虑
+- 会询问价格和性价比
+- 需要店员耐心解答问题
+- 会被专业知识和真诚态度打动
+- 会货比三家，但最终会做出决定`,
+      initialTrust: 35,
+      initialIntent: 25,
+      trustGain: 10,
+      trustLoss: 10,
+      purchaseThreshold: 80
+    },
+    hard: {
+      name: "困难",
+      description: "顾客比较挑剔，对价格敏感，疑虑较多，需要店员展现专业能力和耐心才能说服。",
+      personality: `- 性格较为谨慎，不容易被说服
+- 对价格非常敏感，会反复比价
+- 对产品功效有较多疑虑
+- 会提出尖锐问题
+- 需要店员展现专业知识和耐心
+- 只有在充分信任后才会购买`,
+      initialTrust: 20,
+      initialIntent: 15,
+      trustGain: 8,
+      trustLoss: 15,
+      purchaseThreshold: 85
+    }
+  };
+  
+  return configs[difficulty] || configs.medium;
 }

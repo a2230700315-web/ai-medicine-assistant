@@ -30,7 +30,9 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   const [reviewData, setReviewData] = useState(null)
   const [trustScore, setTrustScore] = useState(50)
   const [currentStage, setCurrentStage] = useState('initial')
+  const [purchaseIntent, setPurchaseIntent] = useState(25)
   const [showStatusBar, setShowStatusBar] = useState(true)
+  const [showPurchaseSuccess, setShowPurchaseSuccess] = useState(false)
   const messagesEndRef = useRef(null)
 
   const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {
@@ -133,11 +135,13 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         console.log('最终内容:', finalContent)
         console.log('信任度分数:', parsedMetadata.trust_score)
         console.log('销售阶段:', parsedMetadata.current_stage)
+        console.log('购买意向:', parsedMetadata.purchase_intent)
         
         return {
           content: finalContent,
           trustScore: parsedMetadata.trust_score || 50,
-          currentStage: parsedMetadata.current_stage || 'initial'
+          currentStage: parsedMetadata.current_stage || 'initial',
+          purchaseIntent: parsedMetadata.purchase_intent || 25
         }
       }
       
@@ -182,11 +186,15 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       await fetchStreamResponse([...messages, userMessage], (metadata) => {
         setTrustScore(metadata.trustScore)
         setCurrentStage(metadata.currentStage)
+        setPurchaseIntent(metadata.purchaseIntent)
         setMessages(prev => prev.map(msg => 
           msg.id === assistantMessage.id 
             ? { ...msg, content: metadata.content, isStreaming: false }
             : msg
         ))
+        if (metadata.purchaseIntent >= 85 || metadata.currentStage === 'purchase') {
+          setShowPurchaseSuccess(true)
+        }
       })
     } catch (error) {
       console.error('AI响应错误:', error)
@@ -375,15 +383,19 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     setReviewData(null)
     setTrustScore(50)
     setCurrentStage('initial')
+    setPurchaseIntent(25)
+    setShowPurchaseSuccess(false)
   }
 
   const getStageLabel = (stage) => {
     const stageMap = {
       'initial': '初次接触',
+      'interest': '产生兴趣',
       'inquiry': '询问了解',
       'objection': '提出异议',
       'consideration': '考虑评估',
       'decision': '决定购买',
+      'purchase': '完成购买',
       'rejection': '拒绝购买'
     }
     return stageMap[stage] || stage
@@ -426,36 +438,65 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       </div>
 
       <div className={`mb-4 p-3 md:p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg ${showStatusBar ? '' : 'hidden md:block'}`}>
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">顾客满意度</span>
-            {trustScore < 30 && (
-              <AlertCircle className="w-4 h-4 text-red-500 animate-pulse" />
-            )}
+        {showPurchaseSuccess && (
+          <div className="mb-3 p-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg border border-green-200">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🎉</span>
+              <div>
+                <p className="text-green-700 font-bold">销售成功！</p>
+                <p className="text-green-600 text-sm">顾客决定购买您推荐的产品</p>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-xl md:text-2xl font-bold ${trustScore < 30 ? 'text-red-600' : 'text-purple-600'}`}>
-              {trustScore}
-            </span>
-            <button 
-              onClick={() => setShowStatusBar(!showStatusBar)}
-              className="md:hidden p-1 text-gray-400"
-            >
-              <ChevronDown className="w-4 h-4" />
-            </button>
+        )}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-700">顾客满意度</span>
+              {trustScore < 30 && (
+                <AlertCircle className="w-4 h-4 text-red-500 animate-pulse" />
+              )}
+            </div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`text-xl font-bold ${trustScore < 30 ? 'text-red-600' : 'text-purple-600'}`}>
+                {trustScore}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className={`h-2 rounded-full transition-all duration-500 ${getTrustColor(trustScore)}`}
+                style={{ width: `${trustScore}%` }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-700">购买意向</span>
+              {purchaseIntent >= 70 && (
+                <span className="text-xs text-green-500">✓ 接近成交</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`text-xl font-bold ${purchaseIntent >= 70 ? 'text-green-600' : purchaseIntent >= 50 ? 'text-yellow-600' : 'text-gray-600'}`}>
+                {purchaseIntent}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className={`h-2 rounded-full transition-all duration-500 ${purchaseIntent >= 85 ? 'bg-green-500' : purchaseIntent >= 70 ? 'bg-emerald-400' : purchaseIntent >= 50 ? 'bg-yellow-400' : 'bg-gray-400'}`}
+                style={{ width: `${purchaseIntent}%` }}
+              />
+            </div>
           </div>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
-          <div
-            className={`h-2 md:h-3 rounded-full transition-all duration-500 ${getTrustColor(trustScore)}`}
-            style={{ width: `${trustScore}%` }}
-          />
-        </div>
-        <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+        <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
           <span>当前阶段：{getStageLabel(currentStage)}</span>
-          {trustScore < 30 && (
-            <span className="text-red-500 font-medium">⚠️ 顾客满意度较低</span>
-          )}
+          <button 
+            onClick={() => setShowStatusBar(!showStatusBar)}
+            className="md:hidden p-1 text-gray-400"
+          >
+            <ChevronDown className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
