@@ -1,0 +1,17 @@
+[Unit]
+Description=Pharmacy AI Training API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/pharmacy-api
+Environment="PATH=/opt/pharmacy-api/venv/bin"
+Environment="VOLC_API_KEY=your_api_key_here"
+Environment="VOLC_ENDPOINT_ID=your_endpoint_id_here"
+ExecStart=/opt/pharmacy-api/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
