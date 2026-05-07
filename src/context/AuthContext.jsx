@@ -1,70 +1,67 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { API } from '../utils/api'
 
 const AuthContext = createContext(null)
-
-const USERS = {
-  staff01: {
-    username: 'staff01',
-    password: '123456',
-    role: 'staff',
-    roleName: '店员',
-    storeName: '北京朝阳店',
-    storeId: 'store_001'
-  },
-  manager01: {
-    username: 'manager01',
-    password: '123456',
-    role: 'manager',
-    roleName: '店长',
-    storeName: '北京朝阳店',
-    storeId: 'store_001'
-  },
-  boss: {
-    username: 'boss',
-    password: '123456',
-    role: 'admin',
-    roleName: '老板',
-    storeName: '总部',
-    storeId: 'headquarters'
-  }
-}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const token = localStorage.getItem('pharmacy_access_token')
     const savedUser = localStorage.getItem('pharmacy_user')
-    if (savedUser) {
+    
+    if (token && savedUser) {
       try {
-        setUser(JSON.parse(savedUser))
+        const userData = JSON.parse(savedUser)
+        setUser(userData)
       } catch (e) {
+        localStorage.removeItem('pharmacy_access_token')
         localStorage.removeItem('pharmacy_user')
       }
     }
     setLoading(false)
   }, [])
 
-  const login = (username, password) => {
-    const userData = USERS[username]
-    if (userData && userData.password === password) {
-      const userInfo = {
-        username: userData.username,
-        role: userData.role,
-        roleName: userData.roleName,
-        storeName: userData.storeName,
-        storeId: userData.storeId
+  const login = async (username, password) => {
+    try {
+      const response = await API.auth.login(username, password)
+      const { access_token } = response.data
+      
+      const userResponse = await API.auth.me()
+      const userData = userResponse.data
+      
+      localStorage.setItem('pharmacy_access_token', access_token)
+      localStorage.setItem('pharmacy_user', JSON.stringify(userData))
+      
+      setUser(userData)
+      return { success: true, user: userData, token: access_token }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.response?.data?.detail || '登录失败，请检查用户名和密码' 
       }
-      setUser(userInfo)
-      localStorage.setItem('pharmacy_user', JSON.stringify(userInfo))
-      return { success: true, user: userInfo }
     }
-    return { success: false, error: '用户名或密码错误' }
   }
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem('pharmacy_access_token')
     localStorage.removeItem('pharmacy_user')
+  }
+
+  const getDefaultRoute = () => {
+    if (!user) return '/login'
+    
+    switch (user.role) {
+      case 'super_admin':
+        return '/super'
+      case 'admin':
+        return '/admin'
+      case 'staff':
+      default:
+        return '/practice'
+    }
   }
 
   const hasPermission = (requiredRole) => {
@@ -72,8 +69,8 @@ export function AuthProvider({ children }) {
     
     const roleHierarchy = {
       staff: 1,
-      manager: 2,
-      admin: 3
+      admin: 2,
+      super_admin: 3
     }
     
     return roleHierarchy[user.role] >= roleHierarchy[requiredRole]
@@ -83,12 +80,14 @@ export function AuthProvider({ children }) {
     if (!user) return false
     
     const featurePermissions = {
-      learning: ['staff', 'manager', 'admin'],
-      practice: ['staff', 'manager', 'admin'],
-      practiceExam: ['staff', 'manager', 'admin'],
-      realExam: ['staff', 'manager', 'admin'],
-      storeManagement: ['manager', 'admin'],
-      headquarters: ['admin']
+      learning: ['staff', 'admin', 'super_admin'],
+      practice: ['staff', 'admin', 'super_admin'],
+      practiceExam: ['staff', 'admin', 'super_admin'],
+      realExam: ['staff', 'admin', 'super_admin'],
+      storeManagement: ['admin', 'super_admin'],
+      headquarters: ['super_admin'],
+      admin: ['admin', 'super_admin'],
+      super: ['super_admin']
     }
     
     return featurePermissions[feature]?.includes(user.role) || false
@@ -101,7 +100,8 @@ export function AuthProvider({ children }) {
     logout,
     hasPermission,
     canAccess,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    getDefaultRoute
   }
 
   return (

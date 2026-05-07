@@ -25,7 +25,6 @@ function AppContent() {
   }, [])
 
   useEffect(() => {
-    // 捕获全局错误
     const handleError = (event) => {
       setError(event.error.message)
       console.error('Global error:', event.error)

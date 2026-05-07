@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { GraduationCap, BookOpen, Eye, EyeOff, Play, FileText, ChevronLeft, ChevronRight, LogOut, Store, Building2, Menu, X, User, Home, Award, Settings } from 'lucide-react'
+import { GraduationCap, BookOpen, Eye, EyeOff, Play, FileText, ChevronLeft, ChevronRight, LogOut, Store, Building2, Menu, X, User, Home, Award, Settings, Users, BarChart3 } from 'lucide-react'
 import CaseCategorySelector from './CaseCategorySelector'
 import CaseList from './CaseList'
 import CaseDetail from './CaseDetail'
@@ -9,7 +9,8 @@ import LearningModule from './LearningModule'
 import PracticeExam from './PracticeExam'
 import ExamSystem from './ExamSystem'
 import StoreManagement from './StoreManagement'
-import HeadquartersDashboard from './HeadquartersDashboard'
+import SuperAdminDashboard from './SuperAdminDashboard'
+import AdminDashboard from './AdminDashboard'
 import { useAuth } from '../context/AuthContext'
 
 function Dashboard() {
@@ -46,12 +47,7 @@ function Dashboard() {
   }, [])
 
   const handleModeChange = (mode) => {
-    if (mode === 'storeManagement' && !canAccess('storeManagement')) {
-      setPermissionDenied(true)
-      setTimeout(() => setPermissionDenied(false), 3000)
-      return
-    }
-    if (mode === 'headquarters' && !canAccess('headquarters')) {
+    if (!canAccess(mode)) {
       setPermissionDenied(true)
       setTimeout(() => setPermissionDenied(false), 3000)
       return
@@ -107,7 +103,12 @@ function Dashboard() {
 
   const getWelcomeText = () => {
     if (!user) return '欢迎回来'
-    return `欢迎您，${user.storeName}${user.roleName}`
+    const roleNames = {
+      super_admin: '超级管理员',
+      admin: '店长',
+      staff: '店员'
+    }
+    return `欢迎您，${user.store_id ? `门店${user.store_id}` : '总部'}${roleNames[user.role] || user.role}`
   }
 
   const menuItems = [
@@ -117,12 +118,12 @@ function Dashboard() {
     { id: 'realExam', label: '真题', icon: FileText, color: 'red', permission: 'realExam' },
   ]
 
-  if (canAccess('storeManagement')) {
+  if (canAccess('super')) {
+    menuItems.push({ id: 'super', label: '超级管理', icon: Building2, color: 'orange', permission: 'super' })
+  } else if (canAccess('admin')) {
+    menuItems.push({ id: 'admin', label: '门店管理', icon: Users, color: 'purple', permission: 'admin' })
+  } else if (canAccess('storeManagement')) {
     menuItems.push({ id: 'storeManagement', label: '门店', icon: Store, color: 'purple', permission: 'storeManagement' })
-  }
-
-  if (canAccess('headquarters')) {
-    menuItems.push({ id: 'headquarters', label: '总部', icon: Building2, color: 'orange', permission: 'headquarters' })
   }
 
   const getColorClasses = (color, isActive) => {
@@ -156,9 +157,116 @@ function Dashboard() {
       case 'practiceExam': return '模拟题'
       case 'realExam': return '真题考试'
       case 'storeManagement': return '门店管理'
-      case 'headquarters': return '总部看板'
+      case 'super': return '超级管理后台'
+      case 'admin': return '门店管理后台'
       default: return '药房培训平台'
     }
+  }
+
+  const renderContent = () => {
+    if (currentMode === 'super') {
+      return <SuperAdminDashboard />
+    }
+    if (currentMode === 'admin') {
+      return <AdminDashboard />
+    }
+    if (currentMode === 'practice') {
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">
+            {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseCategorySelector
+                cases={cases}
+                onCategorySelect={handleCategorySelect}
+                selectedCategory={selectedCategory}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseList
+                cases={cases}
+                category={selectedCategory}
+                onCaseSelect={handleCaseSelect}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && (selectedCase || currentPracticeCase) && (
+              <CaseDetail
+                case_={selectedCase || currentPracticeCase}
+                onStartPractice={handleStartPractice}
+                onBack={handleBackToList}
+              />
+            )}
+            {examMode && (
+              <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col items-center justify-center">
+                <div className="text-center">
+                  <EyeOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-700">考试模式已启用</h3>
+                  <p className="text-sm text-gray-500 mt-2">案例档案已隐藏</p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="lg:col-span-6">
+            <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
+          </div>
+          <div className="lg:col-span-3">
+            <KnowledgeAssistant examMode={examMode} />
+          </div>
+        </div>
+      )
+    }
+    if (currentMode === 'learning') {
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+          <div className={assistantCollapsed ? "lg:col-span-12" : "lg:col-span-8"}>
+            <LearningModule onCaseRecommend={handleCaseRecommend} />
+          </div>
+          <div className={assistantCollapsed ? "hidden" : "lg:col-span-4"}>
+            <KnowledgeAssistant examMode={false} />
+          </div>
+          <button
+            onClick={() => setAssistantCollapsed(!assistantCollapsed)}
+            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center hover:scale-110"
+          >
+            {assistantCollapsed ? <ChevronLeft className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}
+          </button>
+        </div>
+      )
+    }
+    if (currentMode === 'practiceExam') {
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-8">
+            <PracticeExam onBack={handleBackToMain} />
+          </div>
+          <div className="lg:col-span-4">
+            <KnowledgeAssistant examMode={false} />
+          </div>
+        </div>
+      )
+    }
+    if (currentMode === 'realExam') {
+      return <ExamSystem onBack={() => setCurrentMode('learning')} />
+    }
+    if (currentMode === 'storeManagement') {
+      return <StoreManagement />
+    }
+    return null
+  }
+
+  if (currentMode === 'super' || currentMode === 'admin') {
+    return (
+      <>
+        {permissionDenied && (
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
+            <X className="w-5 h-5" />
+            <span className="font-medium">权限不足，无法访问该功能</span>
+          </div>
+        )}
+        {currentMode === 'super' ? <SuperAdminDashboard /> : <AdminDashboard />}
+      </>
+    )
   }
 
   return (
@@ -180,7 +288,7 @@ function Dashboard() {
                 </div>
                 <div>
                   <h1 className="text-base font-bold text-gray-800">{getPageTitle()}</h1>
-                  <p className="text-xs text-gray-500">{user?.storeName} · {user?.roleName}</p>
+                  <p className="text-xs text-gray-500">{user?.store_id ? `门店${user.store_id}` : '总部'} · {user?.role}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -214,8 +322,8 @@ function Dashboard() {
                       <User className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-800">{user?.storeName}</p>
-                      <p className="text-xs text-gray-500">{user?.roleName}</p>
+                      <p className="font-medium text-gray-800">{user?.store_id ? `门店${user.store_id}` : '总部'}</p>
+                      <p className="text-xs text-gray-500">{user?.role}</p>
                     </div>
                   </div>
                   <button onClick={() => setMobileMenuOpen(false)} className="p-2">
@@ -252,58 +360,7 @@ function Dashboard() {
           )}
 
           <main className="flex-1 overflow-y-auto pb-20">
-            {currentMode === 'practice' ? (
-              <div className="flex flex-col h-full">
-                {!examMode && !currentPracticeCase && (
-                  <div className="p-3">
-                    {!selectedCategory && !selectedCase && (
-                      <CaseCategorySelector
-                        cases={cases}
-                        onCategorySelect={handleCategorySelect}
-                        selectedCategory={selectedCategory}
-                        onBack={handleBackToCategories}
-                      />
-                    )}
-                    {selectedCategory && !selectedCase && (
-                      <CaseList
-                        cases={cases}
-                        category={selectedCategory}
-                        onCaseSelect={handleCaseSelect}
-                        onBack={handleBackToCategories}
-                      />
-                    )}
-                    {selectedCase && (
-                      <CaseDetail
-                        case_={selectedCase}
-                        onStartPractice={handleStartPractice}
-                        onBack={handleBackToList}
-                      />
-                    )}
-                  </div>
-                )}
-                <div className="flex-1 flex flex-col">
-                  <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
-                </div>
-              </div>
-            ) : currentMode === 'learning' ? (
-              <div className="p-3">
-                <LearningModule onCaseRecommend={handleCaseRecommend} />
-              </div>
-            ) : currentMode === 'practiceExam' ? (
-              <div className="p-3 h-full">
-                <PracticeExam onBack={handleBackToMain} />
-              </div>
-            ) : currentMode === 'realExam' ? (
-              <ExamSystem onBack={() => setCurrentMode('learning')} />
-            ) : currentMode === 'storeManagement' ? (
-              <div className="p-3">
-                <StoreManagement />
-              </div>
-            ) : currentMode === 'headquarters' ? (
-              <div className="p-3">
-                <HeadquartersDashboard />
-              </div>
-            ) : null}
+            {renderContent()}
           </main>
 
           <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-bottom z-40">
@@ -367,8 +424,8 @@ function Dashboard() {
                       <User className="w-4 h-4 text-blue-600" />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-sm font-medium text-gray-800 truncate">{user.storeName}</p>
-                      <p className="text-xs text-gray-500">{user.roleName}</p>
+                      <p className="text-sm font-medium text-gray-800 truncate">{user.store_id ? `门店${user.store_id}` : '总部'}</p>
+                      <p className="text-xs text-gray-500">{user.role}</p>
                     </div>
                   </div>
                 </div>
@@ -416,80 +473,7 @@ function Dashboard() {
             </header>
 
             <main className="flex-1 overflow-y-auto p-6">
-              {currentMode === 'practice' ? (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">
-                    {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
-                      <CaseCategorySelector
-                        cases={cases}
-                        onCategorySelect={handleCategorySelect}
-                        selectedCategory={selectedCategory}
-                        onBack={handleBackToCategories}
-                      />
-                    )}
-                    {!examMode && selectedCategory && !selectedCase && !currentPracticeCase && (
-                      <CaseList
-                        cases={cases}
-                        category={selectedCategory}
-                        onCaseSelect={handleCaseSelect}
-                        onBack={handleBackToCategories}
-                      />
-                    )}
-                    {!examMode && (selectedCase || currentPracticeCase) && (
-                      <CaseDetail
-                        case_={selectedCase || currentPracticeCase}
-                        onStartPractice={handleStartPractice}
-                        onBack={handleBackToList}
-                      />
-                    )}
-                    {examMode && (
-                      <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col items-center justify-center">
-                        <div className="text-center">
-                          <EyeOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <h3 className="text-lg font-medium text-gray-700">考试模式已启用</h3>
-                          <p className="text-sm text-gray-500 mt-2">案例档案已隐藏</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="lg:col-span-6">
-                    <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
-                  </div>
-                  <div className="lg:col-span-3">
-                    <KnowledgeAssistant examMode={examMode} />
-                  </div>
-                </div>
-              ) : currentMode === 'learning' ? (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
-                  <div className={assistantCollapsed ? "lg:col-span-12" : "lg:col-span-8"}>
-                    <LearningModule onCaseRecommend={handleCaseRecommend} />
-                  </div>
-                  <div className={assistantCollapsed ? "hidden" : "lg:col-span-4"}>
-                    <KnowledgeAssistant examMode={false} />
-                  </div>
-                  <button
-                    onClick={() => setAssistantCollapsed(!assistantCollapsed)}
-                    className="fixed right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center hover:scale-110"
-                  >
-                    {assistantCollapsed ? <ChevronLeft className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}
-                  </button>
-                </div>
-              ) : currentMode === 'practiceExam' ? (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="lg:col-span-8">
-                    <PracticeExam onBack={handleBackToMain} />
-                  </div>
-                  <div className="lg:col-span-4">
-                    <KnowledgeAssistant examMode={false} />
-                  </div>
-                </div>
-              ) : currentMode === 'realExam' ? (
-                <ExamSystem onBack={() => setCurrentMode('learning')} />
-              ) : currentMode === 'storeManagement' ? (
-                <StoreManagement />
-              ) : currentMode === 'headquarters' ? (
-                <HeadquartersDashboard />
-              ) : null}
+              {renderContent()}
             </main>
           </div>
         </div>

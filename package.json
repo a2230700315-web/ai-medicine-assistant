@@ -20,6 +20,7 @@
     "@capacitor/keyboard": "^8.0.3",
     "@capacitor/status-bar": "^8.0.2",
     "@capacitor/toast": "^8.0.1",
+    "axios": "^1.16.0",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.6",
     "lucide-react": "^0.263.1",
