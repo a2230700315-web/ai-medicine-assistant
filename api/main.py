@@ -1,22 +1,30 @@
 """
 FastAPI 主应用
-药店AI培训系统后端API
+药店AI培训系统 - 商业化架构
 """
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List
 import sqlite3
 import json
 import httpx
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+from datetime import date
+
+from models import Database, User, Store
+from auth import (
+    verify_password, get_password_hash, create_access_token,
+    get_current_user, get_current_active_user, check_role,
+    check_super_admin, check_admin_or_super_admin,
+    Token, UserLogin, UserCreate, authenticate_user
+)
 
 app = FastAPI(
     title="药店AI培训系统 API",
-    description="提供学习管理、模拟训练、考试系统等API接口",
-    version="1.0.0"
+    description="商业化药店AI培训系统API接口",
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -27,13 +35,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'pharmacy.db')
+DB_PATH = "/www/wwwroot/api/pharmacy.db"
+db = Database()
 
 VOLC_API_KEY = os.getenv("VOLC_API_KEY", "")
 VOLC_ENDPOINT_ID = os.getenv("VOLC_ENDPOINT_ID", "")
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     try:
         yield conn
@@ -76,13 +85,278 @@ class ExamRecordCreate(BaseModel):
     correct_count: Optional[int] = None
     duration: Optional[int] = None
 
+class StoreCreate(BaseModel):
+    name: str
+    contact_person: Optional[str] = None
+    contact_phone: Optional[str] = None
+    expire_date: Optional[str] = None
+
+class StoreUpdate(BaseModel):
+    name: Optional[str] = None
+    contact_person: Optional[str] = None
+    contact_phone: Optional[str] = None
+    expire_date: Optional[str] = None
+    is_active: Optional[int] = None
+
+class UserCreateRequest(BaseModel):
+    username: str
+    password: str
+    role: str
+    real_name: Optional[str] = None
+    store_id: Optional[int] = None
+
+class UserUpdateRequest(BaseModel):
+    password: Optional[str] = None
+    role: Optional[str] = None
+    real_name: Optional[str] = None
+    store_id: Optional[int] = None
+    status: Optional[str] = None
+
 @app.get("/")
 async def root():
-    return {"message": "药店AI培训系统 API", "version": "1.0.0"}
+    return {"message": "药店AI培训系统 API", "version": "2.0.0"}
 
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
+@app.post("/api/auth/login", response_model=Token)
+async def login(user_login: UserLogin):
+    user = authenticate_user(db, user_login.username, user_login.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名或密码错误",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=60*24)
+    access_token = create_access_token(
+        data={"sub": user["username"], "user_id": user["id"], "role": user["role"]},
+        expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/api/auth/me")
+async def get_current_user_info(current_user: dict = Depends(get_current_active_user)):
+    return {
+        "id": current_user["id"],
+        "username": current_user["username"],
+        "role": current_user["role"],
+        "real_name": current_user["real_name"],
+        "store_id": current_user["store_id"],
+        "status": current_user["status"]
+    }
+
+@app.post("/api/auth/register", dependencies=[Depends(check_super_admin)])
+async def register_user(user_data: UserCreateRequest):
+    existing = db.get_user_by_username(user_data.username)
+    if existing:
+        raise HTTPException(status_code=400, detail="用户名已存在")
+    hashed = get_password_hash(user_data.password)
+    user_id = db.create_user(
+        username=user_data.username,
+        hashed_password=hashed,
+        role=user_data.role,
+        real_name=user_data.real_name,
+        store_id=user_data.store_id
+    )
+    return {"message": "用户创建成功", "user_id": user_id}
+
+@app.get("/api/super/stores")
+async def get_all_stores(current_user: dict = Depends(check_super_admin)):
+    return db.get_all_stores()
+
+@app.post("/api/super/stores")
+async def create_store(
+    store_data: StoreCreate,
+    current_user: dict = Depends(check_super_admin)
+):
+    store_id = db.create_store(
+        name=store_data.name,
+        contact_person=store_data.contact_person,
+        contact_phone=store_data.contact_phone,
+        expire_date=store_data.expire_date or ""
+    )
+    return {"message": "门店创建成功", "store_id": store_id}
+
+@app.put("/api/super/stores/{store_id}")
+async def update_store(
+    store_id: int,
+    store_data: StoreUpdate,
+    current_user: dict = Depends(check_super_admin)
+):
+    success = db.update_store(
+        store_id=store_id,
+        name=store_data.name,
+        contact_person=store_data.contact_person,
+        contact_phone=store_data.contact_phone,
+        expire_date=store_data.expire_date,
+        is_active=store_data.is_active
+    )
+    if not success:
+        raise HTTPException(status_code=404, detail="门店不存在")
+    return {"message": "门店更新成功"}
+
+@app.delete("/api/super/stores/{store_id}")
+async def delete_store(
+    store_id: int,
+    current_user: dict = Depends(check_super_admin)
+):
+    success = db.delete_store(store_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="门店不存在")
+    return {"message": "门店已停用"}
+
+@app.get("/api/super/users")
+async def get_all_users(current_user: dict = Depends(check_super_admin)):
+    return db.get_all_users()
+
+@app.put("/api/super/users/{user_id}/status")
+async def update_user_status(
+    user_id: int,
+    status: str,
+    current_user: dict = Depends(check_super_admin)
+):
+    success = db.update_user_status(user_id, status)
+    if not success:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    return {"message": "用户状态已更新"}
+
+@app.delete("/api/super/users/{user_id}")
+async def delete_user(
+    user_id: int,
+    current_user: dict = Depends(check_super_admin)
+):
+    if user_id == current_user["id"]:
+        raise HTTPException(status_code=400, detail="不能删除自己")
+    success = db.delete_user(user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    return {"message": "用户已删除"}
+
+@app.get("/api/admin/staff")
+async def get_store_staff(current_user: dict = Depends(check_admin_or_super_admin)):
+    if current_user["role"] == "super_admin":
+        return db.get_all_users()
+    if not current_user["store_id"]:
+        raise HTTPException(status_code=400, detail="用户未关联门店")
+    return db.get_users_by_store(current_user["store_id"])
+
+@app.post("/api/admin/staff")
+async def create_staff_user(
+    user_data: UserCreateRequest,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    if current_user["role"] == "admin" and current_user["store_id"]:
+        user_data.store_id = current_user["store_id"]
+        if user_data.role not in ["staff"]:
+            raise HTTPException(status_code=403, detail="Admin只能创建staff角色")
+    existing = db.get_user_by_username(user_data.username)
+    if existing:
+        raise HTTPException(status_code=400, detail="用户名已存在")
+    hashed = get_password_hash(user_data.password)
+    user_id = db.create_user(
+        username=user_data.username,
+        hashed_password=hashed,
+        role=user_data.role,
+        real_name=user_data.real_name,
+        store_id=user_data.store_id
+    )
+    return {"message": "员工账号创建成功", "user_id": user_id}
+
+@app.put("/api/admin/staff/{user_id}")
+async def update_staff(
+    user_id: int,
+    user_data: UserUpdateRequest,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    user = db.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if current_user["role"] == "admin":
+        if user["store_id"] != current_user["store_id"]:
+            raise HTTPException(status_code=403, detail="不能操作其他门店员工")
+        if user_data.role and user_data.role != "staff":
+            raise HTTPException(status_code=403, detail="Admin只能设置staff角色")
+    if user_data.password:
+        user_data.password = get_password_hash(user_data.password)
+    return {"message": "员工信息已更新"}
+
+@app.get("/api/cases")
+async def get_cases():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM cases WHERE is_active = 1")
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+@app.get("/api/cases/{case_id}")
+async def get_case(case_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM cases WHERE case_id = ?", (case_id,))
+    row = cursor.fetchone()
+    conn.close()
+    if not row:
+        raise HTTPException(status_code=404, detail="案例不存在")
+    return dict(row)
+
+@app.get("/api/learning/progress/{user_id}")
+async def get_learning_progress(user_id: int):
+    return db.get_learning_progress(user_id)
+
+@app.post("/api/learning/progress")
+async def update_learning_progress(progress: LearningProgressUpdate):
+    db.update_learning_progress(
+        user_id=progress.user_id,
+        subject=progress.subject,
+        unit=progress.unit,
+        knowledge_point=progress.knowledge_point,
+        progress=progress.progress,
+        completed=progress.completed
+    )
+    return {"message": "学习进度已更新"}
+
+@app.post("/api/practice/record")
+async def create_practice_record(
+    record: PracticeRecordCreate,
+    current_user: dict = Depends(get_current_active_user)
+):
+    record_id = db.create_practice_record(
+        user_id=record.user_id,
+        case_id=record.case_id,
+        difficulty=record.difficulty,
+        messages=record.messages,
+        scores=record.scores,
+        total_score=record.total_score,
+        duration=record.duration
+    )
+    return {"message": "训练记录已保存", "id": record_id}
+
+@app.get("/api/practice/records/{user_id}")
+async def get_practice_records(user_id: int):
+    return db.get_practice_records(user_id=user_id)
+
+@app.post("/api/exam/record")
+async def create_exam_record(
+    record: ExamRecordCreate,
+    current_user: dict = Depends(get_current_active_user)
+):
+    record_id = db.create_exam_record(
+        user_id=record.user_id,
+        exam_type=record.exam_type,
+        questions=record.questions,
+        answers=record.answers,
+        score=record.score,
+        correct_count=record.correct_count,
+        duration=record.duration
+    )
+    return {"message": "考试记录已保存", "id": record_id}
+
+@app.get("/api/exam/records/{user_id}")
+async def get_exam_records(user_id: int):
+    return db.get_exam_records(user_id=user_id)
 
 @app.post("/api/chat/stream")
 async def chat_stream(request: ChatRequest):
@@ -90,16 +364,16 @@ async def chat_stream(request: ChatRequest):
     practice_case = request.practice_case
     request_type = request.type
     difficulty = request.difficulty
-    
+
     system_prompt = build_system_prompt(practice_case, difficulty, request_type)
-    
+
     api_messages = [{"role": "system", "content": system_prompt}]
     for msg in messages:
         api_messages.append({"role": msg.role, "content": msg.content})
-    
+
     if not VOLC_API_KEY or not VOLC_ENDPOINT_ID:
-        return {"content": "API配置错误，请检查环境变量 VOLC_API_KEY 和 VOLC_ENDPOINT_ID"}
-    
+        return {"content": "API配置错误，请检查环境变量"}
+
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
@@ -114,14 +388,14 @@ async def chat_stream(request: ChatRequest):
                     "stream": False
                 }
             )
-            
+
             if response.status_code != 200:
                 raise HTTPException(status_code=response.status_code, detail=response.text)
-            
+
             data = response.json()
             content = data["choices"][0]["message"]["content"]
             return {"content": content}
-            
+
     except httpx.TimeoutException:
         raise HTTPException(status_code=504, detail="API请求超时")
     except Exception as e:
@@ -131,14 +405,14 @@ async def chat_stream(request: ChatRequest):
 async def chat_review(request: ChatRequest):
     messages = request.messages
     practice_case = request.practice_case
-    
+
     system_prompt = f"""你是一位专业的药店销售培训师，请根据店员与顾客的对话进行评价。
 
 对话内容：
 {json.dumps([m.dict() for m in messages], ensure_ascii=False, indent=2)}
 
 请从以下4个维度进行打分（0-100分）：
-1. 专业知识（professionalKnowledge）：是否识别出病症，是否提到了正确卖点
+1. 专业知识：是否识别出病症，是否提到了正确卖点
 2. 沟通技巧：是否礼貌，是否有需求挖掘
 3. 推销意识：是否尝试关联推销，是否处理了异议
 4. 合规性：是否有禁忌症提醒，如过敏询问
@@ -170,10 +444,10 @@ async def chat_review(request: ChatRequest):
                     "stream": False
                 }
             )
-            
+
             data = response.json()
             content = data["choices"][0]["message"]["content"]
-            
+
             try:
                 return json.loads(content)
             except json.JSONDecodeError:
@@ -188,140 +462,13 @@ async def chat_review(request: ChatRequest):
                     "advantages": ["无法解析AI回复"],
                     "suggestions": ["请检查API配置"]
                 }
-                
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/cases")
-async def get_cases(db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM cases WHERE is_active = 1")
-    rows = cursor.fetchall()
-    return [dict(row) for row in rows]
-
-@app.get("/api/cases/{case_id}")
-async def get_case(case_id: str, db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM cases WHERE case_id = ?", (case_id,))
-    row = cursor.fetchone()
-    if not row:
-        raise HTTPException(status_code=404, detail="案例不存在")
-    return dict(row)
-
-@app.get("/api/learning/progress/{user_id}")
-async def get_learning_progress(user_id: int, db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute(
-        "SELECT * FROM learning_progress WHERE user_id = ?",
-        (user_id,)
-    )
-    rows = cursor.fetchall()
-    return [dict(row) for row in rows]
-
-@app.post("/api/learning/progress")
-async def update_learning_progress(
-    progress: LearningProgressUpdate,
-    db: sqlite3.Connection = Depends(get_db)
-):
-    cursor = db.cursor()
-    cursor.execute("""
-        INSERT INTO learning_progress (user_id, subject, unit, knowledge_point, progress, completed)
-        VALUES (?, ?, ?, ?, ?, ?)
-        ON CONFLICT(user_id, subject, unit, knowledge_point)
-        DO UPDATE SET progress = ?, completed = ?, last_study_time = CURRENT_TIMESTAMP
-    """, (
-        progress.user_id, progress.subject, progress.unit, progress.knowledge_point,
-        progress.progress, progress.completed,
-        progress.progress, progress.completed
-    ))
-    db.commit()
-    return {"message": "学习进度已更新"}
-
-@app.post("/api/practice/record")
-async def create_practice_record(
-    record: PracticeRecordCreate,
-    db: sqlite3.Connection = Depends(get_db)
-):
-    cursor = db.cursor()
-    cursor.execute("""
-        INSERT INTO practice_records (user_id, case_id, difficulty, messages, scores, total_score, duration)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        record.user_id, record.case_id, record.difficulty,
-        json.dumps(record.messages, ensure_ascii=False),
-        json.dumps(record.scores, ensure_ascii=False) if record.scores else None,
-        record.total_score, record.duration
-    ))
-    db.commit()
-    return {"message": "训练记录已保存", "id": cursor.lastrowid}
-
-@app.get("/api/practice/records/{user_id}")
-async def get_practice_records(user_id: int, db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute(
-        "SELECT * FROM practice_records WHERE user_id = ? ORDER BY created_at DESC",
-        (user_id,)
-    )
-    rows = cursor.fetchall()
-    records = []
-    for row in rows:
-        record = dict(row)
-        record['messages'] = json.loads(record['messages']) if record['messages'] else []
-        record['scores'] = json.loads(record['scores']) if record['scores'] else None
-        records.append(record)
-    return records
-
-@app.post("/api/exam/record")
-async def create_exam_record(
-    record: ExamRecordCreate,
-    db: sqlite3.Connection = Depends(get_db)
-):
-    cursor = db.cursor()
-    cursor.execute("""
-        INSERT INTO exam_records (user_id, exam_type, questions, answers, score, correct_count, duration)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        record.user_id, record.exam_type,
-        json.dumps(record.questions, ensure_ascii=False),
-        json.dumps(record.answers, ensure_ascii=False) if record.answers else None,
-        record.score, record.correct_count, record.duration
-    ))
-    db.commit()
-    return {"message": "考试记录已保存", "id": cursor.lastrowid}
-
-@app.get("/api/exam/records/{user_id}")
-async def get_exam_records(user_id: int, db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute(
-        "SELECT * FROM exam_records WHERE user_id = ? ORDER BY created_at DESC",
-        (user_id,)
-    )
-    rows = cursor.fetchall()
-    records = []
-    for row in rows:
-        record = dict(row)
-        record['questions'] = json.loads(record['questions']) if record['questions'] else []
-        record['answers'] = json.loads(record['answers']) if record['answers'] else None
-        records.append(record)
-    return records
-
-@app.get("/api/users")
-async def get_users(db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute("SELECT id, username, real_name, role, store_id, created_at FROM users")
-    rows = cursor.fetchall()
-    return [dict(row) for row in rows]
-
-@app.get("/api/stores")
-async def get_stores(db: sqlite3.Connection = Depends(get_db)):
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM stores")
-    rows = cursor.fetchall()
-    return [dict(row) for row in rows]
-
 def build_system_prompt(practice_case, difficulty, request_type):
     difficulty_config = get_difficulty_config(difficulty)
-    
+
     base_prompt = f"""你是一位来药店咨询的顾客。请按照以下要求进行角色扮演：
 
 ## 核心规则
@@ -392,7 +539,7 @@ def build_system_prompt(practice_case, difficulty, request_type):
 
 请根据以上信息扮演这位顾客，你的主要需求是：{practice_case.get('现病史', '咨询健康问题')}。"""
         return base_prompt + case_info
-    
+
     return base_prompt
 
 def get_difficulty_config(difficulty):

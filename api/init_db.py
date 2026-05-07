@@ -1,45 +1,57 @@
 """
 数据库初始化脚本
-创建 SQLite 数据库和表结构
+药店AI培训系统 - 商业化架构
+自动创建数据库表和超级管理员
 """
 import sqlite3
 import os
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'pharmacy.db')
+DB_PATH = "/www/wwwroot/api/pharmacy.db"
+INIT_ADMIN_USERNAME = "admin"
+INIT_ADMIN_PASSWORD = "Admin@123456"
 
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    return sqlite3.connect(DB_PATH, check_same_thread=False)
 
 def init_database():
     conn = get_connection()
     cursor = conn.cursor()
-    
+
+    cursor.execute("DROP TABLE IF EXISTS exam_records")
+    cursor.execute("DROP TABLE IF EXISTS practice_records")
+    cursor.execute("DROP TABLE IF EXISTS learning_progress")
+    cursor.execute("DROP TABLE IF EXISTS users")
+    cursor.execute("DROP TABLE IF EXISTS stores")
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username VARCHAR(50) UNIQUE NOT NULL,
-            password_hash VARCHAR(255) NOT NULL,
-            real_name VARCHAR(50),
-            role VARCHAR(20) DEFAULT 'student',
-            store_id INTEGER,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            last_login TIMESTAMP
-        )
-    ''')
-    
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS stores (
+        CREATE TABLE stores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR(100) NOT NULL,
-            address VARCHAR(255),
-            manager_id INTEGER,
+            contact_person VARCHAR(50),
+            contact_phone VARCHAR(20),
+            expire_date VARCHAR(20) DEFAULT '',
+            is_active INTEGER DEFAULT 1,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS learning_progress (
+        CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            hashed_password VARCHAR(255) NOT NULL,
+            role VARCHAR(20) NOT NULL DEFAULT 'staff',
+            real_name VARCHAR(50),
+            store_id INTEGER,
+            status VARCHAR(20) DEFAULT 'active',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (store_id) REFERENCES stores(id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE learning_progress (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             subject VARCHAR(100) NOT NULL,
@@ -52,9 +64,9 @@ def init_database():
             UNIQUE(user_id, subject, unit, knowledge_point)
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS practice_records (
+        CREATE TABLE practice_records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             case_id VARCHAR(50) NOT NULL,
@@ -67,9 +79,9 @@ def init_database():
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS exam_records (
+        CREATE TABLE exam_records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             exam_type VARCHAR(50) NOT NULL,
@@ -83,9 +95,9 @@ def init_database():
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS daily_challenges (
+        CREATE TABLE daily_challenges (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             challenge_date DATE NOT NULL,
@@ -97,9 +109,9 @@ def init_database():
             UNIQUE(user_id, challenge_date, challenge_type)
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS cases (
+        CREATE TABLE cases (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             case_id VARCHAR(50) UNIQUE NOT NULL,
             category VARCHAR(50) NOT NULL,
@@ -112,24 +124,24 @@ def init_database():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS exam_questions (
+        CREATE TABLE exam_questions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             question_id VARCHAR(50) UNIQUE NOT NULL,
             subject VARCHAR(100) NOT NULL,
             question_type VARCHAR(50) NOT NULL,
             content TEXT NOT NULL,
             options TEXT,
-            answer TEXT NOT NULL,
+            answer VARCHAR(10) NOT NULL,
             explanation TEXT,
             difficulty VARCHAR(20) DEFAULT 'medium',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
+
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS api_keys (
+        CREATE TABLE api_keys (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             key_name VARCHAR(100) NOT NULL,
             api_key VARCHAR(255) NOT NULL,
@@ -138,20 +150,58 @@ def init_database():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    cursor.execute('''
-        INSERT OR IGNORE INTO users (username, password_hash, real_name, role)
-        VALUES ('admin', 'pbkdf2:sha256:600000$admin$hash_placeholder', '管理员', 'admin')
-    ''')
-    
-    cursor.execute('''
-        INSERT OR IGNORE INTO users (username, password_hash, real_name, role)
-        VALUES ('demo', 'pbkdf2:sha256:600000$demo$hash_placeholder', '演示用户', 'student')
-    ''')
-    
+
     conn.commit()
     conn.close()
-    print(f"数据库初始化完成: {DB_PATH}")
+    print(f"数据库表创建完成: {DB_PATH}")
+
+def create_default_admin():
+    from passlib.context import CryptContext
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    hashed_password = pwd_context.hash(INIT_ADMIN_PASSWORD)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM users WHERE username = ?", (INIT_ADMIN_USERNAME,))
+    existing = cursor.fetchone()
+
+    if not existing:
+        cursor.execute("""
+            INSERT INTO users (username, hashed_password, role, real_name, status)
+            VALUES (?, ?, 'super_admin', '系统管理员', 'active')
+        """, (INIT_ADMIN_USERNAME, hashed_password))
+        conn.commit()
+        print(f"超级管理员账号已创建: {INIT_ADMIN_USERNAME}")
+        print(f"初始密码: {INIT_ADMIN_PASSWORD}")
+        print("请首次登录后立即修改密码！")
+    else:
+        print(f"超级管理员账号已存在: {INIT_ADMIN_USERNAME}")
+
+    conn.close()
+
+def create_demo_data():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM stores")
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("""
+            INSERT INTO stores (name, contact_person, contact_phone, expire_date, is_active)
+            VALUES ('旗舰店', '张三', '13800138000', '2027-12-31', 1)
+        """)
+        cursor.execute("""
+            INSERT INTO stores (name, contact_person, contact_phone, expire_date, is_active)
+            VALUES ('二分店', '李四', '13900139000', '2027-06-30', 1)
+        """)
+        conn.commit()
+        print("演示门店数据已创建")
+
+    conn.close()
 
 if __name__ == '__main__':
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     init_database()
+    create_default_admin()
+    create_demo_data()
+    print("\n初始化完成！")
