@@ -1,5 +1,5 @@
 // 针对阿里云后端环境的配置
-const API_BASE_URL = 'http://47.82.80.164:8000';
+const API_BASE_URL = 'https://a1sc.cn';
 
 export const API_CONFIG = {
   CHAT_STREAM: `${API_BASE_URL}/api/chat/stream`,
