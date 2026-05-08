@@ -1,20 +1,36 @@
+// build test 2026-05-09
 import { useState, useEffect } from 'react'
-import { Building2, Plus, Edit2, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle } from 'lucide-react'
+import { Building2, Plus, Edit2, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle, LogOut } from 'lucide-react'
 import { API } from '../utils/api'
+import { useAuth } from '../context/AuthContext'
 
 function SuperAdminDashboard() {
+  const { logout } = useAuth()
   const [stores, setStores] = useState([])
   const [users, setUsers] = useState([])
   const [selectedStore, setSelectedStore] = useState(null)
   const [showStoreModal, setShowStoreModal] = useState(false)
+  const [showUserModal, setShowUserModal] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState('stores')
   const [storeForm, setStoreForm] = useState({
     name: '',
     contact_person: '',
     contact_phone: '',
-    expire_date: ''
+    expire_date: '',
+    create_admin: true,
+    admin_username: '',
+    admin_password: '',
   })
+  const [userForm, setUserForm] = useState({
+    username: '',
+    password: '',
+    real_name: '',
+    role: 'staff',
+    store_id: '',
+  })
+  const [userFormError, setUserFormError] = useState('')
+  const [storeFormError, setStoreFormError] = useState('')
 
   useEffect(() => {
     fetchStores()
@@ -40,13 +56,50 @@ function SuperAdminDashboard() {
   }
 
   const handleCreateStore = async () => {
+    setStoreFormError('')
     try {
-      await API.super.stores.create(storeForm)
+      const res = await API.super.stores.create({
+        name: storeForm.name,
+        contact_person: storeForm.contact_person,
+        contact_phone: storeForm.contact_phone,
+        expire_date: storeForm.expire_date,
+      })
+      const newStoreId = res.data.store_id
+
+      if (storeForm.create_admin && storeForm.admin_username && storeForm.admin_password) {
+        await API.auth.register({
+          username: storeForm.admin_username,
+          password: storeForm.admin_password,
+          role: 'admin',
+          real_name: storeForm.contact_person || '',
+          store_id: newStoreId,
+        })
+      }
+
       setShowStoreModal(false)
-      setStoreForm({ name: '', contact_person: '', contact_phone: '', expire_date: '' })
+      setStoreForm({ name: '', contact_person: '', contact_phone: '', expire_date: '', create_admin: true, admin_username: '', admin_password: '' })
       fetchStores()
+      fetchUsers()
     } catch (error) {
-      console.error('创建门店失败:', error)
+      setStoreFormError(error.response?.data?.detail || '创建失败，请重试')
+    }
+  }
+
+  const handleCreateUser = async () => {
+    setUserFormError('')
+    try {
+      await API.auth.register({
+        username: userForm.username,
+        password: userForm.password,
+        real_name: userForm.real_name,
+        role: userForm.role,
+        store_id: userForm.store_id ? parseInt(userForm.store_id) : null,
+      })
+      setShowUserModal(false)
+      setUserForm({ username: '', password: '', real_name: '', role: 'staff', store_id: '' })
+      fetchUsers()
+    } catch (error) {
+      setUserFormError(error.response?.data?.detail || '创建失败，请重试')
     }
   }
 
@@ -67,6 +120,17 @@ function SuperAdminDashboard() {
       fetchUsers()
     } catch (error) {
       console.error('更新用户状态失败:', error)
+    }
+  }
+
+  const handleDeleteUser = async (userId) => {
+    if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
+      try {
+        await API.super.users.delete(userId)
+        fetchUsers()
+      } catch (error) {
+        console.error('删除用户失败:', error)
+      }
     }
   }
 
@@ -96,6 +160,13 @@ function SuperAdminDashboard() {
               <h1 className="text-2xl font-bold text-gray-800">超级管理后台</h1>
               <p className="text-sm text-gray-500 mt-1">管理所有门店和用户</p>
             </div>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              退出登录
+            </button>
           </div>
         </div>
       </header>
@@ -145,11 +216,9 @@ function SuperAdminDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 <button
-                  onClick={() => setActiveTab('stores')}
+                  onClick={() => { setActiveTab('stores'); setSearchTerm('') }}
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    activeTab === 'stores'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
+                    activeTab === 'stores' ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -158,11 +227,9 @@ function SuperAdminDashboard() {
                   </span>
                 </button>
                 <button
-                  onClick={() => setActiveTab('users')}
+                  onClick={() => { setActiveTab('users'); setSearchTerm('') }}
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    activeTab === 'users'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
+                    activeTab === 'users' ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -178,6 +245,15 @@ function SuperAdminDashboard() {
                 >
                   <Plus className="w-4 h-4" />
                   添加门店
+                </button>
+              )}
+              {activeTab === 'users' && (
+                <button
+                  onClick={() => setShowUserModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  添加用户
                 </button>
               )}
             </div>
@@ -312,20 +388,31 @@ function SuperAdminDashboard() {
                             </span>
                           </td>
                           <td className="px-4 py-3">
-                            <button
-                              onClick={() => handleUpdateUserStatus(user.id, user.status === 'active' ? 'inactive' : 'active')}
-                              className={`flex items-center gap-1 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                                user.status === 'active'
-                                  ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                                  : 'bg-green-50 text-green-600 hover:bg-green-100'
-                              }`}
-                            >
-                              {user.status === 'active' ? (
-                                <><XCircle className="w-3 h-3" /> 停用</>
-                              ) : (
-                                <><Check className="w-3 h-3" /> 启用</>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleUpdateUserStatus(user.id, user.status === 'active' ? 'inactive' : 'active')}
+                                className={`flex items-center gap-1 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                                  user.status === 'active'
+                                    ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                                    : 'bg-green-50 text-green-600 hover:bg-green-100'
+                                }`}
+                              >
+                                {user.status === 'active' ? (
+                                  <><XCircle className="w-3 h-3" /> 停用</>
+                                ) : (
+                                  <><Check className="w-3 h-3" /> 启用</>
+                                )}
+                              </button>
+                              {user.role !== 'super_admin' && (
+                                <button
+                                  onClick={() => handleDeleteUser(user.id)}
+                                  className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                  title="删除用户"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
                               )}
-                            </button>
+                            </div>
                           </td>
                         </tr>
                       )
@@ -343,12 +430,13 @@ function SuperAdminDashboard() {
           </div>
         </div>
 
+        {/* 添加门店弹窗 */}
         {showStoreModal && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
               <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                 <h2 className="text-lg font-bold text-gray-800">添加新门店</h2>
-                <button onClick={() => setShowStoreModal(false)} className="p-2 hover:bg-gray-100 rounded-lg">
+                <button onClick={() => { setShowStoreModal(false); setStoreFormError('') }} className="p-2 hover:bg-gray-100 rounded-lg">
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
@@ -392,17 +480,57 @@ function SuperAdminDashboard() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
+
+                <div className="border-t border-gray-100 pt-4">
+                  <label className="flex items-center gap-2 cursor-pointer mb-3">
+                    <input
+                      type="checkbox"
+                      checked={storeForm.create_admin}
+                      onChange={(e) => setStoreForm({ ...storeForm, create_admin: e.target.checked })}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <span className="text-sm font-medium text-gray-700">同时创建店长账号</span>
+                  </label>
+                  {storeForm.create_admin && (
+                    <div className="space-y-3 pl-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">店长用户名 *</label>
+                        <input
+                          type="text"
+                          value={storeForm.admin_username}
+                          onChange={(e) => setStoreForm({ ...storeForm, admin_username: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="请输入店长登录账号"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">店长初始密码 *</label>
+                        <input
+                          type="text"
+                          value={storeForm.admin_password}
+                          onChange={(e) => setStoreForm({ ...storeForm, admin_password: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="请设置初始密码"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {storeFormError && (
+                  <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{storeFormError}</p>
+                )}
               </div>
               <div className="border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
                 <button
-                  onClick={() => setShowStoreModal(false)}
+                  onClick={() => { setShowStoreModal(false); setStoreFormError('') }}
                   className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleCreateStore}
-                  disabled={!storeForm.name}
+                  disabled={!storeForm.name || (storeForm.create_admin && (!storeForm.admin_username || !storeForm.admin_password))}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   确认添加
@@ -412,6 +540,96 @@ function SuperAdminDashboard() {
           </div>
         )}
 
+        {/* 添加用户弹窗 */}
+        {showUserModal && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+              <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-lg font-bold text-gray-800">添加用户</h2>
+                <button onClick={() => { setShowUserModal(false); setUserFormError('') }} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">用户名 *</label>
+                  <input
+                    type="text"
+                    value={userForm.username}
+                    onChange={(e) => setUserForm({ ...userForm, username: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="请输入登录用户名"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">初始密码 *</label>
+                  <input
+                    type="text"
+                    value={userForm.password}
+                    onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="请设置初始密码"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">真实姓名</label>
+                  <input
+                    type="text"
+                    value={userForm.real_name}
+                    onChange={(e) => setUserForm({ ...userForm, real_name: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="请输入真实姓名"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">角色 *</label>
+                  <select
+                    value={userForm.role}
+                    onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="staff">店员</option>
+                    <option value="admin">店长</option>
+                    <option value="super_admin">超级管理员</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">所属门店</label>
+                  <select
+                    value={userForm.store_id}
+                    onChange={(e) => setUserForm({ ...userForm, store_id: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">不关联门店（总部）</option>
+                    {stores.filter(s => s.is_active === 1).map(store => (
+                      <option key={store.id} value={store.id}>{store.name}</option>
+                    ))}
+                  </select>
+                </div>
+                {userFormError && (
+                  <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{userFormError}</p>
+                )}
+              </div>
+              <div className="border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
+                <button
+                  onClick={() => { setShowUserModal(false); setUserFormError('') }}
+                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleCreateUser}
+                  disabled={!userForm.username || !userForm.password}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  确认添加
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 门店详情弹窗 */}
         {selectedStore && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
@@ -462,6 +680,15 @@ function SuperAdminDashboard() {
                           : 'text-gray-800'
                       }`}>
                         {selectedStore.expire_date || '未设置'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Users className="w-5 h-5 text-gray-400" />
+                    <div>
+                      <p className="text-sm text-gray-500">该门店用户</p>
+                      <p className="font-medium text-gray-800">
+                        {users.filter(u => u.store_id === selectedStore.id).length} 人
                       </p>
                     </div>
                   </div>
