@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { 
-  CheckCircle, XCircle, ArrowRight, Play, BookOpen, Clock, 
+import {
+  CheckCircle, XCircle, ArrowRight, Play, BookOpen, Clock,
   Target, Brain, Zap, TrendingUp, Award, RefreshCw,
   ChevronRight, Timer, AlertCircle, Star, Flame
 } from 'lucide-react'
@@ -16,8 +16,11 @@ import {
   getExamRecords,
   getUserRecordsByCategory
 } from '../data/mockExamService'
+import { useAuth } from '../context/AuthContext'
 
 function PracticeExam({ onBack }) {
+  const { user } = useAuth()
+  const userId = user?.id || 'guest'
   const [view, setView] = useState('menu')
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [examMode, setExamMode] = useState(null)
@@ -57,7 +60,7 @@ function PracticeExam({ onBack }) {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category)
-    const records = getUserRecordsByCategory(category.id)
+    const records = getUserRecordsByCategory(category.id, userId)
     const analysis = analyzeUserWeakness(records, category.id)
     setWeaknessAnalysis(analysis)
     const reviews = getDailyReviewQuestions(records, category.id)
@@ -74,7 +77,7 @@ function PracticeExam({ onBack }) {
     setQuickMode(mode === 'quick')
 
     let result
-    const records = getUserRecordsByCategory(selectedCategory.id)
+    const records = getUserRecordsByCategory(selectedCategory.id, userId)
 
     switch (mode) {
       case 'mock':
@@ -169,7 +172,7 @@ function PracticeExam({ onBack }) {
       correctCount,
       totalQuestions: questions.length,
       timeSpent: (metadata?.timeLimit * 60 || 0) - timeLeft
-    })
+    }, userId)
   }, [questions, answers, selectedCategory, examMode, metadata, timeLeft])
 
   const handleRestart = () => {

@@ -399,26 +399,29 @@ export function getHeatLabel(heatScore) {
   return { label: '基础', color: '#6B7280', icon: '📝' }
 }
 
-export function saveExamRecord(record) {
-  const records = JSON.parse(localStorage.getItem('examRecords') || '[]')
+export function saveExamRecord(record, userId) {
+  const key = `examRecords_${userId}`
+  const records = JSON.parse(localStorage.getItem(key) || '[]')
   records.push({
     ...record,
     id: `record_${Date.now()}`,
     completedAt: new Date().toISOString()
   })
-  localStorage.setItem('examRecords', JSON.stringify(records))
+  localStorage.setItem(key, JSON.stringify(records))
   return record
 }
 
-export function getExamRecords() {
-  return JSON.parse(localStorage.getItem('examRecords') || '[]')
+export function getExamRecords(userId) {
+  const key = `examRecords_${userId}`
+  return JSON.parse(localStorage.getItem(key) || '[]')
 }
 
-export function getUserRecordsByCategory(categoryId) {
-  const records = getExamRecords()
+export function getUserRecordsByCategory(categoryId, userId) {
+  const records = getExamRecords(userId)
   return records.filter(r => r.categoryId === categoryId)
 }
 
-export function clearExamRecords() {
-  localStorage.removeItem('examRecords')
+export function clearExamRecords(userId) {
+  const key = `examRecords_${userId}`
+  localStorage.removeItem(key)
 }
