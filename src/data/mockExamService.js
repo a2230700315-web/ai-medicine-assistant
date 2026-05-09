@@ -138,6 +138,7 @@ export function generateMockPaper(categoryId, options = {}) {
 
   selectedQuestions = selectedQuestions.map((q, index) => ({
     ...q,
+    originalId: q.id,
     id: `mock_${categoryId}_${Date.now()}_${index}`,
     questionNumber: index + 1,
     points: q.type === 'multi' ? 1.5 : 1
@@ -183,7 +184,7 @@ export function generateWeaknessPaper(userRecords, categoryId, options = {}) {
       if (record.categoryId !== categoryId) return
       
       record.questions?.forEach(q => {
-        doneQuestions.add(q.id)
+        doneQuestions.add(q.originalId || q.id)
         if (!q.isCorrect) {
           const kp = q.knowledgePoint || '其他'
           errorStats[kp] = (errorStats[kp] || 0) + 1
@@ -238,6 +239,7 @@ export function generateWeaknessPaper(userRecords, categoryId, options = {}) {
 
   selectedQuestions = selectedQuestions.map((q, index) => ({
     ...q,
+    originalId: q.id,
     id: `weakness_${categoryId}_${Date.now()}_${index}`,
     questionNumber: index + 1,
     points: q.type === 'multi' ? 1.5 : 1,

@@ -595,15 +595,17 @@ function PracticeExam({ onBack }) {
                 })}
               </div>
 
-              {(quickMode || isSubmitted) && currentQuestion.explanation && (
+              {(quickMode || isSubmitted) && (
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5">
                   <div className="flex items-start gap-3">
                     <BookOpen className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-semibold text-indigo-800 mb-2">答案解析</h4>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {currentQuestion.explanation}
-                      </p>
+                      {currentQuestion.explanation ? (
+                        <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.explanation}</p>
+                      ) : (
+                        <p className="text-sm text-gray-500">暂无解析</p>
+                      )}
                       {currentQuestion.knowledgePoint && (
                         <div className="mt-3 flex items-center gap-2">
                           <span className="text-xs text-gray-500">知识点：</span>
@@ -693,7 +695,7 @@ function PracticeExam({ onBack }) {
 
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">答题情况</h3>
-            <div className="grid grid-cols-10 gap-2">
+            <div className="grid grid-cols-10 gap-2 mb-6">
               {questions.map((q, index) => {
                 const isCorrect = answers[q.id] === q.answer
                 const isAnswered = answers[q.id]
@@ -702,8 +704,7 @@ function PracticeExam({ onBack }) {
                     key={q.id}
                     onClick={() => {
                       setCurrentIndex(index)
-                      setIsSubmitted(false)
-                      setView('exam')
+                      document.getElementById(`review-q-${index}`)?.scrollIntoView({ behavior: 'smooth' })
                     }}
                     className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${
                       isCorrect
@@ -715,6 +716,44 @@ function PracticeExam({ onBack }) {
                   >
                     {index + 1}
                   </button>
+                )
+              })}
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">错题解析</h3>
+            <div className="space-y-4">
+              {questions.map((q, index) => {
+                const isCorrect = answers[q.id] === q.answer
+                if (isCorrect) return null
+                return (
+                  <div key={q.id} id={`review-q-${index}`} className="border border-red-200 rounded-xl p-4 bg-red-50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm font-medium text-red-600">第 {index + 1} 题</span>
+                      <span className="text-sm text-gray-500">正确答案：{q.answer}</span>
+                      {answers[q.id] && <span className="text-sm text-gray-500">你的答案：{answers[q.id]}</span>}
+                    </div>
+                    <p className="text-sm text-gray-800 mb-3">{q.question}</p>
+                    <div className="space-y-1 mb-3">
+                      {q.options?.map((opt, i) => {
+                        const letter = opt.charAt(0)
+                        const isCorrectOpt = letter === q.answer
+                        const isUserOpt = letter === answers[q.id]
+                        return (
+                          <div key={i} className={`text-sm px-3 py-1 rounded ${
+                            isCorrectOpt ? 'bg-green-100 text-green-800 font-medium' :
+                            isUserOpt ? 'bg-red-100 text-red-800' : 'text-gray-600'
+                          }`}>{opt}</div>
+                        )
+                      })}
+                    </div>
+                    {q.explanation ? (
+                      <div className="bg-blue-50 rounded-lg p-3 text-sm text-gray-700">
+                        <span className="font-medium text-blue-700">解析：</span>{q.explanation}
+                      </div>
+                    ) : (
+                      <div className="bg-gray-100 rounded-lg p-3 text-sm text-gray-500">暂无解析</div>
+                    )}
+                  </div>
                 )
               })}
             </div>
