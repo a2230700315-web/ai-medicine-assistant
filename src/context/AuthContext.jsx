@@ -27,14 +27,19 @@ export function AuthProvider({ children }) {
     try {
       const response = await API.auth.login(username, password)
       const { access_token } = response.data
-      
+
+      localStorage.setItem('pharmacy_access_token', access_token)
+
       const userResponse = await API.auth.me()
       const userData = userResponse.data
-      
-      localStorage.setItem('pharmacy_access_token', access_token)
+
       localStorage.setItem('pharmacy_user', JSON.stringify(userData))
       
       setUser(userData)
+      
+      const defaultRoute = getDefaultRoute()
+      window.location.href = defaultRoute
+      
       return { success: true, user: userData, token: access_token }
     } catch (error) {
       return { 

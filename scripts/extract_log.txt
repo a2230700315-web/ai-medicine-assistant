@@ -1,0 +1,1888 @@
+已加载现有数据
+
+处理: pharmacy_1 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2016年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2017年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2018年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2019年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2020年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2021年
+  提取PDF文字...
+  识别到119个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2022年
+  提取PDF文字...
+  识别到117个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2023年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-40题...
+  新增15题，累计40题
+  完成！共40题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_1 2024年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-40题...
+  新增15题，累计40题
+  完成！共40题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2016年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2017年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2018年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2019年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2020年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2021年
+  提取PDF文字...
+  识别到118个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2022年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  新增25题，累计25题
+  提取第26-50题...
+  新增25题，累计50题
+  提取第51-75题...
+  新增25题，累计75题
+  提取第76-100题...
+  新增25题，累计100题
+  提取第101-120题...
+  新增20题，累计120题
+  完成！共120题
+  已保存到 C:\Users\22307\Desktop\ai-medicine-assistant\src\data\examQuestionsData.json
+
+处理: pharmacy_2 2023年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: pharmacy_2 2024年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2016年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2017年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2018年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2019年
+  提取PDF文字...
+  识别到121个题号，最大题号588
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-125题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-125题失败，跳过
+  提取第126-150题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第126-150题失败，跳过
+  提取第151-175题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第151-175题失败，跳过
+  提取第176-200题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第176-200题失败，跳过
+  提取第201-225题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第201-225题失败，跳过
+  提取第226-250题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第226-250题失败，跳过
+  提取第251-275题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第251-275题失败，跳过
+  提取第276-300题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第276-300题失败，跳过
+  提取第301-325题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第301-325题失败，跳过
+  提取第326-350题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第326-350题失败，跳过
+  提取第351-375题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第351-375题失败，跳过
+  提取第376-400题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第376-400题失败，跳过
+  提取第401-425题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第401-425题失败，跳过
+  提取第426-450题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第426-450题失败，跳过
+  提取第451-475题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第451-475题失败，跳过
+  提取第476-500题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第476-500题失败，跳过
+  提取第501-525题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第501-525题失败，跳过
+  提取第526-550题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第526-550题失败，跳过
+  提取第551-575题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第551-575题失败，跳过
+  提取第576-588题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第576-588题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2020年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2021年
+  提取PDF文字...
+  识别到119个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2022年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2023年
+  提取PDF文字...
+  识别到39个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: pharmacy_comprehensive 2024年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2016年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2017年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2018年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2019年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2020年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2021年
+  提取PDF文字...
+  识别到119个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2022年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2023年
+  提取PDF文字...
+  识别到98个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: pharmacy_regulation 2024年
+  提取PDF文字...
+  PDF无文字内容，跳过
+
+处理: tcm_1 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2016年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2017年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2018年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2019年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2020年
+  提取PDF文字...
+  识别到121个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2021年
+  提取PDF文字...
+  识别到117个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2022年
+  提取PDF文字...
+  识别到110个题号，最大题号110
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-110题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-110题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2023年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: tcm_1 2024年
+  提取PDF文字...
+  识别到40个题号，最大题号40
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-40题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-40题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2015年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2016年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2017年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2018年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2019年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第26-50题失败，跳过
+  提取第51-75题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第51-75题失败，跳过
+  提取第76-100题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第76-100题失败，跳过
+  提取第101-120题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第101-120题失败，跳过
+  完成！共0题
+
+处理: tcm_2 2020年
+  提取PDF文字...
+  识别到120个题号，最大题号120
+  提取第1-25题...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1-25题失败，跳过
+  提取第26-50题...
+  API调用失败(第1次): Connect  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2019年
+  提取PDF文字...
+  文字提取完成，共24239字符
+  分为4个批次处理
+  处理第1/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2020年
+  提取PDF文字...
+  文字提取完成，共41552字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2021年
+  提取PDF文字...
+  文字提取完成，共12789字符
+  分为4个批次处理
+  处理第1/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2022年
+  提取PDF文字...
+  文字提取完成，共16471字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2023年
+  提取PDF文字...
+  文字提取完成，共21225字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_2 2024年
+  提取PDF文字...
+  文字提取完成，共21118字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2015年
+  提取PDF文字...
+  文字提取完成，共24689字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2016年
+  提取PDF文字...
+  文字提取完成，共26006字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2017年
+  提取PDF文字...
+  文字提取完成，共21552字符
+  分为4个批次处理
+  处理第1/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/4批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2018年
+  提取PDF文字...
+  文字提取完成，共29831字符
+  分为6个批次处理
+  处理第1/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  处理第6/6批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第6批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2019年
+  提取PDF文字...
+  文字提取完成，共37201字符
+  分为8个批次处理
+  处理第1/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  处理第6/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第6批次失败，跳过
+  处理第7/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第7批次失败，跳过
+  处理第8/8批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第8批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2020年
+  提取PDF文字...
+  文字提取完成，共26523字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2021年
+  提取PDF文字...
+  文字提取完成，共14503字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2022年
+  提取PDF文字...
+  文字提取完成，共23721字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2023年
+  提取PDF文字...
+  文字提取完成，共20962字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+处理: tcm_comprehensive 2024年
+  提取PDF文字...
+  文字提取完成，共20138字符
+  分为5个批次处理
+  处理第1/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第1批次失败，跳过
+  处理第2/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第2批次失败，跳过
+  处理第3/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第3批次失败，跳过
+  处理第4/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第4批次失败，跳过
+  处理第5/5批次...
+  API调用失败(第1次): Connection error.
+  API调用失败(第2次): Connection error.
+  API调用失败(第3次): Connection error.
+  第5批次失败，跳过
+  完成！共提取0题
+
+全部完成！

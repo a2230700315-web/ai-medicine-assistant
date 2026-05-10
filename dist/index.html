@@ -2,10 +2,27 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 移动端关键 meta：声明 viewport-fit=cover 适配刘海屏 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
+    <!-- 移动端浏览器主题色 -->
+    <meta name="theme-color" content="#3b82f6" />
+    <!-- iOS 全屏/图标支持 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="药房培训" />
+    <!-- Android Chrome 独立模式 -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- 禁止电话号码自动识别 -->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- DNS 预解析后端接口域名，减少首次 API 请求延迟 -->
+    <link rel="dns-prefetch" href="//a1sc.cn" />
     <title>药房健康顾问培训平台</title>
-    <script type="module" crossorigin src="/assets/index-C5HIvqRy.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Sl-bu8lZ.css">
+    <script type="module" crossorigin src="/assets/index-BtMIHvJ1.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-icons-CcFvku91.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-CKWTGK2_.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-axios-DgWFtHJP.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-charts-DCtTEkxG.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-Dl68EqEn.css">
   </head>
   <body>
     <div id="root"></div>

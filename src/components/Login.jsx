@@ -38,18 +38,18 @@ function Login() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-8 text-center">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-white text-3xl font-bold">药</span>
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-6 md:px-8 md:py-8 text-center">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4">
+              <span className="text-white text-2xl md:text-3xl font-bold">药</span>
             </div>
-            <h1 className="text-2xl font-bold text-white">药房健康顾问培训平台</h1>
-            <p className="text-blue-100 mt-2">专业培训 · 智能学习 · 高效提升</p>
+            <h1 className="text-xl md:text-2xl font-bold text-white">药房健康顾问培训平台</h1>
+            <p className="text-blue-100 mt-2 text-sm">专业培训 · 智能学习 · 高效提升</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8">
+          <form onSubmit={handleSubmit} className="p-6 md:p-8">
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-600">
-                <AlertCircle className="w-5 h-5" />
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
                 <span className="text-sm">{error}</span>
               </div>
             )}
@@ -65,6 +65,7 @@ function Login() {
                     onChange={(e) => setUsername(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     placeholder="请输入用户名"
+                    autoComplete="username"
                   />
                 </div>
               </div>
@@ -79,6 +80,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     placeholder="请输入密码"
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
@@ -100,10 +102,11 @@ function Login() {
             </button>
           </form>
 
-          <div className="px-8 pb-8">
-            <div className="border-t border-gray-200 pt-6">
-              <p className="text-sm text-gray-500 text-center mb-4">演示账号</p>
-              <div className="grid grid-cols-3 gap-2">
+          <div className="px-6 pb-6 md:px-8 md:pb-8">
+            <div className="border-t border-gray-200 pt-5">
+              <p className="text-sm text-gray-500 text-center mb-3">演示账号</p>
+              {/* 小屏：单列，大屏：3列 */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {demoAccounts.map((account) => (
                   <button
                     key={account.username}
@@ -111,10 +114,10 @@ function Login() {
                       setUsername(account.username)
                       setPassword(account.password)
                     }}
-                    className="p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-center transition-all border border-gray-200 hover:border-blue-300"
+                    className="p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-left sm:text-center transition-all border border-gray-200 hover:border-blue-300 flex sm:flex-col items-center sm:items-center gap-3 sm:gap-0"
                   >
                     <p className="text-sm font-medium text-gray-700">{account.role}</p>
-                    <p className="text-xs text-gray-500 mt-1">{account.store}</p>
+                    <p className="text-xs text-gray-500 sm:mt-1">{account.store}</p>
                   </button>
                 ))}
               </div>

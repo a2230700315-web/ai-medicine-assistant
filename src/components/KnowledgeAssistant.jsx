@@ -62,7 +62,7 @@ function KnowledgeAssistant({ examMode = false }) {
 
   if (examMode) {
     return (
-      <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 h-full flex flex-col items-center justify-center">
         <div className="text-center">
           <EyeOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-700">考试模式已启用</h3>
@@ -73,12 +73,12 @@ function KnowledgeAssistant({ examMode = false }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 h-full overflow-y-auto">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center">
-          <BookOpen className="w-5 h-5 text-white" />
+    <div className="bg-white rounded-xl shadow-lg p-3 md:p-6 h-full overflow-y-auto">
+      <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+        <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-white" />
         </div>
-        <h2 className="text-xl font-bold text-gray-800">药店知识助手</h2>
+        <h2 className="text-base md:text-xl font-bold text-gray-800">药店知识助手</h2>
       </div>
 
       <div className="flex gap-2 mb-6">

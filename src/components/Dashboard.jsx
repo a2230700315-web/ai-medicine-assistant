@@ -171,6 +171,46 @@ function Dashboard() {
       return <AdminDashboard />
     }
     if (currentMode === 'practice') {
+      // 移动端：单列顺序展示（案例选择 → 聊天 → 知识助手）
+      if (isMobile) {
+        return (
+          <div className="flex flex-col gap-3 px-3 py-3">
+            {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseCategorySelector
+                cases={cases}
+                onCategorySelect={handleCategorySelect}
+                selectedCategory={selectedCategory}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseList
+                cases={cases}
+                category={selectedCategory}
+                onCaseSelect={handleCaseSelect}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && (selectedCase || currentPracticeCase) && (
+              <CaseDetail
+                case_={selectedCase || currentPracticeCase}
+                onStartPractice={handleStartPractice}
+                onBack={handleBackToList}
+              />
+            )}
+            {examMode && (
+              <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center justify-center py-8">
+                <EyeOff className="w-10 h-10 text-gray-400 mb-3" />
+                <h3 className="text-base font-medium text-gray-700">考试模式已启用</h3>
+                <p className="text-sm text-gray-500 mt-1">案例档案已隐藏</p>
+              </div>
+            )}
+            <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
+            <KnowledgeAssistant examMode={examMode} />
+          </div>
+        )
+      }
+      // 桌面端：保持三列布局
       return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">
@@ -217,6 +257,14 @@ function Dashboard() {
       )
     }
     if (currentMode === 'learning') {
+      // 移动端：隐藏悬浮助手按钮，全宽展示学习内容
+      if (isMobile) {
+        return (
+          <div className="px-3 py-3">
+            <LearningModule onCaseRecommend={handleCaseRecommend} />
+          </div>
+        )
+      }
       return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
           <div className={assistantCollapsed ? "lg:col-span-12" : "lg:col-span-8"}>
@@ -235,6 +283,14 @@ function Dashboard() {
       )
     }
     if (currentMode === 'practiceExam') {
+      // 移动端：单列，隐藏知识助手侧栏
+      if (isMobile) {
+        return (
+          <div className="px-3 py-3">
+            <PracticeExam onBack={handleBackToMain} />
+          </div>
+        )
+      }
       return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
@@ -359,11 +415,11 @@ function Dashboard() {
             </div>
           )}
 
-          <main className="flex-1 overflow-y-auto pb-20">
+          <main className="flex-1 overflow-y-auto pb-20 smooth-scroll">
             {renderContent()}
           </main>
 
-          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-bottom z-40">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-bottom z-40 fixed-bottom-nav">
             <div className="flex items-center justify-around py-2">
               {menuItems.slice(0, 5).map((item) => {
                 const Icon = item.icon

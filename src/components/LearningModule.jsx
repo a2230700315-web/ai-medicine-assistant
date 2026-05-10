@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { BookOpen, CheckCircle, ArrowRight, Play, ChevronDown, ChevronRight, FolderOpen, Folder, Circle, CheckCircle2 } from 'lucide-react'
-import { learningContent } from '../data/learningContent'
 
 function LearningModule({ onCaseRecommend }) {
   const [selectedCategory, setSelectedCategory] = useState(null)
@@ -12,9 +11,25 @@ function LearningModule({ onCaseRecommend }) {
   const [expandedUnits, setExpandedUnits] = useState({})
   const [expandedSubunits, setExpandedSubunits] = useState({})
   const [viewMode, setViewMode] = useState('catalog')
+  // 移动端专属：'outline'（目录树） | 'content'（内容阅读）
+  const [mobileView, setMobileView] = useState('outline')
+  const [isMobile, setIsMobile] = useState(false)
+  const [learningContent, setLearningContent] = useState(null)
   const contentRef = useRef(null)
 
-  const mainCategories = [
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  // 懒加载学习内容数据（11MB），避免阻塞首屏
+  useEffect(() => {
+    import('../data/learningContent').then(m => setLearningContent(m.learningContent))
+  }, [])
+
+  const mainCategories = learningContent ? [
     {
       id: 'professional',
       name: '专业化学习',
@@ -35,7 +50,7 @@ function LearningModule({ onCaseRecommend }) {
       color: 'from-green-50 to-emerald-100',
       data: learningContent.scenarioLearning
     }
-  ]
+  ] : []
 
   const handleTopicComplete = (topicId) => {
     if (!completedTopics.includes(topicId)) {
@@ -44,6 +59,10 @@ function LearningModule({ onCaseRecommend }) {
   }
 
   const handleBack = () => {
+    if (isMobile && mobileView === 'content') {
+      setMobileView('outline')
+      return
+    }
     if (viewMode === 'learning') {
       setViewMode('catalog')
       setSelectedTopic(null)
@@ -127,6 +146,9 @@ function LearningModule({ onCaseRecommend }) {
 
   const handleTopicClick = (topic) => {
     setSelectedTopic(topic)
+    if (isMobile) {
+      setMobileView('content')
+    }
     if (contentRef.current) {
       contentRef.current.scrollTop = 0
     }
@@ -148,22 +170,31 @@ function LearningModule({ onCaseRecommend }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
+    <div className="bg-white rounded-xl shadow-lg p-3 md:p-6 h-full flex flex-col">
+      {!learningContent && (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-sm text-gray-500">加载学习内容...</p>
+          </div>
+        </div>
+      )}
+      {learningContent && <>
+      <div className="flex items-center justify-between mb-4 md:mb-6">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="w-9 h-9 md:w-12 md:h-12 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+            <BookOpen className="w-4 h-4 md:w-6 md:h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">学习中心</h2>
-            <p className="text-sm text-gray-500">专业知识学习 · 任务点完成</p>
+            <h2 className="text-base md:text-xl font-bold text-gray-800">学习中心</h2>
+            <p className="text-xs md:text-sm text-gray-500">专业知识学习 · 任务点完成</p>
           </div>
         </div>
         {viewMode === 'learning' && selectedSubject && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">已完成任务点</span>
-            <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div 
+          <div className="flex items-center gap-1 md:gap-2">
+            <span className="hidden md:block text-sm text-gray-600">已完成任务点</span>
+            <div className="w-20 md:w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div
                 className="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-300"
                 style={{ width: `${getSubjectProgress(selectedSubject)}%` }}
               />
@@ -239,8 +270,18 @@ function LearningModule({ onCaseRecommend }) {
         </div>
       ) : (
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-80 border-r border-gray-200 flex flex-col">
-            <div className="p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+          {/* 移动端：目录树视图 / 内容视图 二选一 */}
+          {/* 桌面端：左侧固定宽度目录 + 右侧内容并排 */}
+
+          {/* 目录侧边栏：移动端在 mobileView==='outline' 时全宽显示，桌面端固定 w-80 */}
+          <div className={`
+            border-r border-gray-200 flex flex-col
+            ${isMobile
+              ? mobileView === 'outline' ? 'w-full' : 'hidden'
+              : 'w-80'
+            }
+          `}>
+            <div className="p-3 md:p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
               <button
                 onClick={handleBack}
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors w-full"
@@ -248,7 +289,7 @@ function LearningModule({ onCaseRecommend }) {
                 <ArrowRight className="w-4 h-4 rotate-180" />
                 <span className="text-sm">返回目录</span>
               </button>
-              <h3 className="text-lg font-bold text-gray-800 mt-3">{selectedSubject?.name}</h3>
+              <h3 className="text-base md:text-lg font-bold text-gray-800 mt-3">{selectedSubject?.name}</h3>
               <p className="text-sm text-gray-600 mt-1">{selectedSubject?.units.length} 个大单元</p>
             </div>
             <div className="flex-1 overflow-y-auto p-2">
@@ -352,12 +393,28 @@ function LearningModule({ onCaseRecommend }) {
               })}
             </div>
           </div>
-          <div className="flex-1 overflow-y-auto" ref={contentRef} onScroll={handleScroll}>
+          <div className={`
+            overflow-y-auto smooth-scroll
+            ${isMobile
+              ? mobileView === 'content' ? 'flex-1' : 'hidden'
+              : 'flex-1'
+            }
+          `} ref={contentRef} onScroll={handleScroll}>
             {selectedTopic ? (
-              <div className="p-6">
+              <div className="p-3 md:p-6">
                 <div className="bg-white rounded-lg border border-gray-200">
-                  <div className="p-6 border-b border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{selectedTopic.name}</h3>
+                  <div className="p-4 md:p-6 border-b border-gray-200">
+                    {/* 移动端：返回目录按钮 */}
+                    {isMobile && (
+                      <button
+                        onClick={() => setMobileView('outline')}
+                        className="flex items-center gap-2 text-indigo-600 mb-3 text-sm"
+                      >
+                        <ArrowRight className="w-4 h-4 rotate-180" />
+                        返回目录
+                      </button>
+                    )}
+                    <h3 className="text-base md:text-xl font-bold text-gray-800 mb-2">{selectedTopic.name}</h3>
                     <div className="flex items-center gap-4">
                       {completedTopics.includes(selectedTopic.id) ? (
                         <div className="flex items-center gap-2 text-green-600">
@@ -372,21 +429,21 @@ function LearningModule({ onCaseRecommend }) {
                       )}
                     </div>
                   </div>
-                  <div className="p-6">
+                  <div className="p-3 md:p-6">
                     {!completedTopics.includes(selectedTopic.id) && (
                       <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
                         💡 提示：滚动到内容底部会自动标记为已完成
                       </div>
                     )}
-                    <div className="prose prose-indigo max-w-none space-y-6 text-gray-700 leading-relaxed">
+                    <div className="prose prose-indigo max-w-none space-y-6 text-gray-700 leading-relaxed text-sm md:text-base">
                       {selectedTopic.content.coreExplanation && (
-                        <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm">
+                        <div className="bg-white rounded-lg p-4 md:p-8 border border-gray-100 shadow-sm">
                           <div className="space-y-4" dangerouslySetInnerHTML={{ __html: selectedTopic.content.coreExplanation }} />
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                  <div className="p-4 md:p-6 border-t border-gray-200 bg-gray-50">
                     <div className="flex flex-col gap-3">
                       {!completedTopics.includes(selectedTopic.id) && (
                         <button
@@ -412,6 +469,7 @@ function LearningModule({ onCaseRecommend }) {
           </div>
         </div>
       )}
+      </>}
     </div>
   )
 }

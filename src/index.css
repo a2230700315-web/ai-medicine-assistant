@@ -2,25 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* ===== 全局重置 ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
 
 html {
   scroll-behavior: smooth;
+  /* 使用 dvh 防止移动端地址栏导致的高度抖动 */
+  height: 100%;
 }
 
 body {
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* 防止橡皮筋滚动影响布局 */
   overscroll-behavior: none;
+  /* 防止横向溢出 */
+  overflow-x: hidden;
+  /* GPU 加速文本渲染 */
+  text-rendering: optimizeLegibility;
 }
 
+#root {
+  height: 100%;
+  /* 支持 iOS 动态视口高度 */
+  min-height: 100dvh;
+}
+
+/* ===== 安全区域 ===== */
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0);
 }
@@ -29,43 +48,7 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-@media (max-width: 768px) {
-  .mobile-hidden {
-    display: none !important;
-  }
-  
-  .mobile-full-width {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mobile-stack {
-    flex-direction: column !important;
-  }
-  
-  .mobile-text-sm {
-    font-size: 0.875rem !important;
-  }
-  
-  .mobile-p-2 {
-    padding: 0.5rem !important;
-  }
-  
-  .mobile-p-3 {
-    padding: 0.75rem !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .desktop-hidden {
-    display: none !important;
-  }
-}
-
-.touch-action-pan-y {
-  touch-action: pan-y;
-}
-
+/* ===== 滚动优化 ===== */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -75,12 +58,104 @@ body {
   scrollbar-width: none;
 }
 
+/* 移动端平滑滚动 */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* ===== 触控优化 ===== */
+.touch-action-pan-y {
+  touch-action: pan-y;
+}
+
+button,
+[role="button"],
+a {
+  touch-action: manipulation;
+}
+
+/* ===== 移动端布局工具类 ===== */
+@media (max-width: 767px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-text-sm {
+    font-size: 0.875rem !important;
+  }
+
+  .mobile-p-2 {
+    padding: 0.5rem !important;
+  }
+
+  .mobile-p-3 {
+    padding: 0.75rem !important;
+  }
+
+  /* 移动端容器消除内边距 */
+  .mobile-px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* ===== 安全区域 Tailwind 工具类 ===== */
 @layer utilities {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
-  
+
   .pt-safe {
     padding-top: env(safe-area-inset-top, 0);
   }
+
+  .min-h-dvh {
+    min-height: 100dvh;
+  }
+
+  .h-dvh {
+    height: 100dvh;
+  }
+}
+
+/* ===== 性能优化：减少 layout thrashing ===== */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* 固定底部导航栏 GPU 合成层 */
+.fixed-bottom-nav {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ===== 输入框移动端优化 ===== */
+input,
+textarea,
+select {
+  /* 防止 iOS 自动缩放表单元素 */
+  font-size: max(16px, 1em);
+}
+
+/* ===== 图片优化 ===== */
+img {
+  max-width: 100%;
+  height: auto;
 }
