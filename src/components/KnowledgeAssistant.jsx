@@ -1,64 +1,26 @@
-import { useState } from 'react'
-import { BookOpen, Lightbulb, ChevronRight, EyeOff } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { BookOpen, Lightbulb, ChevronDown, ChevronRight, EyeOff } from 'lucide-react'
+import { getKnowledgeForCase } from '../data/caseKnowledge'
 
-function KnowledgeAssistant({ examMode = false }) {
+function KnowledgeAssistant({ examMode = false, practiceCase = null }) {
   const [selectedCategory, setSelectedCategory] = useState('selling')
+  const [expandedTip, setExpandedTip] = useState(0)
+  const [knowledge, setKnowledge] = useState(() => getKnowledgeForCase(null))
+
+  useEffect(() => {
+    setKnowledge(getKnowledgeForCase(practiceCase))
+    setExpandedTip(0)
+  }, [practiceCase?.id, practiceCase?.category])
 
   const categories = [
-    { id: 'selling', name: '销售技巧', icon: Lightbulb },
+    { id: 'selling', name: '销售话术', icon: Lightbulb },
     { id: 'products', name: '产品卖点', icon: BookOpen }
   ]
 
-  const sellingTips = [
-    {
-      title: '益生菌卖点',
-      content: [
-        '调节肠道菌群平衡',
-        '增强免疫力',
-        '改善消化功能',
-        '适合各年龄段人群'
-      ]
-    },
-    {
-      title: '联合用药公式',
-      content: [
-        '感冒药 + 维生素C：加速康复',
-        '钙片 + 维生素D3：促进吸收',
-                        '益生菌 + 益生元：协同增效',
-        '止痛药 + 胃黏膜保护剂：减少刺激'
-      ]
-    },
-    {
-      title: '沟通技巧',
-      content: [
-        '先倾听再推荐',
-        '用专业术语建立信任',
-        '强调产品独特优势',
-        '提供多种选择方案'
-      ]
-    }
-  ]
-
-  const productInfo = [
-    {
-      name: '益生菌',
-      category: '保健品',
-      keyPoints: ['调节肠道', '增强免疫', '改善消化'],
-      targetCustomers: ['肠胃不适', '免疫力低下', '老人儿童']
-    },
-    {
-      name: '维生素C',
-      category: '维生素',
-      keyPoints: ['抗氧化', '增强免疫', '促进吸收'],
-      targetCustomers: ['易感冒', '压力大', '饮食不均衡']
-    },
-    {
-      name: '钙片',
-      category: '矿物质',
-      keyPoints: ['强健骨骼', '预防骨质疏松', '促进发育'],
-      targetCustomers: ['中老年', '青少年', '孕妇']
-    }
-  ]
+  const getCategoryLabel = () => {
+    if (!practiceCase) return null
+    return practiceCase.category || null
+  }
 
   if (examMode) {
     return (
@@ -72,91 +34,114 @@ function KnowledgeAssistant({ examMode = false }) {
     )
   }
 
+  const label = getCategoryLabel()
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-3 md:p-6 h-full overflow-y-auto">
-      <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+      <div className="flex items-center gap-2 md:gap-3 mb-4">
         <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
           <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-white" />
         </div>
-        <h2 className="text-base md:text-xl font-bold text-gray-800">药店知识助手</h2>
+        <div className="min-w-0">
+          <h2 className="text-base md:text-lg font-bold text-gray-800 leading-tight">药店知识助手</h2>
+          {label && (
+            <span className="text-xs px-2 py-0.5 bg-purple-100 text-purple-600 rounded-full">
+              {label}
+            </span>
+          )}
+        </div>
       </div>
 
-      <div className="flex gap-2 mb-6">
+      {!practiceCase && (
+        <div className="mb-3 p-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700">
+          💡 选择左侧案例后，知识助手会自动更新对应内容
+        </div>
+      )}
+
+      <div className="flex gap-2 mb-4">
         {categories.map((category) => {
           const Icon = category.icon
           return (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg transition-all text-sm ${
                 selectedCategory === category.id
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-sm'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              <span className="text-sm font-medium">{category.name}</span>
+              <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="font-medium">{category.name}</span>
             </button>
           )
         })}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {selectedCategory === 'selling' ? (
-          sellingTips.map((tip, index) => (
+          knowledge.sellingTips.map((tip, index) => (
             <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-4 py-3 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-800">{tip.title}</h3>
-                <ChevronRight className="w-4 h-4 text-gray-400" />
-              </div>
-              <ul className="p-4 space-y-2">
-                {tip.content.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <button
+                onClick={() => setExpandedTip(expandedTip === index ? -1 : index)}
+                className="w-full flex items-center justify-between px-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition-all"
+              >
+                <h3 className="font-semibold text-gray-800 text-sm text-left">{tip.title}</h3>
+                {expandedTip === index
+                  ? <ChevronDown className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                  : <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                }
+              </button>
+              {expandedTip === index && (
+                <ul className="px-3 py-2 space-y-2 bg-white">
+                  {tip.content.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+                      <span className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))
         ) : (
-          productInfo.map((product, index) => (
+          knowledge.products.map((product, index) => (
             <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-4 py-3">
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-3 py-2.5">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-800">{product.name}</h3>
-                  <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">
+                  <h3 className="font-semibold text-gray-800 text-sm">{product.name}</h3>
+                  <span className="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">
                     {product.category}
                   </span>
                 </div>
               </div>
-              <div className="p-4 space-y-3">
+              <div className="px-3 py-2 space-y-2 bg-white">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-2">核心卖点</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-xs font-medium text-gray-500 mb-1">核心卖点</p>
+                  <div className="flex flex-wrap gap-1">
                     {product.keyPoints.map((point, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded"
-                      >
+                      <span key={idx} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">
                         {point}
                       </span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-2">适用人群</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-xs font-medium text-gray-500 mb-1">适用人群</p>
+                  <div className="flex flex-wrap gap-1">
                     {product.targetCustomers.map((customer, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded"
-                      >
+                      <span key={idx} className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded">
                         {customer}
                       </span>
                     ))}
                   </div>
                 </div>
+                {product.combo && (
+                  <div className="flex items-start gap-1.5 mt-1 p-2 bg-orange-50 rounded text-xs text-orange-700">
+                    <span className="flex-shrink-0">💊</span>
+                    <span>{product.combo}</span>
+                  </div>
+                )}
               </div>
             </div>
           ))

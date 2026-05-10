@@ -229,7 +229,7 @@ function Dashboard() {
               </div>
             )}
             <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
-            <KnowledgeAssistant examMode={examMode} />
+            <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
           </div>
         )
       }
@@ -274,7 +274,7 @@ function Dashboard() {
             <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
           </div>
           <div className="lg:col-span-3">
-            <KnowledgeAssistant examMode={examMode} />
+            <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
           </div>
         </div>
       )

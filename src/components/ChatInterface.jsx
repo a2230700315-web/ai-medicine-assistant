@@ -9,16 +9,17 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     {
       id: 1,
       role: 'assistant',
-      content: '您好，我是今天的模拟顾客。我最近总是感觉肠胃不舒服，想买点益生菌，但是市面上品牌太多了，不知道该怎么选择。您能给我一些建议吗？'
+      content: '你好，我想买点东西，你们有什么可以推荐的吗？'
     }
   ])
 
   useEffect(() => {
     if (practiceCase) {
+      const openings = buildOpeningMessage(practiceCase)
       const initialMessage = {
         id: Date.now(),
         role: 'assistant',
-        content: `您好，我最近身体不太舒服。${practiceCase.现病史}。${practiceCase.目前用药 ? '目前我正在服用' + practiceCase.目前用药 + '。' : ''}您能给我一些建议吗？`
+        content: openings
       }
       setMessages([initialMessage])
     }
@@ -35,8 +36,120 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   const [showPurchaseSuccess, setShowPurchaseSuccess] = useState(false)
   const messagesEndRef = useRef(null)
 
-  const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {
-    console.log('handleVoiceTranscript 被调用:', { transcript, isInterim, isFinal })
+  // 根据案例和难度生成真实感强的顾客开场白
+  const buildOpeningMessage = (case_) => {
+    if (!case_) {
+      return '你好，我想买点东西，你们这边有什么可以推荐的吗？'
+    }
+    const difficulty = case_.difficulty || 'medium'
+    const category = case_.category || ''
+    const name = case_.name || '顾客'
+    const age = case_.age || ''
+
+    // 按分类生成贴近真实场景的开场白
+    const openingsByCategory = {
+      高血糖: {
+        easy: [
+          `你好，我最近查体检血糖有点高，医生说要注意，我想来看看有什么适合我吃的。`,
+          `你好，我血糖偏高，想配点降糖的药，应该买哪个？`,
+        ],
+        medium: [
+          `你好，我上次去医院，医生说我空腹血糖${case_.现病史?.match(/\d+\.?\d*mmol/)?.[0] || '偏高'}，让我来药店看看有没有辅助调理的。我现在在吃${case_.目前用药 || '药'}，你们有什么可以搭着用的吗？`,
+          `师傅，我想问一下，我血糖控制得不太好，吃了${case_.目前用药 || '降糖药'}感觉效果一般，还有没有别的方案？`,
+        ],
+        hard: [
+          `你好，我糖尿病好几年了，现在在吃${case_.目前用药 || '药'}，最近复查餐后血糖还是高，我听说${Math.random() > 0.5 ? '阿卡波糖' : 'DPP-4抑制剂'}效果不错，你们有卖吗？价格怎么样？`,
+          `你这里有${case_.销售目标?.match(/[一-龥A-Za-z-]+(?:抑制剂|类|片|胶囊)/)?.[0] || '联合降糖药'}吗？我自己在网上查了一下，感觉可以试试，但我有${case_.过敏史 !== '无' ? case_.过敏史 + '过敏' : '一些担心'}，你帮我看看行不行？`,
+        ]
+      },
+      高血压: {
+        easy: [
+          `你好，我最近血压有点高，头有时候会晕，来看看有什么药可以吃。`,
+          `你好，我想买点降压药，你们这有什么？`,
+        ],
+        medium: [
+          `你好，我血压${case_.现病史?.match(/\d+\/\d+/)?.[0] || '偏高'}，在吃${case_.目前用药 || '降压药'}，最近感觉控制得不太稳，你有没有什么建议？`,
+          `师傅，我老公血压高，一直在吃${case_.目前用药 || '药'}，但有时候还是高，你们有没有可以配合着用的？`,
+        ],
+        hard: [
+          `你好，我吃${case_.目前用药 || 'CCB'}有${case_.现病史?.includes('脚肿') ? '脚肿' : Math.random() > 0.5 ? '脚踝有点肿' : '副作用'}，想换或者加个药，我还有${case_.现病史?.includes('冠心病') ? '冠心病' : '其他问题'}，你看怎么搭配比较好？`,
+          `我对${case_.过敏史 !== '无' ? case_.过敏史 : 'ACE抑制剂'}过敏，现在要加强降压方案，你帮我看看有什么合适的替代？`,
+        ]
+      },
+      高血脂: {
+        easy: [
+          `你好，体检说我血脂高，医生让我来买他汀类的药，你们有什么？`,
+          `你好，我胆固醇高，想买点调血脂的，哪个好？`,
+        ],
+        medium: [
+          `你好，我在吃${case_.目前用药 || '他汀药'}，最近复查LDL还是${case_.现病史?.match(/\d+\.?\d*/)?.[0] || '偏高'}，医生让加量，但我有点担心副作用，有没有其他方案？`,
+          `师傅，我甘油三酯很高，他汀类对它效果好吗？还是要换别的？`,
+        ],
+        hard: [
+          `你好，我吃他汀吃了半年，最近感觉腿有点酸，是不是肌肉的问题？我要不要停药？有没有别的降脂办法？`,
+          `我想问一下，鱼油和他汀可以一起吃吗？我甘油三酯和胆固醇都高，想双管齐下。`,
+        ]
+      },
+      高尿酸: {
+        easy: [
+          `你好，我上次痛风发作，现在好了，医生说要吃药控制尿酸，买什么？`,
+          `你好，我尿酸高，关节有时候会疼，有什么可以吃的药？`,
+        ],
+        medium: [
+          `你好，我上次痛风发了，吃了${case_.目前用药 || '消炎药'}好了，但我尿酸还是${case_.现病史?.match(/\d+/)?.[0] || '高'}，要不要长期吃降尿酸的药？`,
+          `师傅，我尿酸高，听说要少吃海鲜啤酒，我平时饮食注意了，但还是高，有没有药可以帮忙？`,
+        ],
+        hard: [
+          `你好，我吃别嘌醇之前皮肤出过疹子，现在要降尿酸，有没有其他选择？我尿酸有${case_.现病史?.match(/\d+/)?.[0] || '500'}多了，肾功能也稍微有点问题。`,
+          `痛风发作期能不能直接就用降尿酸药？还是要先消炎？你帮我解释一下怎么个顺序。`,
+        ]
+      },
+      消化内科: {
+        easy: [
+          `你好，我最近胃不舒服，总是反酸，有没有什么胃药推荐？`,
+          `你好，我肠胃不好，老是胀气，买什么药比较好？`,
+        ],
+        medium: [
+          `你好，我有胃食管反流，在吃${case_.目前用药 || '奥美拉唑'}，但效果一般，吃完饭还是会烧心，你们有没有更好的方案？`,
+          `师傅，我胃镜查出来有慢性胃炎，幽门螺旋杆菌阳性，医生让我来配三联治疗的药，你帮我看看买什么？`,
+        ],
+        hard: [
+          `你好，我长期吃PPI，最近看到说会影响骨质，是真的吗？有没有替代方案？我反流很严重，不吃就难受。`,
+          `我妈妈${age ? age + '岁' : '年纪大了'}，消化不好，经常腹胀腹泻，她还有其他基础病在吃好几种药，有没有消化方面的药可以推荐，不会跟她其他药冲突的？`,
+        ]
+      },
+      中医内科: {
+        easy: [
+          `你好，我最近总是感觉很累，睡不好，想买点中成药调理一下。`,
+          `你好，我体质比较差，容易生病，有没有适合我的调理方案？`,
+        ],
+        medium: [
+          `你好，我${case_.现病史 || '最近总是乏力，手脚发凉'}，中医说我是气虚，你们有什么中成药可以调理？`,
+          `师傅，我想买点六味地黄丸，但不知道自己适不适合，你帮我看看？`,
+        ],
+        hard: [
+          `你好，我在吃西药${case_.目前用药 || '降压药'}，想同时配点中药调理，会不会有冲突？怎么搭配比较好？`,
+          `我已经在吃好几种中成药了，想再加一个活血化瘀的，有没有需要注意的地方？`,
+        ]
+      }
+    }
+
+    const categoryOpenings = openingsByCategory[category]
+    if (categoryOpenings) {
+      const pool = categoryOpenings[difficulty] || categoryOpenings['medium']
+      return pool[Math.floor(Math.random() * pool.length)]
+    }
+
+    // 兜底：通用自然开场
+    const generic = {
+      easy: `你好，我想买点药，${case_.现病史 ? case_.现病史.slice(0, 30) + '……' : '你帮我推荐一下'}`,
+      medium: `你好，我${case_.现病史 || '身体不舒服'}，现在在吃${case_.目前用药 || '一些药'}，你帮我看看有没有合适的。`,
+      hard: `你好，我有个问题想咨询一下。${case_.现病史 || ''}。我在网上查了一些资料，但还是不确定，${case_.销售目标 ? '我想了解' + case_.销售目标.slice(0, 20) : '你帮我分析一下'}。`
+    }
+    return generic[difficulty] || generic['medium']
+  }
+
+  const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {    console.log('handleVoiceTranscript 被调用:', { transcript, isInterim, isFinal })
     
     if (transcript && transcript.trim()) {
       setInput(prevInput => {
@@ -230,21 +343,41 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       }
     })
 
+    const difficultyConfig = {
+      easy: {
+        desc: '简单顾客：性格温和配合，对医药知识了解少，容易被引导，不太会主动提出质疑，推荐什么基本会接受，偶尔问问价格',
+        trust_base: 60,
+        intent_base: 40
+      },
+      medium: {
+        desc: '普通顾客：有一定主见，会询问效果和副作用，有时会说"让我再想想"或比较价格，需要店员耐心解释才会信任',
+        trust_base: 45,
+        intent_base: 25
+      },
+      hard: {
+        desc: '困难顾客：自己查过资料，有既定想法，容易质疑推荐，可能提出挑战性问题（副作用、价格贵、药效存疑），需要专业、有说服力的回答才会改变主意',
+        trust_base: 30,
+        intent_base: 15
+      }
+    }
+    const dc = difficultyConfig[practiceCase?.difficulty || 'medium']
+
     const requestBody = {
       messages: messages,
       practice_case: practiceCase || {
-        姓名: '模拟顾客',
-        年龄: 45,
-        BMI: 24.5,
+        category: '通用',
+        name: '模拟顾客',
+        age: 45,
         过敏史: '无',
-        现病史: '最近总是感觉肠胃不舒服，想买点益生菌',
+        现病史: '最近肠胃不舒服',
         目前用药: '',
         饮食习惯: '饮食不规律',
-        销售目标: '成功推荐益生菌产品'
+        销售目标: '推荐消化类产品'
       },
-      temperature: 0.8,
-      max_tokens: 500,
-      difficulty: practiceCase?.difficulty || 'medium'
+      difficulty: practiceCase?.difficulty || 'medium',
+      difficulty_description: dc.desc,
+      temperature: 0.85,
+      max_tokens: 400
     }
 
     console.log('发送到后端的请求体:', requestBody)
@@ -367,7 +500,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       const initialMessage = {
         id: Date.now(),
         role: 'assistant',
-        content: `您好，我最近身体不太舒服。${practiceCase.现病史}。${practiceCase.目前用药 ? '目前我正在服用' + practiceCase.目前用药 + '。' : ''}您能给我一些建议吗？`
+        content: buildOpeningMessage(practiceCase)
       }
       setMessages([initialMessage])
     } else {
@@ -375,7 +508,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         {
           id: 1,
           role: 'assistant',
-          content: '您好，我是今天的模拟顾客。我最近总是感觉肠胃不舒服，想买点益生菌，但是市面上品牌太多了，不知道该怎么选择。您能给我一些建议吗？'
+          content: '你好，我想买点东西，你们有什么可以推荐的吗？'
         }
       ])
     }
