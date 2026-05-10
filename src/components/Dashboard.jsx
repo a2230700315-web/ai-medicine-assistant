@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { GraduationCap, BookOpen, Eye, EyeOff, Play, FileText, ChevronLeft, ChevronRight, LogOut, Store, Building2, Menu, X, User, Home, Award, Settings, Users, BarChart3 } from 'lucide-react'
 import CaseCategorySelector from './CaseCategorySelector'
 import CaseList from './CaseList'
@@ -12,6 +12,7 @@ import StoreManagement from './StoreManagement'
 import SuperAdminDashboard from './SuperAdminDashboard'
 import AdminDashboard from './AdminDashboard'
 import { useAuth } from '../context/AuthContext'
+import { useBackHandler } from '../App'
 
 function Dashboard() {
   const { user, logout, canAccess } = useAuth()
@@ -163,12 +164,34 @@ function Dashboard() {
     }
   }
 
+  const handleBackToHome = () => {
+    setCurrentMode('learning')
+  }
+
+  const mobileBackHandler = useCallback(() => {
+    if (currentMode === 'super' || currentMode === 'admin') {
+      setCurrentMode('learning')
+    } else if (currentMode === 'practice') {
+      if (currentPracticeCase || selectedCase) {
+        setSelectedCase(null)
+        setCurrentPracticeCase(null)
+      } else if (selectedCategory) {
+        setSelectedCategory(null)
+        setSelectedCase(null)
+      }
+    } else if (currentMode === 'practiceExam' || currentMode === 'realExam' || currentMode === 'storeManagement') {
+      setCurrentMode('learning')
+    }
+  }, [currentMode, currentPracticeCase, selectedCase, selectedCategory])
+
+  useBackHandler(mobileBackHandler)
+
   const renderContent = () => {
     if (currentMode === 'super') {
-      return <SuperAdminDashboard />
+      return <SuperAdminDashboard onBack={handleBackToHome} />
     }
     if (currentMode === 'admin') {
-      return <AdminDashboard />
+      return <AdminDashboard onBack={handleBackToHome} />
     }
     if (currentMode === 'practice') {
       // 移动端：单列顺序展示（案例选择 → 聊天 → 知识助手）
@@ -320,7 +343,10 @@ function Dashboard() {
             <span className="font-medium">权限不足，无法访问该功能</span>
           </div>
         )}
-        {currentMode === 'super' ? <SuperAdminDashboard /> : <AdminDashboard />}
+        {currentMode === 'super'
+          ? <SuperAdminDashboard onBack={handleBackToHome} />
+          : <AdminDashboard onBack={handleBackToHome} />
+        }
       </>
     )
   }

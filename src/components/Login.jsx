@@ -28,12 +28,6 @@ function Login() {
     setLoading(false)
   }
 
-  const demoAccounts = [
-    { username: 'admin', role: '超级管理员', store: '总部', password: 'Admin@123456' },
-    { username: 'manager01', role: '店长', store: '北京朝阳店', password: '123456' },
-    { username: 'staff01', role: '店员', store: '北京朝阳店', password: '123456' }
-  ]
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -104,23 +98,17 @@ function Login() {
 
           <div className="px-6 pb-6 md:px-8 md:pb-8">
             <div className="border-t border-gray-200 pt-5">
-              <p className="text-sm text-gray-500 text-center mb-3">演示账号</p>
-              {/* 小屏：单列，大屏：3列 */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                {demoAccounts.map((account) => (
-                  <button
-                    key={account.username}
-                    onClick={() => {
-                      setUsername(account.username)
-                      setPassword(account.password)
-                    }}
-                    className="p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-left sm:text-center transition-all border border-gray-200 hover:border-blue-300 flex sm:flex-col items-center sm:items-center gap-3 sm:gap-0"
-                  >
-                    <p className="text-sm font-medium text-gray-700">{account.role}</p>
-                    <p className="text-xs text-gray-500 sm:mt-1">{account.store}</p>
-                  </button>
-                ))}
-              </div>
+              <p className="text-sm text-gray-500 text-center mb-3">快捷登录</p>
+              <button
+                onClick={() => {
+                  setUsername('admin')
+                  setPassword('Admin@123456')
+                }}
+                className="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-center transition-all border border-gray-200 hover:border-blue-300"
+              >
+                <p className="text-sm font-medium text-gray-700">超级管理员</p>
+                <p className="text-xs text-gray-500 mt-1">总部</p>
+              </button>
             </div>
           </div>
         </div>

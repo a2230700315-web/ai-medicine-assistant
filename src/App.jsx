@@ -2,7 +2,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 import useMobileBridge from './hooks/use-mobile-bridge'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, createContext, useContext } from 'react'
 
 function isNativeApp() {
   return typeof window !== 'undefined' &&
@@ -10,10 +10,27 @@ function isNativeApp() {
          window.Capacitor.isNativePlatform()
 }
 
+export const BackHandlerContext = createContext(null)
+
+export function useBackHandler(handler) {
+  const registerBackHandler = useContext(BackHandlerContext)
+  useEffect(() => {
+    if (registerBackHandler) {
+      registerBackHandler(handler)
+      return () => registerBackHandler(null)
+    }
+  }, [registerBackHandler, handler])
+}
+
 function AppContent() {
   const { user, loading } = useAuth()
   const [isMobile, setIsMobile] = useState(false)
   const [error, setError] = useState(null)
+  const backHandlerRef = useRef(null)
+
+  const registerBackHandler = (handler) => {
+    backHandlerRef.current = handler
+  }
 
   useEffect(() => {
     const checkMobile = () => {
@@ -34,9 +51,9 @@ function AppContent() {
   }, [])
 
   useMobileBridge({
-    onBackButton: (canGoBack) => {
-      if (canGoBack) {
-        window.history.back()
+    onBackButton: () => {
+      if (backHandlerRef.current) {
+        backHandlerRef.current()
       }
     }
   })
@@ -69,7 +86,11 @@ function AppContent() {
     return <Login />
   }
 
-  return <Dashboard />
+  return (
+    <BackHandlerContext.Provider value={registerBackHandler}>
+      <Dashboard />
+    </BackHandlerContext.Provider>
+  )
 }
 
 function App() {

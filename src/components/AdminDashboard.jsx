@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Users, Plus, Edit2, Trash2, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award } from 'lucide-react'
+import { Users, Plus, Edit2, Trash2, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
-function AdminDashboard() {
+function AdminDashboard({ onBack }) {
   const { user } = useAuth()
   const [staff, setStaff] = useState([])
   const [selectedStaff, setSelectedStaff] = useState(null)
@@ -57,9 +57,20 @@ function AdminDashboard() {
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">门店管理后台</h1>
-              <p className="text-sm text-gray-500 mt-1">{user?.store_id ? `门店ID: ${user.store_id}` : '管理员面板'}</p>
+            <div className="flex items-center gap-3">
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="flex items-center gap-1 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                  返回
+                </button>
+              )}
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">门店管理后台</h1>
+                <p className="text-sm text-gray-500 mt-1">{user?.store_id ? `门店ID: ${user.store_id}` : '管理员面板'}</p>
+              </div>
             </div>
           </div>
         </div>

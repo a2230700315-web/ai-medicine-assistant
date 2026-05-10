@@ -1,10 +1,10 @@
 // build test 2026-05-09
 import { useState, useEffect } from 'react'
-import { Building2, Plus, Edit2, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle, LogOut } from 'lucide-react'
+import { Building2, Plus, Edit2, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle, LogOut, ChevronLeft } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
-function SuperAdminDashboard() {
+function SuperAdminDashboard({ onBack }) {
   const { logout } = useAuth()
   const [stores, setStores] = useState([])
   const [users, setUsers] = useState([])
@@ -21,6 +21,8 @@ function SuperAdminDashboard() {
     create_admin: true,
     admin_username: '',
     admin_password: '',
+    admin_expire_date: '',
+    max_staff: '',
   })
   const [userForm, setUserForm] = useState({
     username: '',
@@ -73,11 +75,13 @@ function SuperAdminDashboard() {
           role: 'admin',
           real_name: storeForm.contact_person || '',
           store_id: newStoreId,
+          expire_date: storeForm.admin_expire_date || null,
+          max_staff: storeForm.max_staff ? parseInt(storeForm.max_staff) : null,
         })
       }
 
       setShowStoreModal(false)
-      setStoreForm({ name: '', contact_person: '', contact_phone: '', expire_date: '', create_admin: true, admin_username: '', admin_password: '' })
+      setStoreForm({ name: '', contact_person: '', contact_phone: '', expire_date: '', create_admin: true, admin_username: '', admin_password: '', admin_expire_date: '', max_staff: '' })
       fetchStores()
       fetchUsers()
     } catch (error) {
@@ -156,9 +160,20 @@ function SuperAdminDashboard() {
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">超级管理后台</h1>
-              <p className="text-sm text-gray-500 mt-1">管理所有门店和用户</p>
+            <div className="flex items-center gap-3">
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="flex items-center gap-1 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                  返回
+                </button>
+              )}
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">超级管理后台</h1>
+                <p className="text-sm text-gray-500 mt-1">管理所有门店和用户</p>
+              </div>
             </div>
             <button
               onClick={logout}
@@ -511,6 +526,26 @@ function SuperAdminDashboard() {
                           onChange={(e) => setStoreForm({ ...storeForm, admin_password: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           placeholder="请设置初始密码"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">账号使用期限</label>
+                        <input
+                          type="date"
+                          value={storeForm.admin_expire_date}
+                          onChange={(e) => setStoreForm({ ...storeForm, admin_expire_date: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">最多可添加店员数</label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={storeForm.max_staff}
+                          onChange={(e) => setStoreForm({ ...storeForm, max_staff: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="不填则不限制"
                         />
                       </div>
                     </div>
