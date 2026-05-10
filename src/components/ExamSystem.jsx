@@ -57,14 +57,26 @@ function ExamSystem({ onBack }) {
     setStage('year')
   }
 
+  const isValidQuestion = (q) => {
+    if (!q.question || !q.question.trim()) return false
+    if (!Array.isArray(q.options) || q.options.length < 2) return false
+    const hasEmptyOption = q.options.some(opt => {
+      if (typeof opt !== 'string') return true
+      return opt.replace(/^[A-E]\.\s*/, '').trim().length === 0
+    })
+    if (hasEmptyOption) return false
+    if (!q.answer || !q.answer.trim()) return false
+    return true
+  }
+
   const handleSelectYear = (year) => {
     setSelectedYear(year)
     const categoryQuestions = sampleQuestions[selectedCategory.id]
     if (categoryQuestions && categoryQuestions[year]) {
-      setQuestions(categoryQuestions[year])
+      setQuestions(categoryQuestions[year].filter(isValidQuestion))
     } else {
       const allQuestions = categoryQuestions ? Object.values(categoryQuestions).flat() : []
-      setQuestions(allQuestions.slice(0, 10))
+      setQuestions(allQuestions.filter(isValidQuestion).slice(0, 10))
     }
     setStage('exam')
     setExamStartTime(Date.now())
@@ -504,7 +516,7 @@ function ExamSystem({ onBack }) {
                                reviewMode && isSelected && !isCorrect ? <X className="w-3 h-3 md:w-4 md:h-4" /> :
                                optionLetter}
                             </span>
-                            <span className="text-gray-700 pt-1 text-sm md:text-base">{option.substring(3)}</span>
+                            <span className="text-gray-700 pt-1 text-sm md:text-base">{option.replace(/^[A-E]\.\s*/, '')}</span>
                           </div>
                         </button>
                       )

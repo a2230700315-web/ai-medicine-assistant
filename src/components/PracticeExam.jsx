@@ -551,6 +551,7 @@ function PracticeExam({ onBack }) {
               <div className="space-y-3">
                 {currentQuestion.options?.map((option, index) => {
                   const optionLetter = option.charAt(0)
+                  const optionContent = option.replace(/^[A-E]\.\s*/, '').trim()
                   const isSelected = answers[currentQuestion.id] === optionLetter
                   const isCorrect = currentQuestion.answer === optionLetter
                   const showResult = quickMode || isSubmitted
@@ -591,7 +592,8 @@ function PracticeExam({ onBack }) {
                             )}
                           </div>
                         )}
-                        <span className="text-gray-800">{option}</span>
+                        <span className="font-medium text-gray-500 flex-shrink-0">{optionLetter}.</span>
+                        <span className="text-gray-800">{optionContent}</span>
                       </div>
                     </div>
                   )

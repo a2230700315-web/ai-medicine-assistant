@@ -48,6 +48,19 @@ const KNOWLEDGE_POINTS = {
   ]
 }
 
+function isValidQuestion(question) {
+  if (!question.question || !question.question.trim()) return false
+  if (!Array.isArray(question.options) || question.options.length < 2) return false
+  // 过滤掉选项内容为空的题目（通常是原始数据中的图片题，无法文字呈现）
+  const hasEmptyOption = question.options.some(opt => {
+    if (typeof opt !== 'string') return true
+    return opt.replace(/^[A-E]\.\s*/, '').trim().length === 0
+  })
+  if (hasEmptyOption) return false
+  if (!question.answer || !question.answer.trim()) return false
+  return true
+}
+
 function shuffleArray(array) {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -103,7 +116,7 @@ export function generateMockPaper(categoryId, options = {}) {
   Object.entries(categoryQuestions).forEach(([year, questions]) => {
     if (includeYears && !includeYears.includes(year)) return
     questions.forEach(q => {
-      if (!excludeDone.includes(q.id)) {
+      if (!excludeDone.includes(q.id) && isValidQuestion(q)) {
         allQuestions.push({
           ...q,
           year,
@@ -206,7 +219,7 @@ export function generateWeaknessPaper(userRecords, categoryId, options = {}) {
   let allQuestions = []
   Object.entries(categoryQuestions).forEach(([year, questions]) => {
     questions.forEach(q => {
-      if (!doneQuestions.has(q.id)) {
+      if (!doneQuestions.has(q.id) && isValidQuestion(q)) {
         allQuestions.push({
           ...q,
           year,
