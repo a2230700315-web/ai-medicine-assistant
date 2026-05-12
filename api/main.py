@@ -736,12 +736,12 @@ async def _transcribe_volc(audio_data: bytes) -> str:
         for i, chunk in enumerate(chunks):
             is_last = (i == len(chunks) - 1)
             await ws.send(_audio_packet(chunk, is_last=is_last))
-            await asyncio.sleep(0.005)
+            await asyncio.sleep(0.1)
 
         text_parts = []
         try:
             while True:
-                msg = await asyncio.wait_for(ws.recv(), timeout=15)
+                msg = await asyncio.wait_for(ws.recv(), timeout=30)
                 seq, payload = _parse_server_msg(msg)
                 if payload is None:
                     continue

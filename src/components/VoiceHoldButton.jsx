@@ -51,7 +51,7 @@ function VoiceHoldButton({ onTranscript, disabled }) {
 
   const handleTouchStart = useCallback((event) => {
     if (disabled || isVoiceProcessing) return
-
+    event.preventDefault()
     const touch = event.touches[0]
     setStartY(touch.clientY)
     setCurrentY(touch.clientY)
@@ -130,6 +130,7 @@ function VoiceHoldButton({ onTranscript, disabled }) {
         onTouchStart={handleTouchStart}
         onContextMenu={preventDefault}
         disabled={disabled || isVoiceProcessing}
+        style={{ WebkitUserSelect: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
         className={`relative flex items-center justify-center w-12 h-12 rounded-full transition-all ${
           isHolding && !isCancelling
             ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
