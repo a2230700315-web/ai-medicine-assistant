@@ -44,7 +44,7 @@ VOLC_API_KEY = os.getenv("VOLC_API_KEY", "")
 VOLC_ENDPOINT_ID = os.getenv("VOLC_ENDPOINT_ID", "")
 VOLC_ASR_APP_KEY = os.getenv("VOLC_ASR_APP_KEY", "")
 VOLC_ASR_ACCESS_KEY = os.getenv("VOLC_ASR_ACCESS_KEY", "")
-VOLC_ASR_RESOURCE_ID = "volc.bigasr.sauc.duration"
+VOLC_ASR_RESOURCE_ID = "volc.seedasr.sauc.duration"
 
 def get_db():
     conn = sqlite3.connect(DB_PATH, check_same_thread=False)
@@ -702,8 +702,7 @@ async def _transcribe_volc(audio_data: bytes) -> str:
     connect_id = str(uuid.uuid4())
     url = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
     headers = {
-        "X-Api-App-Key": VOLC_ASR_APP_KEY,
-        "X-Api-Access-Key": VOLC_ASR_ACCESS_KEY,
+        "X-Api-Key": VOLC_ASR_ACCESS_KEY,
         "X-Api-Resource-Id": VOLC_ASR_RESOURCE_ID,
         "X-Api-Connect-Id": connect_id,
     }
