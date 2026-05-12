@@ -13,11 +13,13 @@ const useVoiceChat = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
-      // Prefer webm/opus (Chrome/Firefox), fall back to default
+      // Prefer webm/opus (Chrome/Firefox), fall back to mp4 (iOS Safari), then default
       const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
         ? 'audio/webm;codecs=opus'
         : MediaRecorder.isTypeSupported('audio/webm')
         ? 'audio/webm'
+        : MediaRecorder.isTypeSupported('audio/mp4')
+        ? 'audio/mp4'
         : ''
 
       const mediaRecorder = mimeType
@@ -48,7 +50,12 @@ const useVoiceChat = () => {
 
         try {
           const formData = new FormData()
-          const ext = (mediaRecorder.mimeType || '').includes('webm') ? 'webm' : 'wav'
+          const mime = mediaRecorder.mimeType || ''
+          const ext = mime.includes('webm') ? 'webm'
+                    : mime.includes('mp4') ? 'mp4'
+                    : mime.includes('ogg') ? 'ogg'
+                    : mime.includes('aac') ? 'aac'
+                    : 'audio'
           formData.append('file', audioBlob, `recording.${ext}`)
 
           const response = await fetch('/api/voice/transcribe', {

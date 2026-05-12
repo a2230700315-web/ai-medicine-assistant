@@ -668,7 +668,7 @@ async def voice_transcribe(file: UploadFile = File(...)):
             text = await _transcribe_volc(audio_data)
             return {"status": "success", "text": text}
         except Exception as e:
-            print(f"豆包ASR失败，降级到Whisper: {e}")
+            print(f"豆包ASR失败，降级到Whisper: {e}, filename={file.filename}, size={len(audio_data)}")
 
     # 降级：本地 Whisper
     suffix = os.path.splitext(file.filename or "audio.webm")[1] or ".webm"
