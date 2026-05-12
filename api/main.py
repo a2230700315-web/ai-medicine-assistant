@@ -704,7 +704,6 @@ async def _transcribe_volc(audio_data: bytes) -> str:
         "request": {
             "reqid": str(uuid.uuid4()),
             "workflow": "audio_in,resample,partition,vad,fe,decode,itn,nlu_punctuation",
-            "sequence": 1,
         }
     }
 
@@ -722,17 +721,26 @@ async def _transcribe_volc(audio_data: bytes) -> str:
             await asyncio.sleep(0.01)
 
         text_parts = []
-        while True:
-            msg = await asyncio.wait_for(ws.recv(), timeout=15)
-            seq, payload = _parse_server_msg(msg)
-            if payload is None:
-                continue
-            for r in payload.get("result", []):
-                t = r.get("text", "")
-                if t:
-                    text_parts.append(t)
-            if seq is not None and seq < 0:
-                break
+        try:
+            while True:
+                msg = await asyncio.wait_for(ws.recv(), timeout=15)
+                seq, payload = _parse_server_msg(msg)
+                if payload is None:
+                    continue
+                for r in payload.get("result", {}).get("text", "") if isinstance(payload.get("result"), dict) else []:
+                    pass
+                result_data = payload.get("result", {})
+                if isinstance(result_data, dict):
+                    t = result_data.get("text", "")
+                    if t:
+                        text_parts.append(t)
+                elif isinstance(result_data, list):
+                    for r in result_data:
+                        t = r.get("text", "")
+                        if t:
+                            text_parts.append(t)
+        except Exception:
+            pass  # 连接关闭即为结束
 
     return "".join(text_parts).strip()
 
