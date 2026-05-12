@@ -35,36 +35,28 @@ function VoiceHoldButton({ onTranscript, disabled }) {
   }, [startRecording])
 
   const handleStopRecording = useCallback((onTranscript, shouldSend = true) => {
-    if (shouldSend) {
-      stopRecording(onTranscript)
-    } else {
-      // 取消录音，停止录音但不发送结果
-      if (isRecording) {
-        stopRecording(() => {}) // 传入空回调，不处理结果
-      }
-    }
-    
+    stopRecording(onTranscript, !shouldSend)
     setIsHolding(false)
     setIsCancelling(false)
     setSlideDistance(0)
-  }, [stopRecording, isRecording])
+  }, [stopRecording])
 
   const handleMouseDown = useCallback((event) => {
     if (disabled || isVoiceProcessing) return
-    
+
     setStartY(event.clientY)
     setCurrentY(event.clientY)
-    handleStartRecording()
-  }, [disabled, isVoiceProcessing, handleStartRecording])
+    handleStartRecording(onTranscript)
+  }, [disabled, isVoiceProcessing, handleStartRecording, onTranscript])
 
   const handleTouchStart = useCallback((event) => {
     if (disabled || isVoiceProcessing) return
-    
+
     const touch = event.touches[0]
     setStartY(touch.clientY)
     setCurrentY(touch.clientY)
-    handleStartRecording()
-  }, [disabled, isVoiceProcessing, handleStartRecording])
+    handleStartRecording(onTranscript)
+  }, [disabled, isVoiceProcessing, handleStartRecording, onTranscript])
 
   const handleMouseMove = useCallback((event) => {
     if (!isHolding) return

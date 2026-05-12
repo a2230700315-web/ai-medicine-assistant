@@ -2,7 +2,7 @@
 FastAPI 主应用
 药店AI培训系统 - 商业化架构
 """
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
@@ -10,6 +10,8 @@ import sqlite3
 import json
 import httpx
 import os
+import tempfile
+import shutil
 from datetime import datetime, timedelta
 from datetime import date
 
@@ -588,6 +590,38 @@ def get_difficulty_config(difficulty):
         }
     }
     return configs.get(difficulty, configs["medium"])
+
+_whisper_model = None
+
+def get_whisper_model():
+    global _whisper_model
+    if _whisper_model is None:
+        try:
+            from faster_whisper import WhisperModel
+            _whisper_model = WhisperModel("tiny", device="cpu", compute_type="int8")
+        except ImportError:
+            raise RuntimeError("faster-whisper未安装，请运行: pip install faster-whisper")
+    return _whisper_model
+
+@app.post("/api/voice/transcribe")
+async def voice_transcribe(file: UploadFile = File(...)):
+    suffix = os.path.splitext(file.filename or "audio.webm")[1] or ".webm"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        shutil.copyfileobj(file.file, tmp)
+        tmp_path = tmp.name
+
+    try:
+        model = get_whisper_model()
+        segments, _ = model.transcribe(tmp_path, language="zh", beam_size=1)
+        text = "".join(seg.text for seg in segments).strip()
+        if not text:
+            return {"status": "success", "text": ""}
+        return {"status": "success", "text": text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"语音识别失败: {str(e)}")
+    finally:
+        os.unlink(tmp_path)
+
 
 if __name__ == "__main__":
     import uvicorn
