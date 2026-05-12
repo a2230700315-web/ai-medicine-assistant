@@ -686,6 +686,26 @@ async def voice_transcribe(file: UploadFile = File(...)):
         os.unlink(tmp_path)
 
 async def _transcribe_volc(audio_data: bytes) -> str:
+    # 用 av 把 webm/任意格式转成 16kHz 单声道 PCM
+    import av, io
+    pcm_buf = io.BytesIO()
+    try:
+        in_buf = io.BytesIO(audio_data)
+        container = av.open(in_buf)
+        out_container = av.open(pcm_buf, mode='w', format='s16le')
+        out_stream = out_container.add_stream('pcm_s16le', rate=16000, layout='mono')
+        for frame in container.decode(audio=0):
+            frame.pts = None
+            for pkt in out_stream.encode(frame.reformat(format='s16', rate=16000, layout='mono')):
+                out_container.mux(pkt)
+        for pkt in out_stream.encode(None):
+            out_container.mux(pkt)
+        out_container.close()
+        container.close()
+        pcm_data = pcm_buf.getvalue()
+    except Exception as e:
+        raise RuntimeError(f"音频转换失败: {e}")
+
     url = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
     headers = {
         "X-Api-Key": VOLC_ASR_ACCESS_KEY,
@@ -696,7 +716,7 @@ async def _transcribe_volc(audio_data: bytes) -> str:
     req_payload = {
         "user": {"uid": "pharmacy"},
         "audio": {
-            "format": "webm",
+            "format": "pcm",
             "sample_rate": 16000,
             "channel": 1,
             "language": "zh-CN",
@@ -708,7 +728,9 @@ async def _transcribe_volc(audio_data: bytes) -> str:
     }
 
     chunk_size = 3200
-    chunks = [audio_data[i:i+chunk_size] for i in range(0, len(audio_data), chunk_size)]
+    chunks = [pcm_data[i:i+chunk_size] for i in range(0, len(pcm_data), chunk_size)]
+    if not chunks:
+        return ""
 
     async with websockets.connect(url, additional_headers=headers, open_timeout=10) as ws:
         await ws.send(_full_client_packet(req_payload))
@@ -718,7 +740,7 @@ async def _transcribe_volc(audio_data: bytes) -> str:
             if i == len(chunks) - 1:
                 seq = -(i + 1)
             await ws.send(_audio_packet(chunk, seq))
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.005)
 
         text_parts = []
         try:
@@ -727,8 +749,6 @@ async def _transcribe_volc(audio_data: bytes) -> str:
                 seq, payload = _parse_server_msg(msg)
                 if payload is None:
                     continue
-                for r in payload.get("result", {}).get("text", "") if isinstance(payload.get("result"), dict) else []:
-                    pass
                 result_data = payload.get("result", {})
                 if isinstance(result_data, dict):
                     t = result_data.get("text", "")
@@ -740,7 +760,9 @@ async def _transcribe_volc(audio_data: bytes) -> str:
                         if t:
                             text_parts.append(t)
         except Exception:
-            pass  # 连接关闭即为结束
+            pass
+
+    return "".join(text_parts).strip()
 
     return "".join(text_parts).strip()
 
