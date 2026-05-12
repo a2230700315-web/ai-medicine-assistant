@@ -688,21 +688,19 @@ async def voice_transcribe(file: UploadFile = File(...)):
 async def _transcribe_volc(audio_data: bytes) -> str:
     # 用 av 把 webm/任意格式转成 16kHz 单声道 PCM
     import av, io
-    pcm_buf = io.BytesIO()
     try:
         in_buf = io.BytesIO(audio_data)
         container = av.open(in_buf)
-        out_container = av.open(pcm_buf, mode='w', format='s16le')
-        out_stream = out_container.add_stream('pcm_s16le', rate=16000, layout='mono')
+        resampler = av.AudioResampler(format='s16', layout='mono', rate=16000)
+        pcm_frames = []
         for frame in container.decode(audio=0):
-            frame.pts = None
-            for pkt in out_stream.encode(frame.reformat(format='s16', rate=16000, layout='mono')):
-                out_container.mux(pkt)
-        for pkt in out_stream.encode(None):
-            out_container.mux(pkt)
-        out_container.close()
+            for resampled in resampler.resample(frame):
+                pcm_frames.append(bytes(resampled.planes[0]))
+        # flush
+        for resampled in resampler.resample(None):
+            pcm_frames.append(bytes(resampled.planes[0]))
         container.close()
-        pcm_data = pcm_buf.getvalue()
+        pcm_data = b''.join(pcm_frames)
     except Exception as e:
         raise RuntimeError(f"音频转换失败: {e}")
 
