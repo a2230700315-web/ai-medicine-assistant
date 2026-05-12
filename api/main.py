@@ -600,64 +600,51 @@ import uuid
 import struct
 import gzip
 
-PROTOCOL_VERSION = 0b0001
-HEADER_SIZE = 0b0001
-MESSAGE_TYPE_FULL_CLIENT = 0b0001
-MESSAGE_TYPE_AUDIO_ONLY = 0b0010
-MESSAGE_TYPE_FULL_SERVER = 0b1001
-MESSAGE_TYPE_SERVER_ACK = 0b1011
-MESSAGE_TYPE_SERVER_ERROR = 0b1111
-MESSAGE_SERIALIZATION_JSON = 0b0001
-MESSAGE_SERIALIZATION_NONE = 0b0000
-MESSAGE_COMPRESSION_GZIP = 0b0001
-MESSAGE_COMPRESSION_NONE = 0b0000
+# 协议常量
+_PROTO_VER = 0b0001
+_HDR_SIZE  = 0b0001
+_TYPE_FULL_CLIENT  = 0b0001
+_TYPE_AUDIO_ONLY   = 0b0010
+_TYPE_FULL_SERVER  = 0b1001
+_FLAG_NO_SEQ  = 0b0000
+_FLAG_POS_SEQ = 0b0001
+_FLAG_NEG_SEQ = 0b0010
+_SER_JSON = 0b0001
+_SER_NONE = 0b0000
+_CMP_GZIP = 0b0001
+_CMP_NONE = 0b0000
 
-def _build_header(msg_type, serial=MESSAGE_SERIALIZATION_JSON, compress=MESSAGE_COMPRESSION_NONE, reserved=0x00):
+def _hdr(msg_type, flags, serial, compress):
     return bytes([
-        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
-        (msg_type << 4) | MESSAGE_TYPE_SERVER_ACK,
-        (serial << 4) | compress,
-        reserved
-    ])
-
-def _build_full_client_request(payload_dict):
-    payload = json.dumps(payload_dict).encode()
-    compressed = gzip.compress(payload)
-    header = bytes([
-        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
-        (MESSAGE_TYPE_FULL_CLIENT << 4) | 0b0001,
-        (MESSAGE_SERIALIZATION_JSON << 4) | MESSAGE_COMPRESSION_GZIP,
+        (_PROTO_VER << 4) | _HDR_SIZE,
+        (msg_type   << 4) | flags,
+        (serial     << 4) | compress,
         0x00
     ])
-    size = struct.pack('>I', len(compressed))
-    return header + size + compressed
 
-def _build_audio_packet(audio_data, is_last=False):
-    msg_type = MESSAGE_TYPE_AUDIO_ONLY
-    flag = 0b0010 if is_last else 0b0001
-    header = bytes([
-        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
-        (msg_type << 4) | flag,
-        (MESSAGE_SERIALIZATION_NONE << 4) | MESSAGE_COMPRESSION_NONE,
-        0x00
-    ])
-    size = struct.pack('>I', len(audio_data))
-    return header + size + audio_data
+def _full_client_packet(payload_dict):
+    payload = gzip.compress(json.dumps(payload_dict).encode())
+    return _hdr(_TYPE_FULL_CLIENT, _FLAG_NO_SEQ, _SER_JSON, _CMP_GZIP) \
+           + struct.pack('>I', len(payload)) + payload
 
-def _parse_response(data):
-    # header is 4 bytes + 4 bytes size
-    if len(data) < 8:
-        return None
+def _audio_packet(audio_data, seq):
+    flags = _FLAG_NEG_SEQ if seq < 0 else _FLAG_POS_SEQ
+    hdr = _hdr(_TYPE_AUDIO_ONLY, flags, _SER_NONE, _CMP_NONE)
+    return hdr + struct.pack('>i', seq) + struct.pack('>I', len(audio_data)) + audio_data
+
+def _parse_server_msg(data):
+    hdr_size = (data[0] & 0x0f) * 4
     msg_type = (data[1] >> 4) & 0x0f
-    serial = (data[2] >> 4) & 0x0f
-    compress = data[2] & 0x0f
-    payload_size = struct.unpack('>I', data[4:8])[0]
-    payload = data[8:8 + payload_size]
-    if compress == MESSAGE_COMPRESSION_GZIP:
-        payload = gzip.decompress(payload)
-    if serial == MESSAGE_SERIALIZATION_JSON:
-        return json.loads(payload.decode())
-    return None
+    compress  = data[2] & 0x0f
+    payload   = data[hdr_size:]
+    if msg_type == _TYPE_FULL_SERVER:
+        seq       = struct.unpack('>i', payload[:4])[0]
+        pay_size  = struct.unpack('>I', payload[4:8])[0]
+        pay_data  = payload[8:8+pay_size]
+        if compress == _CMP_GZIP:
+            pay_data = gzip.decompress(pay_data)
+        return seq, json.loads(pay_data)
+    return None, None
 
 _whisper_model = None
 
@@ -699,16 +686,15 @@ async def voice_transcribe(file: UploadFile = File(...)):
         os.unlink(tmp_path)
 
 async def _transcribe_volc(audio_data: bytes) -> str:
-    connect_id = str(uuid.uuid4())
     url = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
     headers = {
         "X-Api-Key": VOLC_ASR_ACCESS_KEY,
         "X-Api-Resource-Id": VOLC_ASR_RESOURCE_ID,
-        "X-Api-Connect-Id": connect_id,
+        "X-Api-Connect-Id": str(uuid.uuid4()),
     }
 
-    full_request = {
-        "user": {"uid": "pharmacy_user"},
+    req_payload = {
+        "user": {"uid": "pharmacy"},
         "audio": {
             "format": "webm",
             "sample_rate": 16000,
@@ -716,48 +702,39 @@ async def _transcribe_volc(audio_data: bytes) -> str:
             "language": "zh-CN",
         },
         "request": {
-            "model_name": "bigmodel",
-            "enable_itn": True,
-            "enable_punc": True,
+            "reqid": str(uuid.uuid4()),
+            "workflow": "audio_in,resample,partition,vad,fe,decode,itn,nlu_punctuation",
+            "sequence": 1,
         }
     }
 
-    # 分包大小：约200ms 的 webm 数据，这里按 4096 字节分包
-    chunk_size = 4096
+    chunk_size = 3200
     chunks = [audio_data[i:i+chunk_size] for i in range(0, len(audio_data), chunk_size)]
 
     async with websockets.connect(url, additional_headers=headers, open_timeout=10) as ws:
-        # 发送 full client request
-        await ws.send(_build_full_client_request(full_request))
-        # 等待 ACK
-        await ws.recv()
+        await ws.send(_full_client_packet(req_payload))
 
-        # 发送音频分包
         for i, chunk in enumerate(chunks):
-            is_last = (i == len(chunks) - 1)
-            await ws.send(_build_audio_packet(chunk, is_last=is_last))
+            seq = i + 1
+            if i == len(chunks) - 1:
+                seq = -(i + 1)
+            await ws.send(_audio_packet(chunk, seq))
             await asyncio.sleep(0.01)
 
-        # 接收识别结果（流式输入模式，负包发完后返回最终结果）
         text_parts = []
-        async for message in ws:
-            result = _parse_response(message)
-            if result is None:
+        while True:
+            msg = await asyncio.wait_for(ws.recv(), timeout=15)
+            seq, payload = _parse_server_msg(msg)
+            if payload is None:
                 continue
-            # 提取识别文本
-            payload_msg = result.get("payload_msg", {})
-            result_text = payload_msg.get("result", [{}])
-            if isinstance(result_text, list) and result_text:
-                utterances = result_text[0].get("utterances", [])
-                for utt in utterances:
-                    t = utt.get("text", "")
-                    if t:
-                        text_parts.append(t)
-            # 检查是否结束
-            if result.get("is_last_package"):
+            for r in payload.get("result", []):
+                t = r.get("text", "")
+                if t:
+                    text_parts.append(t)
+            if seq is not None and seq < 0:
                 break
 
-        return "".join(text_parts).strip()
+    return "".join(text_parts).strip()
 
 
 if __name__ == "__main__":
