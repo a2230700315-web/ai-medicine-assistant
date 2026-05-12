@@ -149,28 +149,11 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     return generic[difficulty] || generic['medium']
   }
 
-  const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {    console.log('handleVoiceTranscript 被调用:', { transcript, isInterim, isFinal })
-    
+  const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {
     if (transcript && transcript.trim()) {
-      setInput(prevInput => {
-        let newText = transcript
-        
-        if (isInterim) {
-          const sentences = prevInput.split(/[。！？.!?]/).filter(s => s.trim())
-          if (sentences.length > 0) {
-            sentences[sentences.length - 1] = transcript
-            newText = sentences.join('。') + '。'
-          }
-        } else if (isFinal) {
-          newText = prevInput ? prevInput + ' ' + transcript : transcript
-        }
-        
-        console.log('设置输入框内容:', newText)
-        return newText
-      })
-      
+      setInput(() => transcript)
+
       if (isFinal) {
-        console.log('检测到最终结果，准备发送消息')
         setTimeout(() => {
           handleSendMessage()
         }, 500)
@@ -196,10 +179,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
 
   const parseMetadata = (content) => {
     try {
-      console.log('解析内容:', content)
-      
       if (!content || content.trim() === '') {
-        console.log('内容为空，返回默认')
         return {
           content: '（顾客正在思考，请继续沟通...）',
           trustScore: 50,
@@ -210,14 +190,11 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       let separator = null
       if (content.includes('@@@')) {
         separator = '@@@'
-        console.log('使用 @@@ 分隔符')
       } else if (content.includes('[/METADATA]')) {
         separator = '[/METADATA]'
-        console.log('使用 [/METADATA] 分隔符（旧格式）')
       }
 
       if (!separator) {
-        console.log('没有找到分隔符，直接显示内容')
         return {
           content: content.trim(),
           trustScore: 50,
@@ -226,43 +203,31 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       }
 
       const parts = content.split(separator)
-      console.log('分割后的部分:', parts)
-      
+
       if (parts.length >= 2) {
         const dialogueContent = parts[0].trim()
         const jsonData = parts[1].trim()
-        
-        console.log('对话内容:', dialogueContent)
-        console.log('JSON数据:', jsonData)
-        
+
         let parsedMetadata = { trustScore: 50, currentStage: 'initial' }
-        
+
         try {
           parsedMetadata = JSON.parse(jsonData)
-          console.log('解析成功:', parsedMetadata)
         } catch (e) {
           console.error('解析JSON失败:', e, jsonData)
         }
-        
-        const finalContent = dialogueContent || '（顾客正在思考，请继续沟通...）'
-        console.log('最终内容:', finalContent)
-        console.log('信任度分数:', parsedMetadata.trust_score)
-        console.log('销售阶段:', parsedMetadata.current_stage)
-        console.log('购买意向:', parsedMetadata.purchase_intent)
-        
+
         return {
-          content: finalContent,
+          content: dialogueContent || '（顾客正在思考，请继续沟通...）',
           trustScore: parsedMetadata.trust_score || 50,
           currentStage: parsedMetadata.current_stage || 'initial',
           purchaseIntent: parsedMetadata.purchase_intent || 25
         }
       }
-      
-      console.log('分割部分不足2个，返回原始内容')
-      return { 
-        content: content.trim(), 
-        trustScore: 50, 
-        currentStage: 'initial' 
+
+      return {
+        content: content.trim(),
+        trustScore: 50,
+        currentStage: 'initial'
       }
     } catch (e) {
       console.error('解析元数据失败:', e)
@@ -380,8 +345,6 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       max_tokens: 400
     }
 
-    console.log('发送到后端的请求体:', requestBody)
-
     const response = await fetch('/api/chat/stream', {
       method: 'POST',
       headers: {
@@ -405,26 +368,20 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
 
     try {
       const responseData = JSON.parse(responseText)
-      console.log('接收到JSON响应:', responseData)
-      
+
       if (responseData.error) {
         console.error('API返回错误:', responseData)
         throw new Error(`API错误: ${responseData.message || responseData.error}`)
       }
-      
+
       if (responseData && responseData.content) {
-        const content = responseData.content
-        console.log('提取的内容:', content)
-        const parsed = parseMetadata(content)
+        const parsed = parseMetadata(responseData.content)
         onComplete(parsed)
       } else {
         console.error('JSON响应格式错误:', responseData)
         throw new Error('API响应格式错误')
       }
     } catch (jsonError) {
-      console.log('JSON解析失败，处理为文本响应:', jsonError.message)
-      console.log('接收到文本响应:', responseText)
-      
       if (responseText.includes('error') || responseText.includes('Error')) {
         console.error('文本响应包含错误:', responseText)
         throw new Error(`API错误: ${responseText}`)
