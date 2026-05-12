@@ -727,7 +727,7 @@ async def _transcribe_volc(audio_data: bytes) -> str:
     chunk_size = 4096
     chunks = [audio_data[i:i+chunk_size] for i in range(0, len(audio_data), chunk_size)]
 
-    async with websockets.connect(url, extra_headers=headers, open_timeout=10) as ws:
+    async with websockets.connect(url, additional_headers=headers, open_timeout=10) as ws:
         # 发送 full client request
         await ws.send(_build_full_client_request(full_request))
         # 等待 ACK
