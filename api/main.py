@@ -42,6 +42,9 @@ db = Database()
 
 VOLC_API_KEY = os.getenv("VOLC_API_KEY", "")
 VOLC_ENDPOINT_ID = os.getenv("VOLC_ENDPOINT_ID", "")
+VOLC_ASR_APP_KEY = os.getenv("VOLC_ASR_APP_KEY", "")
+VOLC_ASR_ACCESS_KEY = os.getenv("VOLC_ASR_ACCESS_KEY", "")
+VOLC_ASR_RESOURCE_ID = "volc.bigasr.sauc.duration"
 
 def get_db():
     conn = sqlite3.connect(DB_PATH, check_same_thread=False)
@@ -591,6 +594,71 @@ def get_difficulty_config(difficulty):
     }
     return configs.get(difficulty, configs["medium"])
 
+import asyncio
+import websockets
+import uuid
+import struct
+import gzip
+
+PROTOCOL_VERSION = 0b0001
+HEADER_SIZE = 0b0001
+MESSAGE_TYPE_FULL_CLIENT = 0b0001
+MESSAGE_TYPE_AUDIO_ONLY = 0b0010
+MESSAGE_TYPE_FULL_SERVER = 0b1001
+MESSAGE_TYPE_SERVER_ACK = 0b1011
+MESSAGE_TYPE_SERVER_ERROR = 0b1111
+MESSAGE_SERIALIZATION_JSON = 0b0001
+MESSAGE_SERIALIZATION_NONE = 0b0000
+MESSAGE_COMPRESSION_GZIP = 0b0001
+MESSAGE_COMPRESSION_NONE = 0b0000
+
+def _build_header(msg_type, serial=MESSAGE_SERIALIZATION_JSON, compress=MESSAGE_COMPRESSION_NONE, reserved=0x00):
+    return bytes([
+        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
+        (msg_type << 4) | MESSAGE_TYPE_SERVER_ACK,
+        (serial << 4) | compress,
+        reserved
+    ])
+
+def _build_full_client_request(payload_dict):
+    payload = json.dumps(payload_dict).encode()
+    compressed = gzip.compress(payload)
+    header = bytes([
+        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
+        (MESSAGE_TYPE_FULL_CLIENT << 4) | 0b0001,
+        (MESSAGE_SERIALIZATION_JSON << 4) | MESSAGE_COMPRESSION_GZIP,
+        0x00
+    ])
+    size = struct.pack('>I', len(compressed))
+    return header + size + compressed
+
+def _build_audio_packet(audio_data, is_last=False):
+    msg_type = MESSAGE_TYPE_AUDIO_ONLY
+    flag = 0b0010 if is_last else 0b0001
+    header = bytes([
+        (PROTOCOL_VERSION << 4) | HEADER_SIZE,
+        (msg_type << 4) | flag,
+        (MESSAGE_SERIALIZATION_NONE << 4) | MESSAGE_COMPRESSION_NONE,
+        0x00
+    ])
+    size = struct.pack('>I', len(audio_data))
+    return header + size + audio_data
+
+def _parse_response(data):
+    # header is 4 bytes + 4 bytes size
+    if len(data) < 8:
+        return None
+    msg_type = (data[1] >> 4) & 0x0f
+    serial = (data[2] >> 4) & 0x0f
+    compress = data[2] & 0x0f
+    payload_size = struct.unpack('>I', data[4:8])[0]
+    payload = data[8:8 + payload_size]
+    if compress == MESSAGE_COMPRESSION_GZIP:
+        payload = gzip.decompress(payload)
+    if serial == MESSAGE_SERIALIZATION_JSON:
+        return json.loads(payload.decode())
+    return None
+
 _whisper_model = None
 
 def get_whisper_model():
@@ -600,27 +668,97 @@ def get_whisper_model():
             from faster_whisper import WhisperModel
             _whisper_model = WhisperModel("tiny", device="cpu", compute_type="int8")
         except ImportError:
-            raise RuntimeError("faster-whisper未安装，请运行: pip install faster-whisper")
+            raise RuntimeError("faster-whisper未安装")
     return _whisper_model
 
 @app.post("/api/voice/transcribe")
 async def voice_transcribe(file: UploadFile = File(...)):
+    audio_data = await file.read()
+
+    # 优先用豆包 ASR
+    if VOLC_ASR_APP_KEY and VOLC_ASR_ACCESS_KEY:
+        try:
+            text = await _transcribe_volc(audio_data)
+            return {"status": "success", "text": text}
+        except Exception as e:
+            print(f"豆包ASR失败，降级到Whisper: {e}")
+
+    # 降级：本地 Whisper
     suffix = os.path.splitext(file.filename or "audio.webm")[1] or ".webm"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-        shutil.copyfileobj(file.file, tmp)
+        tmp.write(audio_data)
         tmp_path = tmp.name
-
     try:
         model = get_whisper_model()
         segments, _ = model.transcribe(tmp_path, language="zh", beam_size=1)
         text = "".join(seg.text for seg in segments).strip()
-        if not text:
-            return {"status": "success", "text": ""}
         return {"status": "success", "text": text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"语音识别失败: {str(e)}")
     finally:
         os.unlink(tmp_path)
+
+async def _transcribe_volc(audio_data: bytes) -> str:
+    connect_id = str(uuid.uuid4())
+    url = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
+    headers = {
+        "X-Api-App-Key": VOLC_ASR_APP_KEY,
+        "X-Api-Access-Key": VOLC_ASR_ACCESS_KEY,
+        "X-Api-Resource-Id": VOLC_ASR_RESOURCE_ID,
+        "X-Api-Connect-Id": connect_id,
+    }
+
+    full_request = {
+        "user": {"uid": "pharmacy_user"},
+        "audio": {
+            "format": "webm",
+            "sample_rate": 16000,
+            "channel": 1,
+            "language": "zh-CN",
+        },
+        "request": {
+            "model_name": "bigmodel",
+            "enable_itn": True,
+            "enable_punc": True,
+        }
+    }
+
+    # 分包大小：约200ms 的 webm 数据，这里按 4096 字节分包
+    chunk_size = 4096
+    chunks = [audio_data[i:i+chunk_size] for i in range(0, len(audio_data), chunk_size)]
+
+    async with websockets.connect(url, extra_headers=headers, open_timeout=10) as ws:
+        # 发送 full client request
+        await ws.send(_build_full_client_request(full_request))
+        # 等待 ACK
+        await ws.recv()
+
+        # 发送音频分包
+        for i, chunk in enumerate(chunks):
+            is_last = (i == len(chunks) - 1)
+            await ws.send(_build_audio_packet(chunk, is_last=is_last))
+            await asyncio.sleep(0.01)
+
+        # 接收识别结果（流式输入模式，负包发完后返回最终结果）
+        text_parts = []
+        async for message in ws:
+            result = _parse_response(message)
+            if result is None:
+                continue
+            # 提取识别文本
+            payload_msg = result.get("payload_msg", {})
+            result_text = payload_msg.get("result", [{}])
+            if isinstance(result_text, list) and result_text:
+                utterances = result_text[0].get("utterances", [])
+                for utt in utterances:
+                    t = utt.get("text", "")
+                    if t:
+                        text_parts.append(t)
+            # 检查是否结束
+            if result.get("is_last_package"):
+                break
+
+        return "".join(text_parts).strip()
 
 
 if __name__ == "__main__":
