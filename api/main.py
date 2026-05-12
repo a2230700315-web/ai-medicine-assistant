@@ -627,10 +627,10 @@ def _full_client_packet(payload_dict):
     return _hdr(_TYPE_FULL_CLIENT, _FLAG_NO_SEQ, _SER_JSON, _CMP_GZIP) \
            + struct.pack('>I', len(payload)) + payload
 
-def _audio_packet(audio_data, seq):
-    flags = _FLAG_NEG_SEQ if seq < 0 else _FLAG_POS_SEQ
+def _audio_packet(audio_data, is_last=False):
+    flags = _FLAG_NEG_SEQ if is_last else _FLAG_NO_SEQ
     hdr = _hdr(_TYPE_AUDIO_ONLY, flags, _SER_NONE, _CMP_NONE)
-    return hdr + struct.pack('>i', seq) + struct.pack('>I', len(audio_data)) + audio_data
+    return hdr + struct.pack('>I', len(audio_data)) + audio_data
 
 def _parse_server_msg(data):
     hdr_size = (data[0] & 0x0f) * 4
@@ -734,10 +734,8 @@ async def _transcribe_volc(audio_data: bytes) -> str:
         await ws.send(_full_client_packet(req_payload))
 
         for i, chunk in enumerate(chunks):
-            seq = i + 1
-            if i == len(chunks) - 1:
-                seq = -(i + 1)
-            await ws.send(_audio_packet(chunk, seq))
+            is_last = (i == len(chunks) - 1)
+            await ws.send(_audio_packet(chunk, is_last=is_last))
             await asyncio.sleep(0.005)
 
         text_parts = []
