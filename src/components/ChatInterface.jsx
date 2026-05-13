@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, MessageSquare, User, Bot, RotateCcw, TrendingUp, AlertCircle, ChevronUp, ChevronDown } from 'lucide-react'
+import { Send, MessageSquare, User, Bot, RotateCcw, TrendingUp, AlertCircle, ChevronUp, ChevronDown, ArrowLeftRight } from 'lucide-react'
 import ReviewModal from './ReviewModal'
 import { saveProgress } from '../utils/progressStorage'
 import VoiceHoldButton from './VoiceHoldButton'
 
 function ChatInterface({ onReview, practiceCase, examMode = false }) {
+  const [roleMode, setRoleMode] = useState('user') // 'user'=用户扮店员 'ai'=AI扮店员
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -14,16 +15,15 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   ])
 
   useEffect(() => {
-    if (practiceCase) {
-      const openings = buildOpeningMessage(practiceCase)
-      const initialMessage = {
-        id: Date.now(),
-        role: 'assistant',
-        content: openings
-      }
-      setMessages([initialMessage])
-    }
-  }, [practiceCase])
+    const opening = roleMode === 'ai'
+      ? buildAIStaffOpening(practiceCase)
+      : practiceCase ? buildOpeningMessage(practiceCase) : '你好，我想买点东西，你们有什么可以推荐的吗？'
+    setMessages([{ id: Date.now(), role: 'assistant', content: opening }])
+    setTrustScore(50)
+    setCurrentStage('initial')
+    setPurchaseIntent(25)
+    setShowPurchaseSuccess(false)
+  }, [practiceCase, roleMode])
 
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -147,6 +147,17 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       hard: `你好，我有个问题想咨询一下。${case_.现病史 || ''}。我在网上查了一些资料，但还是不确定，${case_.销售目标 ? '我想了解' + case_.销售目标.slice(0, 20) : '你帮我分析一下'}。`
     }
     return generic[difficulty] || generic['medium']
+  }
+
+  const buildAIStaffOpening = (case_) => {
+    if (!case_) return '您好，欢迎光临！请问您今天有什么需要帮助的吗？'
+    const name = case_.姓名 || '这位顾客'
+    const templates = [
+      `您好，欢迎光临！请问您今天有什么不舒服，或者有什么需要吗？`,
+      `您好！请问您是自己来配药，还是帮家人来的呢？`,
+      `您好，欢迎！今天有什么可以帮到您的？是身体有什么不舒服吗？`,
+    ]
+    return templates[Math.floor(Math.random() * templates.length)]
   }
 
   const handleVoiceTranscript = (transcript, isInterim = false, isFinal = false) => {
@@ -341,6 +352,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       },
       difficulty: practiceCase?.difficulty || 'medium',
       difficulty_description: dc.desc,
+      role_mode: roleMode,
       temperature: 0.85,
       max_tokens: 400
     }
@@ -453,22 +465,10 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   }
 
   const handleReset = () => {
-    if (practiceCase) {
-      const initialMessage = {
-        id: Date.now(),
-        role: 'assistant',
-        content: buildOpeningMessage(practiceCase)
-      }
-      setMessages([initialMessage])
-    } else {
-      setMessages([
-        {
-          id: 1,
-          role: 'assistant',
-          content: '你好，我想买点东西，你们有什么可以推荐的吗？'
-        }
-      ])
-    }
+    const opening = roleMode === 'ai'
+      ? buildAIStaffOpening(practiceCase)
+      : practiceCase ? buildOpeningMessage(practiceCase) : '你好，我想买点东西，你们有什么可以推荐的吗？'
+    setMessages([{ id: Date.now(), role: 'assistant', content: opening }])
     setShowReview(false)
     setReviewData(null)
     setTrustScore(50)
@@ -510,12 +510,25 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         </div>
         <div className="flex gap-2">
           <button
+            onClick={() => setRoleMode(m => m === 'user' ? 'ai' : 'user')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-sm ${
+              roleMode === 'ai'
+                ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+            title={roleMode === 'ai' ? '当前：AI示范店员模式' : '当前：练习模式'}
+          >
+            <ArrowLeftRight className="w-4 h-4" />
+            <span>{roleMode === 'ai' ? 'AI示范店员' : '练习模式'}</span>
+          </button>
+          <button
             onClick={handleReset}
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
           >
             <RotateCcw className="w-4 h-4" />
             <span className="text-sm">重新开始</span>
           </button>
+          {roleMode === 'user' && (
           <button
             onClick={handleReview}
             disabled={messages.length < 3 || isLoading}
@@ -524,9 +537,11 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
             <TrendingUp className="w-4 h-4" />
             <span className="text-sm">复盘分析</span>
           </button>
+          )}
         </div>
       </div>
 
+      {roleMode === 'user' && (
       <div className={`mb-4 p-3 md:p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg ${showStatusBar ? '' : 'hidden md:block'}`}>
         {showPurchaseSuccess && (
           <div className="mb-3 p-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg border border-green-200">
@@ -589,15 +604,23 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
           </button>
         </div>
       </div>
+      )}
 
-      {!showStatusBar && (
-        <button 
+      {roleMode === 'user' && !showStatusBar && (
+        <button
           onClick={() => setShowStatusBar(true)}
           className="md:hidden mb-2 p-2 bg-purple-50 rounded-lg flex items-center justify-center gap-2 text-purple-600"
         >
           <ChevronUp className="w-4 h-4" />
           <span className="text-sm">显示状态栏</span>
         </button>
+      )}
+
+      {roleMode === 'ai' && (
+        <div className="mb-3 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-2 text-sm text-amber-700">
+          <ArrowLeftRight className="w-4 h-4 flex-shrink-0" />
+          <span>AI示范店员模式：你扮演顾客，观察专业店员如何问诊和推荐</span>
+        </div>
       )}
 
       <div className="flex-1 overflow-y-auto space-y-3 md:space-y-4 mb-4 p-3 md:p-4 bg-gray-50 rounded-lg">
@@ -610,8 +633,12 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
           >
             <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
               message.role === 'user'
-                ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
-                : 'bg-gradient-to-r from-orange-400 to-red-500'
+                ? roleMode === 'ai'
+                  ? 'bg-gradient-to-r from-orange-400 to-red-500'
+                  : 'bg-gradient-to-r from-blue-500 to-indigo-600'
+                : roleMode === 'ai'
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-600'
+                  : 'bg-gradient-to-r from-orange-400 to-red-500'
             }`}>
               {message.role === 'user' ? (
                 <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
@@ -692,12 +719,24 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
         </div>
         <div className="flex gap-2 md:hidden">
           <button
+            onClick={() => setRoleMode(m => m === 'user' ? 'ai' : 'user')}
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm ${
+              roleMode === 'ai'
+                ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white'
+                : 'bg-gray-100 text-gray-700'
+            }`}
+          >
+            <ArrowLeftRight className="w-4 h-4" />
+            <span>{roleMode === 'ai' ? 'AI示范' : '练习'}</span>
+          </button>
+          <button
             onClick={handleReset}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg"
           >
             <RotateCcw className="w-4 h-4" />
             <span className="text-sm">重新开始</span>
           </button>
+          {roleMode === 'user' && (
           <button
             onClick={handleReview}
             disabled={messages.length < 3 || isLoading}
@@ -706,6 +745,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
             <TrendingUp className="w-4 h-4" />
             <span className="text-sm">复盘分析</span>
           </button>
+          )}
         </div>
       </div>
     </div>

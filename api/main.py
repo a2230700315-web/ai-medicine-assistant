@@ -63,6 +63,7 @@ class ChatRequest(BaseModel):
     practice_case: Optional[dict] = None
     type: Optional[str] = "chat"
     difficulty: Optional[str] = "medium"
+    role_mode: Optional[str] = "user"
 
 class LearningProgressUpdate(BaseModel):
     user_id: int
@@ -369,8 +370,9 @@ async def chat_stream(request: ChatRequest):
     practice_case = request.practice_case
     request_type = request.type
     difficulty = request.difficulty
+    role_mode = request.role_mode or "user"
 
-    system_prompt = build_system_prompt(practice_case, difficulty, request_type)
+    system_prompt = build_system_prompt(practice_case, difficulty, request_type, role_mode)
 
     api_messages = [{"role": "system", "content": system_prompt}]
     for msg in messages:
@@ -471,7 +473,9 @@ async def chat_review(request: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def build_system_prompt(practice_case, difficulty, request_type):
+def build_system_prompt(practice_case, difficulty, request_type, role_mode="user"):
+    if role_mode == "ai":
+        return build_staff_prompt(practice_case)
     difficulty_config = get_difficulty_config(difficulty)
 
     base_prompt = f"""你是一位来药店咨询的顾客。请按照以下要求进行角色扮演：
@@ -546,6 +550,52 @@ def build_system_prompt(practice_case, difficulty, request_type):
         return base_prompt + case_info
 
     return base_prompt
+
+def build_staff_prompt(practice_case):
+    case_info = ""
+    if practice_case:
+        case_info = f"""
+## 顾客信息（仅供你参考，不要直接说出来）
+- 姓名: {practice_case.get('姓名', '顾客')}
+- 年龄: {practice_case.get('年龄', 45)}岁
+- 性别: {practice_case.get('性别', '不详')}
+- 过敏史: {practice_case.get('过敏史', '无')}
+- 现病史: {practice_case.get('现病史', '')}
+- 目前用药: {practice_case.get('目前用药', '无')}
+- 饮食习惯: {practice_case.get('饮食习惯', '')}
+- 销售目标: {practice_case.get('销售目标', '')}"""
+
+    return f"""你是一名经验丰富、专业素质极高的资深药店店员，正在接待一位进店的顾客（由用户扮演）。
+
+## 你的核心理念
+你不是一个卖药的推销员，你是一个帮顾客解决健康问题的专业人士。顾客的问题解决了，销售自然会发生。
+
+## 行为准则（严格遵守）
+
+**第一步永远是问诊**
+- 开场主动打招呼，询问顾客的具体症状或需求
+- 不要上来就推产品，先搞清楚顾客的问题是什么
+- 问诊要有层次：主要症状 → 持续时间 → 既往病史/用药 → 过敏史
+
+**说话方式**
+- 说人话，不说医学术语。把"血糖升高"说成"血糖高了"，把"肝功能受损"说成"对肝脏有点伤"
+- 语气温和亲切，像一个懂医的邻居朋友，不是冷冰冰的医院
+- 解释问题时要通俗易懂，让没有医学背景的人听得明白
+
+**推荐产品的时机**
+- 先充分了解症状，再推荐
+- 推荐时说清楚为什么这个产品适合他，不是"这个卖得好"，而是"这个针对你这个情况……"
+- 主动提联合用药方案，但要解释清楚每个药的作用
+- 主动告知注意事项、禁忌、服用方法
+
+**专业体现**
+- 对顾客描述的症状给出合理的分析和判断
+- 能识别潜在风险（如某些症状需要就医）
+- 诚实，不夸大产品效果
+
+## 示范标准
+你的每一句话都是在向正在观察的店员学员展示：什么叫专业、有温度、以解决问题为导向的药店服务。
+{case_info}"""
 
 def get_difficulty_config(difficulty):
     configs = {
