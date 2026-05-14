@@ -285,92 +285,48 @@ function Dashboard() {
         )
       }
 
-      // ── 桌面端：三栏布局，左右可折叠 ──────────────────────────
+      // ── 桌面端：恢复原来的三列 grid 布局 ──────────────────────
       return (
-        <div className="flex gap-0 h-[calc(100vh-130px)] min-h-[500px]">
-          {/* 左栏：案例库，可折叠 */}
-          <div className={`flex-shrink-0 transition-all duration-300 ${sidebarOpen ? 'w-72' : 'w-10'} flex flex-col border-r border-gray-200 bg-white rounded-l-xl overflow-hidden`}>
-            {sidebarOpen ? (
-              <div className="flex flex-col h-full overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 flex-shrink-0">
-                  <span className="font-semibold text-gray-700 text-sm">模拟案例库</span>
-                  <button onClick={() => setSidebarOpen(false)} className="p-1 text-gray-400 hover:text-gray-600 rounded">
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                  {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
-                    <CaseCategorySelector
-                      cases={cases}
-                      onCategorySelect={handleCategorySelect}
-                      selectedCategory={selectedCategory}
-                      onBack={handleBackToCategories}
-                    />
-                  )}
-                  {!examMode && selectedCategory && !selectedCase && !currentPracticeCase && (
-                    <CaseList
-                      cases={cases}
-                      category={selectedCategory}
-                      onCaseSelect={handleCaseSelect}
-                      onBack={handleBackToCategories}
-                    />
-                  )}
-                  {!examMode && (selectedCase || currentPracticeCase) && (
-                    <CaseDetail
-                      case_={selectedCase || currentPracticeCase}
-                      onStartPractice={handleStartPractice}
-                      onBack={handleBackToList}
-                    />
-                  )}
-                  {examMode && (
-                    <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-                      <EyeOff className="w-12 h-12 mb-3" />
-                      <p className="text-sm font-medium">考试模式已启用</p>
-                    </div>
-                  )}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">
+            {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseCategorySelector
+                cases={cases}
+                onCategorySelect={handleCategorySelect}
+                selectedCategory={selectedCategory}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && selectedCategory && !selectedCase && !currentPracticeCase && (
+              <CaseList
+                cases={cases}
+                category={selectedCategory}
+                onCaseSelect={handleCaseSelect}
+                onBack={handleBackToCategories}
+              />
+            )}
+            {!examMode && (selectedCase || currentPracticeCase) && (
+              <CaseDetail
+                case_={selectedCase || currentPracticeCase}
+                onStartPractice={handleStartPractice}
+                onBack={handleBackToList}
+              />
+            )}
+            {examMode && (
+              <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col items-center justify-center">
+                <div className="text-center">
+                  <EyeOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-700">考试模式已启用</h3>
+                  <p className="text-sm text-gray-500 mt-2">案例档案已隐藏</p>
                 </div>
               </div>
-            ) : (
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="flex flex-col items-center justify-center h-full w-full text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors gap-2 py-4"
-                title="展开案例库"
-              >
-                <ChevronRight className="w-4 h-4" />
-                <span className="text-xs [writing-mode:vertical-lr]">案例库</span>
-              </button>
             )}
           </div>
-
-          {/* 中栏：对话 */}
-          <div className="flex-1 min-w-0 flex flex-col bg-white">
+          <div className="lg:col-span-6">
             <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
           </div>
-
-          {/* 右栏：知识助手，可折叠 */}
-          <div className={`flex-shrink-0 transition-all duration-300 ${assistantCollapsed ? 'w-10' : 'w-80'} flex flex-col border-l border-gray-200 bg-white rounded-r-xl overflow-hidden`}>
-            {assistantCollapsed ? (
-              <button
-                onClick={() => setAssistantCollapsed(false)}
-                className="flex flex-col items-center justify-center h-full w-full text-gray-400 hover:text-purple-500 hover:bg-purple-50 transition-colors gap-2 py-4"
-                title="展开知识助手"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <span className="text-xs [writing-mode:vertical-lr]">知识助手</span>
-              </button>
-            ) : (
-              <div className="flex flex-col h-full overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 flex-shrink-0">
-                  <span className="font-semibold text-gray-700 text-sm">药店知识助手</span>
-                  <button onClick={() => setAssistantCollapsed(true)} className="p-1 text-gray-400 hover:text-gray-600 rounded">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                  <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
-                </div>
-              </div>
-            )}
+          <div className="lg:col-span-3">
+            <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
           </div>
         </div>
       )
@@ -448,7 +404,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col overflow-hidden md:min-h-screen md:h-auto md:overflow-visible">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       {permissionDenied && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
           <X className="w-5 h-5" />
@@ -537,7 +493,7 @@ function Dashboard() {
             </div>
           )}
 
-          <main className={`flex-1 min-h-0 ${currentMode === 'practice' && isMobile ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
+          <main className={`flex-1 min-h-0 ${currentMode === 'practice' ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
             {renderContent()}
           </main>
 
@@ -650,7 +606,7 @@ function Dashboard() {
               </div>
             </header>
 
-            <main className={`flex-1 min-h-0 ${currentMode === 'practice' && !isMobile ? 'overflow-hidden p-4' : 'overflow-y-auto p-6'}`}>
+            <main className="flex-1 overflow-y-auto p-6">
               {renderContent()}
             </main>
           </div>

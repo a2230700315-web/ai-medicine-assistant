@@ -1,4 +1,4 @@
-import { User, Calendar, Activity, AlertTriangle, Pill, Utensils, Target, ArrowLeft, Play, Star } from 'lucide-react'
+import { User, Activity, AlertTriangle, Pill, Utensils, Target, ArrowLeft, Play, Star } from 'lucide-react'
 import { useState } from 'react'
 
 function CaseDetail({ case_, onStartPractice, onBack }) {
@@ -13,158 +13,99 @@ function CaseDetail({ case_, onStartPractice, onBack }) {
   const bmiCategory = getBMICategory(case_.bmi)
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
+    <div className="bg-white rounded-xl shadow-lg p-4 h-full flex flex-col">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <div className="w-9 h-9 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center">
+            <User className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{case_.name}</h2>
-            <p className="text-sm text-gray-500">案例编号: #{case_.id}</p>
+            <h2 className="text-sm font-bold text-gray-800">{case_.name}</h2>
+            <p className="text-xs text-gray-400">#{case_.id}</p>
           </div>
         </div>
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+          className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-xs"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm">返回</span>
+          <ArrowLeft className="w-3 h-3" />
+          返回
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
-            <div className="flex items-center gap-2 mb-2">
-              <Calendar className="w-4 h-4 text-blue-500" />
-              <span className="text-xs text-gray-500">年龄</span>
+      <div className="flex-1 overflow-y-auto space-y-3">
+        <div className="grid grid-cols-3 gap-2">
+          <div className="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl text-center">
+            <p className="text-xs text-gray-500 mb-1">年龄</p>
+            <p className="text-xl font-bold text-gray-800">{case_.age}</p>
+            <p className="text-xs text-gray-400">岁</p>
+          </div>
+          <div className="p-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl text-center">
+            <p className="text-xs text-gray-500 mb-1">BMI</p>
+            <p className="text-xl font-bold text-gray-800">{case_.bmi}</p>
+            <span className={`text-xs px-1.5 py-0.5 rounded-full ${bmiCategory.color}`}>{bmiCategory.label}</span>
+          </div>
+          <div className="p-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl text-center">
+            <p className="text-xs text-gray-500 mb-1">分类</p>
+            <p className="text-xs font-bold text-gray-800 leading-tight">{case_.category}</p>
+          </div>
+        </div>
+
+        {[
+          { icon: AlertTriangle, color: 'text-orange-500', bg: 'from-orange-50 to-amber-50', label: '过敏史', value: case_.过敏史 || '无' },
+          { icon: Activity, color: 'text-red-500', bg: 'from-red-50 to-rose-50', label: '现病史', value: case_.现病史 },
+          { icon: Pill, color: 'text-blue-500', bg: 'from-blue-50 to-cyan-50', label: '目前用药', value: case_.目前用药 },
+          { icon: Utensils, color: 'text-green-500', bg: 'from-green-50 to-teal-50', label: '饮食习惯', value: case_.饮食习惯 },
+        ].map(({ icon: Icon, color, bg, label, value }) => (
+          <div key={label} className={`p-3 bg-gradient-to-br ${bg} rounded-xl`}>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Icon className={`w-3.5 h-3.5 ${color}`} />
+              <h3 className="text-xs font-bold text-gray-700">{label}</h3>
             </div>
-            <p className="text-2xl font-bold text-gray-800">{case_.age}</p>
-            <p className="text-xs text-gray-500">岁</p>
+            <p className="text-xs text-gray-600 leading-relaxed">{value}</p>
           </div>
+        ))}
 
-          <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
-            <div className="flex items-center gap-2 mb-2">
-              <Activity className="w-4 h-4 text-green-500" />
-              <span className="text-xs text-gray-500">BMI</span>
-            </div>
-            <p className="text-2xl font-bold text-gray-800">{case_.bmi}</p>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${bmiCategory.color}`}>
-              {bmiCategory.label}
-            </span>
+        <div className="p-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Target className="w-3.5 h-3.5 text-purple-500" />
+            <h3 className="text-xs font-bold text-gray-700">销售目标</h3>
           </div>
-
-          <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-            <div className="flex items-center gap-2 mb-2">
-              <Pill className="w-4 h-4 text-purple-500" />
-              <span className="text-xs text-gray-500">分类</span>
-            </div>
-            <p className="text-lg font-bold text-gray-800">{case_.category}</p>
-          </div>
-        </div>
-
-        <div className="p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl">
-          <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-5 h-5 text-orange-500" />
-            <h3 className="font-bold text-gray-800">过敏史</h3>
-          </div>
-          <p className="text-gray-700">{case_.过敏史 || '无'}</p>
-        </div>
-
-        <div className="p-4 bg-gradient-to-br from-red-50 to-rose-50 rounded-xl">
-          <div className="flex items-center gap-2 mb-3">
-            <Activity className="w-5 h-5 text-red-500" />
-            <h3 className="font-bold text-gray-800">现病史</h3>
-          </div>
-          <p className="text-gray-700 leading-relaxed">{case_.现病史}</p>
-        </div>
-
-        <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
-          <div className="flex items-center gap-2 mb-3">
-            <Pill className="w-5 h-5 text-blue-500" />
-            <h3 className="font-bold text-gray-800">目前用药</h3>
-          </div>
-          <p className="text-gray-700 leading-relaxed">{case_.目前用药}</p>
-        </div>
-
-        <div className="p-4 bg-gradient-to-br from-green-50 to-teal-50 rounded-xl">
-          <div className="flex items-center gap-2 mb-3">
-            <Utensils className="w-5 h-5 text-green-500" />
-            <h3 className="font-bold text-gray-800">饮食习惯</h3>
-          </div>
-          <p className="text-gray-700 leading-relaxed">{case_.饮食习惯}</p>
-        </div>
-
-        <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
-          <div className="flex items-center gap-2 mb-3">
-            <Target className="w-5 h-5 text-purple-500" />
-            <h3 className="font-bold text-gray-800">销售目标</h3>
-          </div>
-          <p className="text-gray-700 leading-relaxed font-medium">{case_.销售目标}</p>
+          <p className="text-xs text-gray-700 leading-relaxed font-medium">{case_.销售目标}</p>
         </div>
       </div>
 
-      <div className="mt-6 pt-4 border-t border-gray-200">
-        {/* 难度选择 */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-            <Star className="w-5 h-5 text-yellow-500" />
-            选择对话难度
-          </h3>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setSelectedDifficulty('easy')}
-              className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                selectedDifficulty === 'easy'
-                  ? 'bg-green-500 text-white shadow-md'
-                  : 'bg-green-50 text-green-700 hover:bg-green-100'
-              }`}
-            >
-              <div className="flex flex-col items-center">
-                <span>简单</span>
-                <span className="text-xs opacity-80">新手</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedDifficulty('medium')}
-              className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                selectedDifficulty === 'medium'
-                  ? 'bg-blue-500 text-white shadow-md'
-                  : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-              }`}
-            >
-              <div className="flex flex-col items-center">
-                <span>中等</span>
-                <span className="text-xs opacity-80">实战</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedDifficulty('hard')}
-              className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                selectedDifficulty === 'hard'
-                  ? 'bg-red-500 text-white shadow-md'
-                  : 'bg-red-50 text-red-700 hover:bg-red-100'
-              }`}
-            >
-              <div className="flex flex-col items-center">
-                <span>困难</span>
-                <span className="text-xs opacity-80">挑剔</span>
-              </div>
-            </button>
+      <div className="mt-3 pt-3 border-t border-gray-200">
+        <div className="mb-3">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Star className="w-3.5 h-3.5 text-yellow-500" />
+            <h3 className="text-xs font-semibold text-gray-700">选择难度</h3>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            {selectedDifficulty === 'easy' && '顾客信任度高，容易被说服'}
-            {selectedDifficulty === 'medium' && '正常顾客，会对价格和副作用有疑问'}
-            {selectedDifficulty === 'hard' && '极度专业且敏感，难以建立信任'}
-          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: 'easy', label: '简单', sub: '新手', active: 'bg-green-500 text-white', inactive: 'bg-green-50 text-green-700' },
+              { id: 'medium', label: '中等', sub: '实战', active: 'bg-blue-500 text-white', inactive: 'bg-blue-50 text-blue-700' },
+              { id: 'hard', label: '困难', sub: '挑剔', active: 'bg-red-500 text-white', inactive: 'bg-red-50 text-red-700' },
+            ].map(d => (
+              <button
+                key={d.id}
+                onClick={() => setSelectedDifficulty(d.id)}
+                className={`py-2 rounded-lg text-xs font-medium transition-all ${selectedDifficulty === d.id ? d.active + ' shadow-md' : d.inactive}`}
+              >
+                <div className="flex flex-col items-center">
+                  <span>{d.label}</span>
+                  <span className="text-xs opacity-70">{d.sub}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <button
           onClick={() => onStartPractice(case_, selectedDifficulty)}
-          className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all font-bold text-lg flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+          className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all font-bold text-sm flex items-center justify-center gap-2 shadow-md"
         >
-          <Play className="w-6 h-6" />
+          <Play className="w-4 h-4" />
           开始模拟练习
         </button>
       </div>
