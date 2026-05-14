@@ -327,8 +327,18 @@ async def batch_create_staff(
         raise HTTPException(status_code=400, detail="用户未关联门店")
     results = []
     users_data = []
-    for name in request.names:
-        username = "user_" + "".join(random.choices(string.digits, k=6))
+    existing_users = db.get_all_users() if hasattr(db, 'get_all_users') else []
+    existing_usernames = {u["username"] for u in existing_users} if existing_users else set()
+    counter_start = len([u for u in existing_users if u.get("store_id") == store_id and u.get("role") == "staff"]) + 1 if existing_users else 1
+    for idx, name in enumerate(request.names):
+        num = str(counter_start + idx).zfill(3)
+        base = f"yf{num}"
+        username = base
+        suffix = 1
+        while username in existing_usernames:
+            username = f"{base}_{suffix}"
+            suffix += 1
+        existing_usernames.add(username)
         password = generate_password(8)
         users_data.append({
             "username": username,
@@ -347,7 +357,7 @@ async def batch_create_staff(
             "username": u["username"],
             "password": u["_plain_password"],
         })
-    return results
+    return {"users": results}
 
 @app.post("/api/admin/staff/{user_id}/reset-password")
 async def admin_reset_staff_password(
