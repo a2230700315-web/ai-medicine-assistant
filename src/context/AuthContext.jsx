@@ -23,8 +23,7 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }, [])
 
-  const login = async (username, password) => {
-    try {
+  const login = async (username, password) => {    try {
       const response = await API.auth.login(username, password)
       const { access_token } = response.data
 
@@ -53,6 +52,17 @@ export function AuthProvider({ children }) {
     setUser(null)
     localStorage.removeItem('pharmacy_access_token')
     localStorage.removeItem('pharmacy_user')
+  }
+
+  const refreshUser = async () => {
+    try {
+      const userResponse = await API.auth.me()
+      const userData = userResponse.data
+      localStorage.setItem('pharmacy_user', JSON.stringify(userData))
+      setUser(userData)
+    } catch (e) {
+      // ignore
+    }
   }
 
   const getDefaultRoute = () => {
@@ -103,6 +113,7 @@ export function AuthProvider({ children }) {
     loading,
     login,
     logout,
+    refreshUser,
     hasPermission,
     canAccess,
     isAuthenticated: !!user,

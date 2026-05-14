@@ -13,6 +13,8 @@ import httpx
 import os
 import tempfile
 import shutil
+import random
+import string
 from datetime import datetime, timedelta
 from datetime import date
 
@@ -40,6 +42,21 @@ app.add_middleware(
 
 DB_PATH = "/www/wwwroot/api/pharmacy.db"
 db = Database()
+
+@app.on_event("startup")
+async def startup_db_migration():
+    conn = db.get_connection()
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN must_change_password INTEGER DEFAULT 0")
+        conn.commit()
+    except Exception:
+        pass  # 列已存在时忽略
+    finally:
+        conn.close()
+
+def generate_password(length=8):
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choices(chars, k=length))
 
 VOLC_API_KEY = os.getenv("VOLC_API_KEY", "")
 VOLC_ENDPOINT_ID = os.getenv("VOLC_ENDPOINT_ID", "")
@@ -119,6 +136,16 @@ class UserUpdateRequest(BaseModel):
     store_id: Optional[int] = None
     status: Optional[str] = None
 
+class BatchCreateStaffRequest(BaseModel):
+    names: List[str]  # 姓名列表，每个自动生成用户名和密码
+
+class ResetPasswordRequest(BaseModel):
+    new_password: Optional[str] = None
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
+
 @app.get("/")
 async def root():
     return {"message": "药店AI培训系统 API", "version": "2.0.0"}
@@ -151,7 +178,8 @@ async def get_current_user_info(current_user: dict = Depends(get_current_active_
         "role": current_user["role"],
         "real_name": current_user["real_name"],
         "store_id": current_user["store_id"],
-        "status": current_user["status"]
+        "status": current_user["status"],
+        "must_change_password": bool(current_user.get("must_change_password", 0))
     }
 
 @app.post("/api/auth/register", dependencies=[Depends(check_super_admin)])
@@ -288,6 +316,76 @@ async def update_staff(
     if user_data.password:
         user_data.password = get_password_hash(user_data.password)
     return {"message": "员工信息已更新"}
+
+@app.post("/api/admin/staff/batch")
+async def batch_create_staff(
+    request: BatchCreateStaffRequest,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    store_id = current_user.get("store_id")
+    if current_user["role"] == "admin" and not store_id:
+        raise HTTPException(status_code=400, detail="用户未关联门店")
+    results = []
+    users_data = []
+    for name in request.names:
+        username = "user_" + "".join(random.choices(string.digits, k=6))
+        password = generate_password(8)
+        users_data.append({
+            "username": username,
+            "hashed_password": get_password_hash(password),
+            "role": "staff",
+            "real_name": name,
+            "store_id": store_id,
+            "must_change_password": True,
+            "_plain_password": password,
+        })
+    created_ids = db.batch_create_users([{k: v for k, v in u.items() if k != "_plain_password"} for u in users_data])
+    for u, uid in zip(users_data, created_ids):
+        results.append({
+            "id": uid,
+            "real_name": u["real_name"],
+            "username": u["username"],
+            "password": u["_plain_password"],
+        })
+    return results
+
+@app.post("/api/admin/staff/{user_id}/reset-password")
+async def admin_reset_staff_password(
+    user_id: int,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    target = db.get_user_by_id(user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if current_user["role"] == "admin":
+        if target.get("store_id") != current_user.get("store_id"):
+            raise HTTPException(status_code=403, detail="不能操作其他门店员工")
+    new_password = generate_password(8)
+    db.update_user_password(user_id, get_password_hash(new_password), must_change_password=True)
+    return {"new_password": new_password}
+
+@app.post("/api/super/users/{user_id}/reset-password")
+async def super_reset_user_password(
+    user_id: int,
+    body: ResetPasswordRequest = None,
+    current_user: dict = Depends(check_super_admin)
+):
+    target = db.get_user_by_id(user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    new_password = (body.new_password if body and body.new_password else None) or generate_password(8)
+    db.update_user_password(user_id, get_password_hash(new_password), must_change_password=True)
+    return {"new_password": new_password}
+
+@app.post("/api/user/change-password")
+async def change_own_password(
+    body: ChangePasswordRequest,
+    current_user: dict = Depends(get_current_active_user)
+):
+    if not verify_password(body.old_password, current_user["hashed_password"]):
+        raise HTTPException(status_code=400, detail="原密码错误")
+    db.update_user_password(current_user["id"], get_password_hash(body.new_password), must_change_password=False)
+    return {"message": "密码修改成功"}
 
 @app.get("/api/cases")
 async def get_cases():

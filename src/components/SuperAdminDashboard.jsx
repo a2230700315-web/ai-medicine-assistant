@@ -1,6 +1,6 @@
 // build test 2026-05-09
 import { useState, useEffect } from 'react'
-import { Building2, Plus, Edit2, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle, LogOut, ChevronLeft } from 'lucide-react'
+import { Building2, Plus, Trash2, Eye, Users, Calendar, DollarSign, BarChart3, Search, X, Check, XCircle, LogOut, ChevronLeft, RefreshCw } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
@@ -13,6 +13,7 @@ function SuperAdminDashboard({ onBack }) {
   const [showUserModal, setShowUserModal] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState('stores')
+  const [resetPasswordResult, setResetPasswordResult] = useState(null)
   const [storeForm, setStoreForm] = useState({
     name: '',
     contact_person: '',
@@ -135,6 +136,15 @@ function SuperAdminDashboard({ onBack }) {
       } catch (error) {
         console.error('删除用户失败:', error)
       }
+    }
+  }
+
+  const handleSuperResetPassword = async (userId, userName) => {
+    try {
+      const response = await API.super.users.resetPassword(userId)
+      setResetPasswordResult({ name: userName, ...response.data })
+    } catch (error) {
+      console.error('重置密码失败:', error)
     }
   }
 
@@ -420,6 +430,15 @@ function SuperAdminDashboard({ onBack }) {
                               </button>
                               {user.role !== 'super_admin' && (
                                 <button
+                                  onClick={() => handleSuperResetPassword(user.id, user.real_name || user.username)}
+                                  className="p-1.5 text-orange-600 hover:bg-orange-50 rounded-lg transition-all"
+                                  title="重置密码"
+                                >
+                                  <RefreshCw className="w-4 h-4" />
+                                </button>
+                              )}
+                              {user.role !== 'super_admin' && (
+                                <button
                                   onClick={() => handleDeleteUser(user.id)}
                                   className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-all"
                                   title="删除用户"
@@ -664,8 +683,44 @@ function SuperAdminDashboard({ onBack }) {
           </div>
         )}
 
-        {/* 门店详情弹窗 */}
-        {selectedStore && (
+        {resetPasswordResult && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-sm">
+              <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-lg font-bold text-gray-800">密码已重置</h2>
+                <button onClick={() => setResetPasswordResult(null)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-6 space-y-3">
+                <p className="text-sm text-gray-600">
+                  已为 <span className="font-bold">{resetPasswordResult.name}</span> 重置密码：
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">用户名</span>
+                    <span className="font-mono font-bold text-gray-800">{resetPasswordResult.username}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">新密码</span>
+                    <span className="font-mono font-bold text-blue-600 text-lg">{resetPasswordResult.new_password}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-orange-500">用户下次登录须修改密码。密码仅显示一次，请立即记录。</p>
+              </div>
+              <div className="border-t border-gray-200 px-6 py-4 flex justify-end">
+                <button
+                  onClick={() => setResetPasswordResult(null)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+                >
+                  确认
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 门店详情弹窗 */}        {selectedStore && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
               <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Users, Plus, Edit2, Trash2, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft } from 'lucide-react'
+import { Users, Plus, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft, RefreshCw, Download, Copy } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
@@ -8,13 +8,18 @@ function AdminDashboard({ onBack }) {
   const [staff, setStaff] = useState([])
   const [selectedStaff, setSelectedStaff] = useState(null)
   const [showStaffModal, setShowStaffModal] = useState(false)
+  const [showBatchModal, setShowBatchModal] = useState(false)
+  const [batchResult, setBatchResult] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [resetPasswordResult, setResetPasswordResult] = useState(null)
   const [staffForm, setStaffForm] = useState({
     username: '',
     password: '',
     real_name: '',
     role: 'staff'
   })
+  const [batchNames, setBatchNames] = useState('')
+  const [batchLoading, setBatchLoading] = useState(false)
 
   useEffect(() => {
     fetchStaff()
@@ -38,6 +43,35 @@ function AdminDashboard({ onBack }) {
     } catch (error) {
       console.error('创建员工失败:', error)
     }
+  }
+
+  const handleBatchCreate = async () => {
+    const names = batchNames.split('\n').map(n => n.trim()).filter(Boolean)
+    if (names.length === 0) return
+    setBatchLoading(true)
+    try {
+      const response = await API.admin.staff.batchCreate({ names })
+      setBatchResult(response.data.users)
+      fetchStaff()
+    } catch (error) {
+      console.error('批量创建失败:', error)
+    } finally {
+      setBatchLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (memberId, memberName) => {
+    try {
+      const response = await API.admin.staff.resetPassword(memberId)
+      setResetPasswordResult({ name: memberName, ...response.data })
+    } catch (error) {
+      console.error('重置密码失败:', error)
+    }
+  }
+
+  const copyCredentials = (rows) => {
+    const text = rows.map(u => `姓名: ${u.real_name}  用户名: ${u.username}  密码: ${u.password}`).join('\n')
+    navigator.clipboard.writeText(text)
   }
 
   const filteredStaff = staff.filter(s =>
@@ -123,13 +157,22 @@ function AdminDashboard({ onBack }) {
                 <Users className="w-5 h-5" />
                 员工管理
               </h2>
-              <button
-                onClick={() => setShowStaffModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
-              >
-                <Plus className="w-4 h-4" />
-                添加员工
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { setShowBatchModal(true); setBatchResult(null); setBatchNames('') }}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                  批量添加
+                </button>
+                <button
+                  onClick={() => setShowStaffModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  添加员工
+                </button>
+              </div>
             </div>
           </div>
 
@@ -190,6 +233,13 @@ function AdminDashboard({ onBack }) {
                             title="查看详情"
                           >
                             <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleResetPassword(member.id, member.real_name || member.username)}
+                            className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-all"
+                            title="重置密码"
+                          >
+                            <RefreshCw className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
@@ -326,6 +376,127 @@ function AdminDashboard({ onBack }) {
           </div>
         )}
 
+        {showBatchModal && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+              <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-lg font-bold text-gray-800">批量添加员工</h2>
+                <button onClick={() => setShowBatchModal(false)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-6 flex-1 overflow-y-auto space-y-4">
+                {!batchResult ? (
+                  <>
+                    <p className="text-sm text-gray-600">每行输入一个员工姓名，系统将自动生成用户名和随机密码。</p>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">员工姓名列表（每行一个）</label>
+                      <textarea
+                        value={batchNames}
+                        onChange={(e) => setBatchNames(e.target.value)}
+                        rows={8}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                        placeholder={"张三\n李四\n王五\n..."}
+                      />
+                      <p className="text-xs text-gray-400 mt-1">
+                        共 {batchNames.split('\n').filter(n => n.trim()).length} 位员工
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-green-600 font-medium">✓ 成功创建 {batchResult.length} 个账号，请保存以下凭据</p>
+                      <button
+                        onClick={() => copyCredentials(batchResult)}
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                      >
+                        <Copy className="w-4 h-4" />
+                        复制全部
+                      </button>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-50">
+                            <th className="px-3 py-2 text-left font-medium text-gray-600">姓名</th>
+                            <th className="px-3 py-2 text-left font-medium text-gray-600">用户名</th>
+                            <th className="px-3 py-2 text-left font-medium text-gray-600">初始密码</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {batchResult.map((u, i) => (
+                            <tr key={i} className="border-b border-gray-100">
+                              <td className="px-3 py-2 text-gray-800">{u.real_name}</td>
+                              <td className="px-3 py-2 font-mono text-gray-800">{u.username}</td>
+                              <td className="px-3 py-2 font-mono text-blue-600 font-bold">{u.password}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-xs text-orange-500">注意：初始密码仅显示一次，请立即记录或复制。员工首次登录时须修改密码。</p>
+                  </>
+                )}
+              </div>
+              <div className="border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowBatchModal(false)}
+                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                >
+                  {batchResult ? '关闭' : '取消'}
+                </button>
+                {!batchResult && (
+                  <button
+                    onClick={handleBatchCreate}
+                    disabled={batchLoading || !batchNames.trim()}
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {batchLoading ? '创建中...' : '确认创建'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {resetPasswordResult && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-sm">
+              <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-lg font-bold text-gray-800">密码已重置</h2>
+                <button onClick={() => setResetPasswordResult(null)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-6 space-y-3">
+                <p className="text-sm text-gray-600">
+                  已为 <span className="font-bold">{resetPasswordResult.name}</span> 重置密码，请将以下凭据告知员工：
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">用户名</span>
+                    <span className="font-mono font-bold text-gray-800">{resetPasswordResult.username}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">新密码</span>
+                    <span className="font-mono font-bold text-blue-600 text-lg">{resetPasswordResult.new_password}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-orange-500">员工首次登录时须修改密码。密码仅显示一次，请立即记录。</p>
+              </div>
+              <div className="border-t border-gray-200 px-6 py-4 flex justify-end">
+                <button
+                  onClick={() => setResetPasswordResult(null)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+                >
+                  确认
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {selectedStaff && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
@@ -383,7 +554,14 @@ function AdminDashboard({ onBack }) {
                   </span>
                 </div>
               </div>
-              <div className="border-t border-gray-200 px-6 py-4 flex justify-end">
+              <div className="border-t border-gray-200 px-6 py-4 flex justify-between">
+                <button
+                  onClick={() => { handleResetPassword(selectedStaff.id, selectedStaff.real_name || selectedStaff.username); setSelectedStaff(null) }}
+                  className="flex items-center gap-2 px-4 py-2 text-orange-600 border border-orange-200 rounded-lg hover:bg-orange-50 transition-all"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  重置密码
+                </button>
                 <button
                   onClick={() => setSelectedStaff(null)}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"

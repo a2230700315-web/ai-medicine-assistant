@@ -40,6 +40,7 @@ export const API = {
  getAll: () => instance.get('/api/super/users'),
  updateStatus: (id, status) => instance.put(`/api/super/users/${id}/status`, { status }),
  delete: (id) => instance.delete(`/api/super/users/${id}`),
+ resetPassword: (id) => instance.post(`/api/super/users/${id}/reset-password`),
  },
  },
  admin: {
@@ -47,7 +48,12 @@ export const API = {
  getAll: () => instance.get('/api/admin/staff'),
  create: (data) => instance.post('/api/admin/staff', data),
  update: (id, data) => instance.put(`/api/admin/staff/${id}`, data),
+ batchCreate: (data) => instance.post('/api/admin/staff/batch', data),
+ resetPassword: (id) => instance.post(`/api/admin/staff/${id}/reset-password`),
  },
+ },
+ user: {
+ changePassword: (data) => instance.post('/api/user/change-password', data),
  },
  learning: {
  progress: {

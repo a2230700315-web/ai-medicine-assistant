@@ -77,13 +77,14 @@ class Database:
         return conn
 
     def create_user(self, username: str, hashed_password: str, role: str,
-                   real_name: Optional[str] = None, store_id: Optional[int] = None) -> int:
+                   real_name: Optional[str] = None, store_id: Optional[int] = None,
+                   must_change_password: bool = False) -> int:
         conn = self.get_connection()
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO users (username, hashed_password, role, real_name, store_id, status)
-            VALUES (?, ?, ?, ?, ?, 'active')
-        """, (username, hashed_password, role, real_name, store_id))
+            INSERT INTO users (username, hashed_password, role, real_name, store_id, status, must_change_password)
+            VALUES (?, ?, ?, ?, ?, 'active', ?)
+        """, (username, hashed_password, role, real_name, store_id, 1 if must_change_password else 0))
         conn.commit()
         user_id = cursor.lastrowid
         conn.close()
@@ -120,6 +121,36 @@ class Database:
         rows = cursor.fetchall()
         conn.close()
         return [dict(row) for row in rows]
+
+    def update_user_password(self, user_id: int, hashed_password: str, must_change_password: bool = False) -> bool:
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET hashed_password = ?, must_change_password = ? WHERE id = ?",
+            (hashed_password, 1 if must_change_password else 0, user_id)
+        )
+        conn.commit()
+        affected = cursor.rowcount
+        conn.close()
+        return affected > 0
+
+    def batch_create_users(self, users_data: list) -> list:
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        created_ids = []
+        for u in users_data:
+            cursor.execute("""
+                INSERT INTO users (username, hashed_password, role, real_name, store_id, status, must_change_password)
+                VALUES (?, ?, ?, ?, ?, 'active', ?)
+            """, (
+                u["username"], u["hashed_password"], u["role"],
+                u.get("real_name"), u.get("store_id"),
+                1 if u.get("must_change_password") else 0
+            ))
+            created_ids.append(cursor.lastrowid)
+        conn.commit()
+        conn.close()
+        return created_ids
 
     def update_user_status(self, user_id: int, status: str) -> bool:
         conn = self.get_connection()
