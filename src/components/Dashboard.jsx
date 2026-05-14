@@ -60,6 +60,11 @@ function Dashboard() {
     setSelectedCase(null)
     setCurrentPracticeCase(null)
     setMobileMenuOpen(false)
+    // 进入练习模式时自动打开案例库
+    if (mode === 'practice') {
+      setMobileLeftOpen(true)
+      setMobileRightOpen(false)
+    }
   }
 
   const handleCategorySelect = (categoryId) => {
@@ -203,7 +208,7 @@ function Dashboard() {
             {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
               <CaseCategorySelector
                 cases={cases}
-                onCategorySelect={(cat) => { handleCategorySelect(cat); setMobileLeftOpen(false) }}
+                onCategorySelect={handleCategorySelect}
                 selectedCategory={selectedCategory}
                 onBack={handleBackToCategories}
               />
@@ -212,7 +217,7 @@ function Dashboard() {
               <CaseList
                 cases={cases}
                 category={selectedCategory}
-                onCaseSelect={(c) => { handleCaseSelect(c); setMobileLeftOpen(false) }}
+                onCaseSelect={handleCaseSelect}
                 onBack={handleBackToCategories}
               />
             )}
@@ -422,7 +427,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col overflow-hidden md:min-h-screen md:h-auto md:overflow-visible">
       {permissionDenied && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
           <X className="w-5 h-5" />
@@ -511,7 +516,7 @@ function Dashboard() {
             </div>
           )}
 
-          <main className={`flex-1 min-h-0 ${currentMode === 'practice' ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
+          <main className={`flex-1 min-h-0 ${currentMode === 'practice' && isMobile ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
             {renderContent()}
           </main>
 
