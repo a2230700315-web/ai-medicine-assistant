@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, lazy, Suspense } from 'react'
 import { Send, MessageSquare, User, Bot, RotateCcw, TrendingUp, AlertCircle, ChevronUp, ChevronDown, ArrowLeftRight } from 'lucide-react'
-import ReviewModal from './ReviewModal'
 import { saveProgress } from '../utils/progressStorage'
 import VoiceHoldButton from './VoiceHoldButton'
+
+const ReviewModal = lazy(() => import('./ReviewModal'))
 
 function ChatInterface({ onReview, practiceCase, examMode = false }) {
   const [roleMode, setRoleMode] = useState('user') // 'user'=用户扮店员 'ai'=AI扮店员
@@ -272,21 +273,36 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       }
       setMessages(prev => [...prev, assistantMessage])
 
-      await fetchStreamResponse([...messages, userMessage], (metadata) => {
-        setTrustScore(metadata.trustScore)
-        setCurrentStage(metadata.currentStage)
-        setPurchaseIntent(metadata.purchaseIntent)
-        setMessages(prev => prev.map(msg => 
-          msg.id === assistantMessage.id 
-            ? { ...msg, content: metadata.content, isStreaming: false }
-            : msg
-        ))
-        if (metadata.purchaseIntent >= 85 || metadata.currentStage === 'purchase') {
-          setShowPurchaseSuccess(true)
+      await fetchStreamResponse(
+        [...messages, userMessage],
+        (partialContent) => {
+          // 流式更新：每收到一段文字就更新气泡内容
+          const displayContent = partialContent.includes('@@@')
+            ? partialContent.split('@@@')[0]
+            : partialContent.includes('[/METADATA]')
+            ? partialContent.split('[/METADATA]')[0]
+            : partialContent
+          setMessages(prev => prev.map(msg =>
+            msg.id === assistantMessage.id
+              ? { ...msg, content: displayContent }
+              : msg
+          ))
+        },
+        (metadata) => {
+          setTrustScore(metadata.trustScore)
+          setCurrentStage(metadata.currentStage)
+          setPurchaseIntent(metadata.purchaseIntent)
+          setMessages(prev => prev.map(msg =>
+            msg.id === assistantMessage.id
+              ? { ...msg, content: metadata.content, isStreaming: false }
+              : msg
+          ))
+          if (metadata.purchaseIntent >= 85 || metadata.currentStage === 'purchase') {
+            setShowPurchaseSuccess(true)
+          }
         }
-      })
+      )
     } catch (error) {
-      console.error('AI响应错误:', error)
       const errorMessage = {
         id: Date.now() + 1,
         role: 'assistant',
@@ -298,10 +314,10 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     }
   }
 
-  const fetchStreamResponse = async (conversationHistory, onComplete) => {
+  const fetchStreamResponse = async (conversationHistory, onChunk, onComplete) => {
     const filteredMessages = conversationHistory.filter(msg => {
       const content = msg.content || ''
-      return !content.includes('[错误:') && 
+      return !content.includes('[错误:') &&
              !content.includes('抱歉，我暂时无法回应')
     })
 
@@ -359,48 +375,45 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
 
     const response = await fetch('/api/chat/stream', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody),
       signal: AbortSignal.timeout(45000)
     })
 
-    const responseText = await response.text()
-    
     if (!response.ok) {
-      console.error('API 请求失败:', response.status, responseText)
-      try {
-        const errorData = JSON.parse(responseText)
-        throw new Error(`HTTP error! status: ${response.status}: ${errorData.message || errorData.error || JSON.stringify(errorData)}`)
-      } catch (jsonError) {
-        throw new Error(`HTTP error! status: ${response.status}: ${responseText}`)
-      }
+      const text = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}: ${text}`)
     }
 
-    try {
-      const responseData = JSON.parse(responseText)
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder()
+    let buffer = ''
+    let fullContent = ''
 
-      if (responseData.error) {
-        console.error('API返回错误:', responseData)
-        throw new Error(`API错误: ${responseData.message || responseData.error}`)
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop()
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue
+        const dataStr = line.slice(6)
+        try {
+          const data = JSON.parse(dataStr)
+          if (data.error) throw new Error(data.error)
+          if (data.delta) {
+            fullContent += data.delta
+            onChunk(fullContent)
+          }
+          if (data.done) {
+            const parsed = parseMetadata(data.content)
+            onComplete(parsed)
+          }
+        } catch (e) {
+          if (e.message && !e.message.includes('JSON')) throw e
+        }
       }
-
-      if (responseData && responseData.content) {
-        const parsed = parseMetadata(responseData.content)
-        onComplete(parsed)
-      } else {
-        console.error('JSON响应格式错误:', responseData)
-        throw new Error('API响应格式错误')
-      }
-    } catch (jsonError) {
-      if (responseText.includes('error') || responseText.includes('Error')) {
-        console.error('文本响应包含错误:', responseText)
-        throw new Error(`API错误: ${responseText}`)
-      }
-      
-      const parsed = parseMetadata(responseText)
-      onComplete(parsed)
     }
   }
 
@@ -682,10 +695,12 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
       </div>
 
       {showReview && reviewData && (
-        <ReviewModal 
-          reviewData={reviewData} 
-          onClose={() => setShowReview(false)} 
-        />
+        <Suspense fallback={null}>
+          <ReviewModal
+            reviewData={reviewData}
+            onClose={() => setShowReview(false)}
+          />
+        </Suspense>
       )}
 
       <div className="flex flex-col md:flex-row gap-2 md:gap-3">

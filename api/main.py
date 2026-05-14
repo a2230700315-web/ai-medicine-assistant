@@ -4,6 +4,7 @@ FastAPI 主应用
 """
 from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List
 import sqlite3
@@ -381,32 +382,42 @@ async def chat_stream(request: ChatRequest):
     if not VOLC_API_KEY or not VOLC_ENDPOINT_ID:
         return {"content": "API配置错误，请检查环境变量"}
 
-    try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
-                headers={
-                    "Content-Type": "application/json",
-                    "Authorization": f"Bearer {VOLC_API_KEY}"
-                },
-                json={
-                    "model": VOLC_ENDPOINT_ID,
-                    "messages": api_messages,
-                    "stream": False
-                }
-            )
+    async def generate():
+        try:
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                async with client.stream(
+                    "POST",
+                    "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {VOLC_API_KEY}"
+                    },
+                    json={
+                        "model": VOLC_ENDPOINT_ID,
+                        "messages": api_messages,
+                        "stream": True
+                    }
+                ) as response:
+                    full_content = ""
+                    async for line in response.aiter_lines():
+                        if not line.startswith("data: "):
+                            continue
+                        data_str = line[6:]
+                        if data_str == "[DONE]":
+                            break
+                        try:
+                            chunk = json.loads(data_str)
+                            delta = chunk["choices"][0]["delta"].get("content", "")
+                            if delta:
+                                full_content += delta
+                                yield f"data: {json.dumps({'delta': delta}, ensure_ascii=False)}\n\n"
+                        except Exception:
+                            continue
+                    yield f"data: {json.dumps({'done': True, 'content': full_content}, ensure_ascii=False)}\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
 
-            if response.status_code != 200:
-                raise HTTPException(status_code=response.status_code, detail=response.text)
-
-            data = response.json()
-            content = data["choices"][0]["message"]["content"]
-            return {"content": content}
-
-    except httpx.TimeoutException:
-        raise HTTPException(status_code=504, detail="API请求超时")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 @app.post("/api/chat/review")
 async def chat_review(request: ChatRequest):
