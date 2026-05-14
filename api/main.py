@@ -317,6 +317,33 @@ async def update_staff(
         user_data.password = get_password_hash(user_data.password)
     return {"message": "员工信息已更新"}
 
+@app.put("/api/admin/staff/{user_id}/status")
+async def update_staff_status(
+    user_id: int,
+    body: dict,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    user = db.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if current_user["role"] == "admin" and user["store_id"] != current_user["store_id"]:
+        raise HTTPException(status_code=403, detail="不能操作其他门店员工")
+    db.update_user_status(user_id, body.get("status"))
+    return {"message": "状态已更新"}
+
+@app.delete("/api/admin/staff/{user_id}")
+async def delete_staff(
+    user_id: int,
+    current_user: dict = Depends(check_admin_or_super_admin)
+):
+    user = db.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if current_user["role"] == "admin" and user["store_id"] != current_user["store_id"]:
+        raise HTTPException(status_code=403, detail="不能操作其他门店员工")
+    db.delete_user(user_id)
+    return {"message": "员工已删除"}
+
 @app.post("/api/admin/staff/batch")
 async def batch_create_staff(
     request: BatchCreateStaffRequest,
@@ -329,10 +356,12 @@ async def batch_create_staff(
     users_data = []
     existing_users = db.get_all_users() if hasattr(db, 'get_all_users') else []
     existing_usernames = {u["username"] for u in existing_users} if existing_users else set()
-    counter_start = len([u for u in existing_users if u.get("store_id") == store_id and u.get("role") == "staff"]) + 1 if existing_users else 1
+    store_prefix = f"s{store_id}_" if store_id else "s0_"
+    same_store_staff = [u for u in existing_users if u.get("store_id") == store_id and u.get("role") == "staff"]
+    counter_start = len(same_store_staff) + 1
     for idx, name in enumerate(request.names):
         num = str(counter_start + idx).zfill(3)
-        base = f"yf{num}"
+        base = f"{store_prefix}{num}"
         username = base
         suffix = 1
         while username in existing_usernames:

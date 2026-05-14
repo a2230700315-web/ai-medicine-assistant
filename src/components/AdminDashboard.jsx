@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Users, Plus, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft, RefreshCw, Download, Copy } from 'lucide-react'
+import { Users, Plus, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft, RefreshCw, Download, Copy, Trash2 } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
@@ -66,6 +66,26 @@ function AdminDashboard({ onBack }) {
       setResetPasswordResult({ name: memberName, ...response.data })
     } catch (error) {
       console.error('重置密码失败:', error)
+    }
+  }
+
+  const handleUpdateStatus = async (memberId, currentStatus) => {
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active'
+    try {
+      await API.admin.staff.updateStatus(memberId, newStatus)
+      fetchStaff()
+    } catch (error) {
+      console.error('更新状态失败:', error)
+    }
+  }
+
+  const handleDelete = async (memberId, memberName) => {
+    if (!confirm(`确定要删除员工「${memberName}」吗？此操作不可恢复。`)) return
+    try {
+      await API.admin.staff.delete(memberId)
+      fetchStaff()
+    } catch (error) {
+      console.error('删除员工失败:', error)
     }
   }
 
@@ -235,11 +255,29 @@ function AdminDashboard({ onBack }) {
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
+                            onClick={() => handleUpdateStatus(member.id, member.status)}
+                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
+                              member.status === 'active'
+                                ? 'bg-orange-50 text-orange-600 hover:bg-orange-100'
+                                : 'bg-green-50 text-green-600 hover:bg-green-100'
+                            }`}
+                            title={member.status === 'active' ? '停用' : '启用'}
+                          >
+                            {member.status === 'active' ? <><XCircle className="w-3 h-3" /> 停用</> : <><Check className="w-3 h-3" /> 启用</>}
+                          </button>
+                          <button
                             onClick={() => handleResetPassword(member.id, member.real_name || member.username)}
                             className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-all"
                             title="重置密码"
                           >
                             <RefreshCw className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(member.id, member.real_name || member.username)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="删除员工"
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>

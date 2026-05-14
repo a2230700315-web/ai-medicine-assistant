@@ -50,6 +50,8 @@ export const API = {
  update: (id, data) => instance.put(`/api/admin/staff/${id}`, data),
  batchCreate: (data) => instance.post('/api/admin/staff/batch', data),
  resetPassword: (id) => instance.post(`/api/admin/staff/${id}/reset-password`),
+ updateStatus: (id, status) => instance.put(`/api/admin/staff/${id}/status`, { status }),
+ delete: (id) => instance.delete(`/api/admin/staff/${id}`),
  },
  },
  user: {
