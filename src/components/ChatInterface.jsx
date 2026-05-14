@@ -390,15 +390,11 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
     let buffer = ''
     let fullContent = ''
 
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      buffer += decoder.decode(value, { stream: true })
-      const lines = buffer.split('\n')
-      buffer = lines.pop()
+    const processLines = (lines) => {
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue
-        const dataStr = line.slice(6)
+        const dataStr = line.slice(6).trim()
+        if (!dataStr) continue
         try {
           const data = JSON.parse(dataStr)
           if (data.error) throw new Error(data.error)
@@ -414,6 +410,19 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
           if (e.message && !e.message.includes('JSON')) throw e
         }
       }
+    }
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) {
+        // 处理最后残留的 buffer
+        if (buffer.trim()) processLines([buffer])
+        break
+      }
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop()
+      processLines(lines)
     }
   }
 
