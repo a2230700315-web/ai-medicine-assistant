@@ -513,7 +513,7 @@ function ChatInterface({ onReview, practiceCase, examMode = false }) {
   }
 
   return (
-    <div className="bg-white md:rounded-xl md:shadow-lg md:p-6 h-full flex flex-col">
+    <div className="bg-white md:rounded-xl md:shadow-lg md:p-6 h-full flex flex-col pb-14 md:pb-0">
       <div className="hidden md:flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { GraduationCap, BookOpen, Eye, EyeOff, Play, FileText, ChevronLeft, ChevronRight, LogOut, Store, Building2, Menu, X, User, Home, Award, Settings, Users, BarChart3 } from 'lucide-react'
+import { GraduationCap, BookOpen, Eye, EyeOff, Play, FileText, ChevronLeft, ChevronRight, LogOut, Store, Building2, Menu, X, User, Home, Award, Settings, Users, BarChart3, PanelLeftOpen, PanelRightOpen } from 'lucide-react'
 import CaseCategorySelector from './CaseCategorySelector'
 import CaseList from './CaseList'
 import CaseDetail from './CaseDetail'
@@ -27,6 +27,8 @@ function Dashboard() {
   const [permissionDenied, setPermissionDenied] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobileLeftOpen, setMobileLeftOpen] = useState(false)
+  const [mobileRightOpen, setMobileRightOpen] = useState(false)
 
   useEffect(() => {
     fetch('/cases_filtered.json')
@@ -194,14 +196,14 @@ function Dashboard() {
       return <AdminDashboard onBack={handleBackToHome} />
     }
     if (currentMode === 'practice') {
-      // 移动端：单列顺序展示（案例选择 → 聊天 → 知识助手）
+      // 移动端：固定高度三列布局，左右抽屉，中间对话区不滚动
       if (isMobile) {
-        return (
-          <div className="flex flex-col gap-3 px-3 py-3">
+        const leftPanel = (
+          <div className="h-full overflow-y-auto p-3">
             {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
               <CaseCategorySelector
                 cases={cases}
-                onCategorySelect={handleCategorySelect}
+                onCategorySelect={(cat) => { handleCategorySelect(cat); setMobileLeftOpen(false) }}
                 selectedCategory={selectedCategory}
                 onBack={handleBackToCategories}
               />
@@ -210,26 +212,94 @@ function Dashboard() {
               <CaseList
                 cases={cases}
                 category={selectedCategory}
-                onCaseSelect={handleCaseSelect}
+                onCaseSelect={(c) => { handleCaseSelect(c); setMobileLeftOpen(false) }}
                 onBack={handleBackToCategories}
               />
             )}
             {!examMode && (selectedCase || currentPracticeCase) && (
               <CaseDetail
                 case_={selectedCase || currentPracticeCase}
-                onStartPractice={handleStartPractice}
+                onStartPractice={(c, d) => { handleStartPractice(c, d); setMobileLeftOpen(false) }}
                 onBack={handleBackToList}
               />
             )}
             {examMode && (
-              <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center justify-center py-8">
+              <div className="bg-white rounded-xl p-6 flex flex-col items-center justify-center py-8">
                 <EyeOff className="w-10 h-10 text-gray-400 mb-3" />
                 <h3 className="text-base font-medium text-gray-700">考试模式已启用</h3>
                 <p className="text-sm text-gray-500 mt-1">案例档案已隐藏</p>
               </div>
             )}
-            <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
-            <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
+          </div>
+        )
+
+        return (
+          <div className="relative flex h-full overflow-hidden">
+            {/* 左侧抽屉遮罩 */}
+            {mobileLeftOpen && (
+              <div
+                className="absolute inset-0 z-20 bg-black/40"
+                onClick={() => setMobileLeftOpen(false)}
+              />
+            )}
+            {/* 左侧抽屉 */}
+            <div className={`absolute left-0 top-0 bottom-0 z-30 w-[80vw] max-w-xs bg-white shadow-xl transition-transform duration-300 ${mobileLeftOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                <span className="font-semibold text-gray-700 text-sm">模拟案例库</span>
+                <button onClick={() => setMobileLeftOpen(false)} className="p-1 text-gray-500">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              {leftPanel}
+            </div>
+
+            {/* 右侧抽屉遮罩 */}
+            {mobileRightOpen && (
+              <div
+                className="absolute inset-0 z-20 bg-black/40"
+                onClick={() => setMobileRightOpen(false)}
+              />
+            )}
+            {/* 右侧抽屉 */}
+            <div className={`absolute right-0 top-0 bottom-0 z-30 w-[80vw] max-w-xs bg-white shadow-xl transition-transform duration-300 ${mobileRightOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                <span className="font-semibold text-gray-700 text-sm">药店知识助手</span>
+                <button onClick={() => setMobileRightOpen(false)} className="p-1 text-gray-500">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="h-full overflow-y-auto p-3 pb-16">
+                <KnowledgeAssistant examMode={examMode} practiceCase={selectedCase || currentPracticeCase} />
+              </div>
+            </div>
+
+            {/* 中间对话区：固定全屏，不滚动 */}
+            <div className="flex-1 flex flex-col min-w-0 h-full">
+              {/* 顶部工具栏 */}
+              <div className="flex items-center justify-between px-3 py-2 bg-white border-b border-gray-200 flex-shrink-0">
+                <button
+                  onClick={() => { setMobileRightOpen(false); setMobileLeftOpen(true) }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium"
+                >
+                  <PanelLeftOpen className="w-4 h-4" />
+                  案例库
+                </button>
+                <span className="text-sm font-semibold text-gray-700">
+                  {currentPracticeCase ? currentPracticeCase.name || '对话练习' : '模拟对话'}
+                </span>
+                <button
+                  onClick={() => { setMobileLeftOpen(false); setMobileRightOpen(true) }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-medium"
+                >
+                  知识库
+                  <PanelRightOpen className="w-4 h-4" />
+                </button>
+              </div>
+              {/* 对话区：铺满剩余高度 */}
+              <div className="flex-1 min-h-0 overflow-hidden">
+                <ChatInterface practiceCase={currentPracticeCase} examMode={examMode} />
+              </div>
+            </div>
           </div>
         )
       }
@@ -352,7 +422,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col overflow-hidden">
       {permissionDenied && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
           <X className="w-5 h-5" />
@@ -441,7 +511,7 @@ function Dashboard() {
             </div>
           )}
 
-          <main className="flex-1 overflow-y-auto pb-20 smooth-scroll">
+          <main className={`flex-1 min-h-0 ${currentMode === 'practice' ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
             {renderContent()}
           </main>
 
