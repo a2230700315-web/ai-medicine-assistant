@@ -16,7 +16,7 @@ function CaseCategorySelector({ cases, onCategorySelect, selectedCategory, onBac
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 h-full">
+    <div className="bg-white rounded-xl shadow-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center">

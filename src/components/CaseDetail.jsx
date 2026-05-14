@@ -13,7 +13,7 @@ function CaseDetail({ case_, onStartPractice, onBack }) {
   const bmiCategory = getBMICategory(case_.bmi)
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 h-full flex flex-col">
+    <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center">
@@ -33,7 +33,7 @@ function CaseDetail({ case_, onStartPractice, onBack }) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-3">
+      <div className="space-y-3">
         <div className="grid grid-cols-3 gap-2">
           <div className="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl text-center">
             <p className="text-xs text-gray-500 mb-1">年龄</p>

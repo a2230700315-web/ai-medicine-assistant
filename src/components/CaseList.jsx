@@ -22,7 +22,7 @@ function CaseList({ cases, category, onCaseSelect, onBack }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 h-full flex flex-col">
+    <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-base font-bold text-gray-800">{categoryName}案例</h2>
@@ -30,7 +30,7 @@ function CaseList({ cases, category, onCaseSelect, onBack }) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-3">
+      <div className="space-y-3">
         {filteredCases.map((case_) => {
           const progress = getCaseProgress(case_.id)
           const medal = progress ? getMedal(progress.score) : null
