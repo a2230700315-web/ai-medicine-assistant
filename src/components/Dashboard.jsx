@@ -236,7 +236,7 @@ function Dashboard() {
 
             {/* 案例库视图 */}
             {mobileTab === 'case' && (
-              <div className="flex-1 overflow-y-auto pb-4 min-h-0">
+              <div className="flex-1 overflow-y-auto pb-24 min-h-0">
                 {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
                   <CaseCategorySelector
                     cases={cases}
