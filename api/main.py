@@ -356,7 +356,7 @@ async def batch_create_staff(
     users_data = []
     existing_users = db.get_all_users() if hasattr(db, 'get_all_users') else []
     existing_usernames = {u["username"] for u in existing_users} if existing_users else set()
-    store_prefix = f"s{store_id}_" if store_id else "s0_"
+    store_prefix = f"s{store_id}" if store_id else "s0"
     same_store_staff = [u for u in existing_users if u.get("store_id") == store_id and u.get("role") == "staff"]
     counter_start = len(same_store_staff) + 1
     for idx, name in enumerate(request.names):
@@ -365,7 +365,7 @@ async def batch_create_staff(
         username = base
         suffix = 1
         while username in existing_usernames:
-            username = f"{base}_{suffix}"
+            username = f"{base}x{suffix}"
             suffix += 1
         existing_usernames.add(username)
         password = generate_password(8)
