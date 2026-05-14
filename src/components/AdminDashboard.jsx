@@ -1,28 +1,26 @@
 import { useState, useEffect } from 'react'
-import { Users, Plus, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft, RefreshCw, Download, Copy, Trash2 } from 'lucide-react'
+import { Users, Plus, Eye, Calendar, BarChart3, Search, X, Check, XCircle, Store, Award, ChevronLeft, RefreshCw, Download, Copy, Trash2, Clock, BookOpen, FileText } from 'lucide-react'
 import { API } from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
 function AdminDashboard({ onBack }) {
   const { user } = useAuth()
   const [staff, setStaff] = useState([])
+  const [storeStats, setStoreStats] = useState(null)
   const [selectedStaff, setSelectedStaff] = useState(null)
   const [showStaffModal, setShowStaffModal] = useState(false)
   const [showBatchModal, setShowBatchModal] = useState(false)
   const [batchResult, setBatchResult] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [resetPasswordResult, setResetPasswordResult] = useState(null)
-  const [staffForm, setStaffForm] = useState({
-    username: '',
-    password: '',
-    real_name: '',
-    role: 'staff'
-  })
+  const [staffForm, setStaffForm] = useState({ username: '', password: '', real_name: '', role: 'staff' })
   const [batchNames, setBatchNames] = useState('')
   const [batchLoading, setBatchLoading] = useState(false)
+  const [reportTab, setReportTab] = useState('summary')
 
   useEffect(() => {
     fetchStaff()
+    fetchStats()
   }, [])
 
   const fetchStaff = async () => {
@@ -31,6 +29,15 @@ function AdminDashboard({ onBack }) {
       setStaff(response.data)
     } catch (error) {
       console.error('获取员工列表失败:', error)
+    }
+  }
+
+  const fetchStats = async () => {
+    try {
+      const response = await API.admin.stats()
+      setStoreStats(response.data)
+    } catch (error) {
+      console.error('获取统计数据失败:', error)
     }
   }
 
@@ -53,8 +60,9 @@ function AdminDashboard({ onBack }) {
       const response = await API.admin.staff.batchCreate({ names })
       setBatchResult(response.data.users)
       fetchStaff()
+      fetchStats()
     } catch (error) {
-      console.error('批量创建失败:', error)
+      alert(error.response?.data?.detail || '批量创建失败')
     } finally {
       setBatchLoading(false)
     }
@@ -84,6 +92,7 @@ function AdminDashboard({ onBack }) {
     try {
       await API.admin.staff.delete(memberId)
       fetchStaff()
+      fetchStats()
     } catch (error) {
       console.error('删除员工失败:', error)
     }
@@ -99,11 +108,14 @@ function AdminDashboard({ onBack }) {
     s.real_name?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const stats = {
-    totalStaff: staff.length,
-    activeStaff: staff.filter(s => s.status === 'active').length,
-    staffCount: staff.filter(s => s.role === 'staff').length,
-    managerCount: staff.filter(s => s.role === 'admin').length
+  const summary = storeStats?.summary || {}
+  const staffStats = storeStats?.staff_stats || []
+
+  const formatDuration = (seconds) => {
+    if (!seconds) return '-'
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    return h > 0 ? `${h}h${m}m` : `${m}分钟`
   }
 
   return (
@@ -133,40 +145,20 @@ function AdminDashboard({ onBack }) {
       <main className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Users className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">员工总数</p>
-              <p className="text-2xl font-bold text-gray-800">{stats.totalStaff}</p>
-            </div>
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"><Users className="w-6 h-6 text-blue-600" /></div>
+            <div><p className="text-sm text-gray-500">员工总数</p><p className="text-2xl font-bold text-gray-800">{summary.total_staff ?? staff.length}</p></div>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <Check className="w-6 h-6 text-green-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">活跃员工</p>
-              <p className="text-2xl font-bold text-gray-800">{stats.activeStaff}</p>
-            </div>
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"><Check className="w-6 h-6 text-green-600" /></div>
+            <div><p className="text-sm text-gray-500">活跃员工</p><p className="text-2xl font-bold text-gray-800">{summary.active_staff ?? staff.filter(s => s.status === 'active').length}</p></div>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Award className="w-6 h-6 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">店员数量</p>
-              <p className="text-2xl font-bold text-gray-800">{stats.staffCount}</p>
-            </div>
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"><BookOpen className="w-6 h-6 text-purple-600" /></div>
+            <div><p className="text-sm text-gray-500">累计练习次数</p><p className="text-2xl font-bold text-gray-800">{summary.total_practice ?? '-'}</p></div>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4">
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-orange-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">店长数量</p>
-              <p className="text-2xl font-bold text-gray-800">{stats.managerCount}</p>
-            </div>
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center"><Award className="w-6 h-6 text-orange-600" /></div>
+            <div><p className="text-sm text-gray-500">练习平均分</p><p className="text-2xl font-bold text-gray-800">{summary.avg_practice_score ?? '-'}</p></div>
           </div>
         </div>
 
@@ -296,51 +288,84 @@ function AdminDashboard({ onBack }) {
         </div>
 
         <div className="mt-6 bg-white rounded-xl shadow-sm">
-          <div className="border-b border-gray-200 px-6 py-4">
+          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
-              门店报表
+              <BarChart3 className="w-5 h-5" />门店报表
             </h2>
+            <div className="flex gap-2">
+              <button onClick={() => setReportTab('summary')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${reportTab === 'summary' ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
+                汇总
+              </button>
+              <button onClick={() => setReportTab('detail')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${reportTab === 'detail' ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
+                店员明细
+              </button>
+            </div>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-blue-600">本月练习次数</p>
-                    <p className="text-3xl font-bold text-blue-800">128</p>
-                  </div>
-                  <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-blue-600" />
+            {reportTab === 'summary' ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div><p className="text-sm text-blue-600">累计练习次数</p><p className="text-3xl font-bold text-blue-800">{summary.total_practice ?? 0}</p></div>
+                    <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center"><BookOpen className="w-6 h-6 text-blue-600" /></div>
                   </div>
                 </div>
-                <p className="text-xs text-blue-500 mt-2">较上月增长 15%</p>
-              </div>
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-green-600">平均分数</p>
-                    <p className="text-3xl font-bold text-green-800">85</p>
-                  </div>
-                  <div className="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center">
-                    <Award className="w-6 h-6 text-green-600" />
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div><p className="text-sm text-green-600">练习平均分</p><p className="text-3xl font-bold text-green-800">{summary.avg_practice_score ?? 0}</p></div>
+                    <div className="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center"><Award className="w-6 h-6 text-green-600" /></div>
                   </div>
                 </div>
-                <p className="text-xs text-green-500 mt-2">较上月提升 5分</p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-purple-600">活跃员工</p>
-                    <p className="text-3xl font-bold text-purple-800">{stats.activeStaff}/{stats.totalStaff}</p>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div><p className="text-sm text-purple-600">活跃员工</p><p className="text-3xl font-bold text-purple-800">{summary.active_staff ?? 0}/{summary.total_staff ?? 0}</p></div>
+                    <div className="w-12 h-12 bg-purple-200 rounded-full flex items-center justify-center"><Users className="w-6 h-6 text-purple-600" /></div>
                   </div>
-                  <div className="w-12 h-12 bg-purple-200 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-purple-600" />
-                  </div>
+                  <p className="text-xs text-purple-500 mt-2">活跃度 {summary.total_staff > 0 ? Math.round(summary.active_staff / summary.total_staff * 100) : 0}%</p>
                 </div>
-                <p className="text-xs text-purple-500 mt-2">活跃度 {stats.totalStaff > 0 ? Math.round(stats.activeStaff / stats.totalStaff * 100) : 0}%</p>
               </div>
-            </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="px-3 py-2 text-left font-medium text-gray-600">姓名</th>
+                      <th className="px-3 py-2 text-left font-medium text-gray-600">用户名</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">状态</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">练习次数</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">练习均分</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">练习时长</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">考试次数</th>
+                      <th className="px-3 py-2 text-center font-medium text-gray-600">考试均分</th>
+                      <th className="px-3 py-2 text-left font-medium text-gray-600">最近活跃</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {staffStats.length === 0 ? (
+                      <tr><td colSpan={9} className="text-center py-8 text-gray-400">暂无数据</td></tr>
+                    ) : staffStats.map((s) => (
+                      <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="px-3 py-2 font-medium text-gray-800">{s.real_name || '-'}</td>
+                        <td className="px-3 py-2 font-mono text-gray-600">{s.username}</td>
+                        <td className="px-3 py-2 text-center">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${s.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {s.status === 'active' ? '活跃' : '停用'}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2 text-center font-bold text-blue-600">{s.practice_count}</td>
+                        <td className="px-3 py-2 text-center">{s.practice_avg_score || '-'}</td>
+                        <td className="px-3 py-2 text-center text-gray-500">{formatDuration(s.practice_total_duration)}</td>
+                        <td className="px-3 py-2 text-center font-bold text-purple-600">{s.exam_count}</td>
+                        <td className="px-3 py-2 text-center">{s.exam_avg_score || '-'}</td>
+                        <td className="px-3 py-2 text-gray-500 text-xs">{s.last_active ? s.last_active.slice(0, 16) : '尚未使用'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
 

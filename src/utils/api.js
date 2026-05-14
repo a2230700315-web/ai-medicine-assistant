@@ -53,6 +53,7 @@ export const API = {
  updateStatus: (id, status) => instance.put(`/api/admin/staff/${id}/status`, { status }),
  delete: (id) => instance.delete(`/api/admin/staff/${id}`),
  },
+ stats: () => instance.get('/api/admin/stats'),
  },
  user: {
  changePassword: (data) => instance.post('/api/user/change-password', data),

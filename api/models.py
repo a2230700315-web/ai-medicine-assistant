@@ -78,13 +78,14 @@ class Database:
 
     def create_user(self, username: str, hashed_password: str, role: str,
                    real_name: Optional[str] = None, store_id: Optional[int] = None,
-                   must_change_password: bool = False) -> int:
+                   must_change_password: bool = False, max_staff: Optional[int] = None,
+                   expire_date: Optional[str] = None) -> int:
         conn = self.get_connection()
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO users (username, hashed_password, role, real_name, store_id, status, must_change_password)
-            VALUES (?, ?, ?, ?, ?, 'active', ?)
-        """, (username, hashed_password, role, real_name, store_id, 1 if must_change_password else 0))
+            INSERT INTO users (username, hashed_password, role, real_name, store_id, status, must_change_password, max_staff, expire_date)
+            VALUES (?, ?, ?, ?, ?, 'active', ?, ?, ?)
+        """, (username, hashed_password, role, real_name, store_id, 1 if must_change_password else 0, max_staff, expire_date))
         conn.commit()
         user_id = cursor.lastrowid
         conn.close()
@@ -357,3 +358,61 @@ class Database:
         rows = cursor.fetchall()
         conn.close()
         return [dict(row) for row in rows]
+
+    def get_store_stats(self, store_id: int) -> dict:
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        # 该门店所有店员
+        cursor.execute("SELECT id, username, real_name, status FROM users WHERE store_id = ? AND role = 'staff'", (store_id,))
+        staff = [dict(r) for r in cursor.fetchall()]
+        staff_ids = [s["id"] for s in staff]
+
+        stats_list = []
+        for s in staff:
+            uid = s["id"]
+            # 练习记录
+            cursor.execute(
+                "SELECT COUNT(*) as cnt, AVG(total_score) as avg_score, SUM(duration) as total_duration FROM practice_records WHERE user_id = ?",
+                (uid,)
+            )
+            pr = dict(cursor.fetchone())
+            # 考试记录
+            cursor.execute(
+                "SELECT COUNT(*) as cnt, AVG(score) as avg_score FROM exam_records WHERE user_id = ?",
+                (uid,)
+            )
+            er = dict(cursor.fetchone())
+            # 最近活跃
+            cursor.execute(
+                "SELECT MAX(created_at) as last_active FROM (SELECT created_at FROM practice_records WHERE user_id=? UNION ALL SELECT created_at FROM exam_records WHERE user_id=?)",
+                (uid, uid)
+            )
+            la = cursor.fetchone()
+            stats_list.append({
+                "id": uid,
+                "username": s["username"],
+                "real_name": s["real_name"],
+                "status": s["status"],
+                "practice_count": pr["cnt"] or 0,
+                "practice_avg_score": round(pr["avg_score"], 1) if pr["avg_score"] else 0,
+                "practice_total_duration": pr["total_duration"] or 0,
+                "exam_count": er["cnt"] or 0,
+                "exam_avg_score": round(er["avg_score"], 1) if er["avg_score"] else 0,
+                "last_active": la["last_active"] if la else None,
+            })
+
+        # 门店汇总
+        total_practice = sum(s["practice_count"] for s in stats_list)
+        avg_practice_score = round(sum(s["practice_avg_score"] for s in stats_list if s["practice_avg_score"]) / max(len([s for s in stats_list if s["practice_avg_score"]]), 1), 1)
+        active_staff = len([s for s in stats_list if s["last_active"]])
+
+        conn.close()
+        return {
+            "staff_stats": stats_list,
+            "summary": {
+                "total_staff": len(staff),
+                "active_staff": active_staff,
+                "total_practice": total_practice,
+                "avg_practice_score": avg_practice_score,
+            }
+        }

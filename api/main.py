@@ -50,9 +50,18 @@ async def startup_db_migration():
         conn.execute("ALTER TABLE users ADD COLUMN must_change_password INTEGER DEFAULT 0")
         conn.commit()
     except Exception:
-        pass  # 列已存在时忽略
-    finally:
-        conn.close()
+        pass
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN max_staff INTEGER DEFAULT NULL")
+        conn.commit()
+    except Exception:
+        pass
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN expire_date TEXT DEFAULT NULL")
+        conn.commit()
+    except Exception:
+        pass
+    conn.close()
 
 def generate_password(length=8):
     chars = string.ascii_letters + string.digits
@@ -128,6 +137,8 @@ class UserCreateRequest(BaseModel):
     role: str
     real_name: Optional[str] = None
     store_id: Optional[int] = None
+    expire_date: Optional[str] = None
+    max_staff: Optional[int] = None
 
 class UserUpdateRequest(BaseModel):
     password: Optional[str] = None
@@ -193,9 +204,22 @@ async def register_user(user_data: UserCreateRequest):
         hashed_password=hashed,
         role=user_data.role,
         real_name=user_data.real_name,
-        store_id=user_data.store_id
+        store_id=user_data.store_id,
+        max_staff=user_data.max_staff,
+        expire_date=user_data.expire_date,
     )
     return {"message": "用户创建成功", "user_id": user_id}
+
+@app.get("/api/super/stores/{store_id}/stats")
+async def get_store_stats(store_id: int, current_user: dict = Depends(check_super_admin)):
+    return db.get_store_stats(store_id)
+
+@app.get("/api/admin/stats")
+async def get_admin_stats(current_user: dict = Depends(check_admin_or_super_admin)):
+    sid = current_user.get("store_id")
+    if not sid:
+        raise HTTPException(status_code=400, detail="未关联门店")
+    return db.get_store_stats(sid)
 
 @app.get("/api/super/stores")
 async def get_all_stores(current_user: dict = Depends(check_super_admin)):
@@ -249,10 +273,10 @@ async def get_all_users(current_user: dict = Depends(check_super_admin)):
 @app.put("/api/super/users/{user_id}/status")
 async def update_user_status(
     user_id: int,
-    status: str,
+    body: dict,
     current_user: dict = Depends(check_super_admin)
 ):
-    success = db.update_user_status(user_id, status)
+    success = db.update_user_status(user_id, body.get("status"))
     if not success:
         raise HTTPException(status_code=404, detail="用户不存在")
     return {"message": "用户状态已更新"}
@@ -286,6 +310,12 @@ async def create_staff_user(
         user_data.store_id = current_user["store_id"]
         if user_data.role not in ["staff"]:
             raise HTTPException(status_code=403, detail="Admin只能创建staff角色")
+        admin_user = db.get_user_by_id(current_user["id"])
+        max_staff = admin_user.get("max_staff") if admin_user else None
+        if max_staff is not None:
+            current_count = len([u for u in db.get_users_by_store(current_user["store_id"]) if u.get("role") == "staff"])
+            if current_count >= max_staff:
+                raise HTTPException(status_code=400, detail=f"超过员工数量限制（最多{max_staff}人）")
     existing = db.get_user_by_username(user_data.username)
     if existing:
         raise HTTPException(status_code=400, detail="用户名已存在")
@@ -352,6 +382,13 @@ async def batch_create_staff(
     store_id = current_user.get("store_id")
     if current_user["role"] == "admin" and not store_id:
         raise HTTPException(status_code=400, detail="用户未关联门店")
+    # 检查 max_staff 限制
+    admin_user = db.get_user_by_id(current_user["id"])
+    max_staff = admin_user.get("max_staff") if admin_user else None
+    if max_staff is not None:
+        current_count = len([u for u in db.get_users_by_store(store_id) if u.get("role") == "staff"])
+        if current_count + len(request.names) > max_staff:
+            raise HTTPException(status_code=400, detail=f"超过员工数量限制（最多{max_staff}人，当前{current_count}人）")
     results = []
     users_data = []
     existing_users = db.get_all_users() if hasattr(db, 'get_all_users') else []
