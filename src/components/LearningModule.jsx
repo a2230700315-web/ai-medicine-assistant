@@ -24,9 +24,10 @@ function LearningModule({ onCaseRecommend }) {
     return () => window.removeEventListener('resize', check)
   }, [])
 
-  // 懒加载学习内容数据（11MB），避免阻塞首屏
   useEffect(() => {
-    import('../data/learningContent').then(m => setLearningContent(m.learningContent))
+    fetch('/learningContent.json')
+      .then(r => r.json())
+      .then(data => setLearningContent(data))
   }, [])
 
   const mainCategories = learningContent ? [

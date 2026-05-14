@@ -1,4 +1,4 @@
-export const learningContent = {
+{
   "publicSubjects": {
     "id": "public",
     "name": "公共科目",
