@@ -212,7 +212,7 @@ function Dashboard() {
         }
 
         return (
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full min-h-0">
             {/* 顶部tab栏 */}
             <div className="flex border-b border-gray-200 bg-white flex-shrink-0">
               {[
@@ -236,7 +236,7 @@ function Dashboard() {
 
             {/* 案例库视图 */}
             {mobileTab === 'case' && (
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 overflow-y-auto pb-4 min-h-0">
                 {!examMode && !selectedCategory && !selectedCase && !currentPracticeCase && (
                   <CaseCategorySelector
                     cases={cases}
@@ -493,7 +493,7 @@ function Dashboard() {
             </div>
           )}
 
-          <main className={`flex-1 min-h-0 ${currentMode === 'practice' ? 'overflow-hidden' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
+          <main className={`flex-1 min-h-0 ${currentMode === 'practice' ? 'overflow-hidden flex flex-col' : 'overflow-y-auto pb-20 smooth-scroll'}`}>
             {renderContent()}
           </main>
 
